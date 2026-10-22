@@ -1,0 +1,735 @@
+{
+  "spec_version": "1.0.0",
+  "product": {
+    "name": "County of Marin Contract Intake",
+    "purpose": "Collect contract intake information and generate a customized contract-readiness checklist based on the user's answers.",
+    "prototype_file": "marin_contract_intake_form.html",
+    "notes": [
+      "All visible questions are required.",
+      "Use radio buttons for discrete choices.",
+      "Use Back/Next navigation with a progress indicator.",
+      "Information Technology is only part of the workflow for New Contract.",
+      "After the Legal step is submitted, show a Thank You transition page, then the customized checklist.",
+      "Dollar-value routing logic is intentionally omitted for now."
+    ]
+  },
+  "ui": {
+    "style": "Clean County of Marin internal tool",
+    "layout": "Multi-step form",
+    "progress_indicator": true,
+    "navigation": [
+      "Back",
+      "Next"
+    ],
+    "validation_message": "Please answer all required questions before continuing."
+  },
+  "departments": [
+    "Agriculture, Weights, & Measures (AWM)",
+    "Assessor-Recorder, County Clerk (ARCC)",
+    "Board of Supervisors (BOS)",
+    "OCE, Clerk of the Board (OCE)",
+    "Child Support Services (CSS)",
+    "Community Development Agency (CDA)",
+    "County Counsel",
+    "Cultural Services",
+    "District Attorney (DA)",
+    "Elections, Registrar of Voters",
+    "Finance (DOF)",
+    "Fire (MCFD)",
+    "Health & Human Services (HHS)",
+    "Human Resources (HR)",
+    "Information Systems & Technology (IST)",
+    "Library (MCFL)",
+    "Parks and Open Space",
+    "Probation",
+    "Public Defender",
+    "Public Works (DPW)",
+    "Retirement (MCERA)",
+    "Sheriff (MCSO)",
+    "UCCE"
+  ],
+  "steps": [
+    {
+      "id": "general_information",
+      "title": "General Information",
+      "fields": [
+        {
+          "id": "name",
+          "question_number": 1,
+          "label": "Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "email",
+          "question_number": 2,
+          "label": "Email",
+          "type": "email",
+          "required": true
+        },
+        {
+          "id": "department",
+          "question_number": 3,
+          "label": "Department",
+          "type": "select",
+          "required": true,
+          "options_source": "departments"
+        },
+        {
+          "id": "division",
+          "question_number": 4,
+          "label": "Division or unit",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "contractTitle",
+          "question_number": 5,
+          "label": "Contract Title",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "contractType",
+          "question_number": 6,
+          "label": "Type of Contract",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "Professional Services Contract",
+            "Community Service Contract",
+            "Goods & Services"
+          ]
+        },
+        {
+          "id": "contractAction",
+          "question_number": 7,
+          "label": "What type of contract is this?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "New Contract",
+            "Purchase Order",
+            "Change Order",
+            "Renewal"
+          ],
+          "display_labels": {
+            "Change Order": "Change order, e.g., addendum, amendment"
+          }
+        },
+        {
+          "id": "annualValue",
+          "question_number": 8,
+          "label": "What is the expected annual value of your purchase?",
+          "type": "currency",
+          "required": true,
+          "currency": "USD"
+        },
+        {
+          "id": "startDate",
+          "question_number": 9,
+          "label": "Anticipated timeline - Start date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "endDate",
+          "question_number": 9,
+          "label": "Anticipated timeline - End date",
+          "type": "date",
+          "required": true,
+          "validation": {
+            "min_field": "startDate"
+          }
+        },
+        {
+          "id": "services",
+          "question_number": 10,
+          "label": "Describe the services to be provided. What is the business need?",
+          "type": "textarea",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "procurement_pathway",
+      "title": "Procurement Pathway",
+      "fields": [
+        {
+          "id": "procurementMethod",
+          "question_number": 1,
+          "label": "Have you gone through a competitive bidding process (e.g., RFP, solicitation of price, etc.) or are you sole/single sourcing this?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "Competitive bidding process",
+            "Sole/single sourcing",
+            "Other"
+          ],
+          "display_labels": {
+            "Competitive bidding process": "Yes, I've gone through a competitive bidding process",
+            "Sole/single sourcing": "I am sole/single sourcing this contract"
+          }
+        },
+        {
+          "id": "procurementOther",
+          "label": "Please explain",
+          "type": "text",
+          "required": true,
+          "show_if": {
+            "field": "procurementMethod",
+            "equals": "Other"
+          }
+        },
+        {
+          "id": "fundingIdentified",
+          "question_number": 2,
+          "label": "Have you identified funding for this contract?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "Yes",
+            "No",
+            "N/A"
+          ]
+        },
+        {
+          "id": "grantFunds",
+          "question_number": 3,
+          "label": "Will any portion of this purchase be paid for with grant funds?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "Yes",
+            "No"
+          ]
+        },
+        {
+          "id": "vendorRegistered",
+          "question_number": 4,
+          "label": "Is the vendor registered with the County?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "Yes",
+            "No"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "human_resources",
+      "title": "Human Resources",
+      "fields": [
+        {
+          "id": "consultedRecruitment",
+          "question_number": 1,
+          "label": "Have you consulted with your Recruitment Analyst to explore staffing solutions?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "Yes",
+            "No"
+          ]
+        },
+        {
+          "id": "renewalDuration",
+          "question_number": 2,
+          "label": "You indicated this contract is a renewal. Approximately how long has this work been contracted out?",
+          "type": "text",
+          "required": true,
+          "show_if": {
+            "field": "contractAction",
+            "equals": "Renewal"
+          }
+        },
+        {
+          "id": "pastPerformance",
+          "question_number": 3,
+          "label": "How is this work currently performed or how has it been performed in the past?",
+          "type": "textarea",
+          "required": true,
+          "show_if": {
+            "field": "contractAction",
+            "equals": "New Contract"
+          }
+        },
+        {
+          "id": "countyStaffPerform",
+          "question_number": 4,
+          "label": "Is there County staff that perform this work?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "Yes",
+            "No"
+          ]
+        },
+        {
+          "id": "contractNecessity",
+          "question_number": 5,
+          "label": "Explain why this contract is necessary, including staffing challenges, operational needs, or other reasons, as applicable.",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "employeeImpacts",
+          "question_number": 6,
+          "label": "Describe any impacts to current employees (include changes to terms and conditions of employment, duties, hours, positions, etc.).",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "processChanges",
+          "question_number": 7,
+          "label": "If the contract for service proceeds, how will this change current processes/procedures?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "emergency",
+          "question_number": 8,
+          "label": "Is this an emergency or is there an exigent circumstance that requires this contract?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "Yes",
+            "No"
+          ]
+        },
+        {
+          "id": "emergencyWhy",
+          "question_number": 9,
+          "label": "Why is this an emergency (sudden, unforeseen threat to public health, safety, or welfare) or exigent circumstance (urgent, uncontrollable situation requiring immediate action to prevent significant harm)?",
+          "type": "textarea",
+          "required": true,
+          "show_if": {
+            "field": "emergency",
+            "equals": "Yes"
+          }
+        }
+      ]
+    },
+    {
+      "id": "information_technology",
+      "title": "Information Technology",
+      "show_if": {
+        "field": "contractAction",
+        "equals": "New Contract"
+      },
+      "fields": [
+        {
+          "id": "technologyInvolved",
+          "question_number": 1,
+          "label": "Does this purchase involve any technology that may connect to County systems or handle County data, such as new software, cloud/SaaS, data sharing, integrations, or vendor security concerns?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "Yes",
+            "No"
+          ]
+        },
+        {
+          "id": "aiInvolved",
+          "question_number": 2,
+          "label": "Does this purchase include any tools or features that use artificial intelligence (AI)?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "Yes",
+            "No"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "risk",
+      "title": "Risk",
+      "fields": [
+        {
+          "id": "riskFactors",
+          "question_number": 1,
+          "label": "Does the project involve public-facing work, field work, minors/vulnerable populations, transportation/facilities, unusual insurance or indemnity, or requests to waive/reduce insurance?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "Yes",
+            "No"
+          ]
+        },
+        {
+          "id": "publicWorks",
+          "question_number": 2,
+          "label": "Is this a public works/construction project that is subject to prevailing wage and Department of Industrial Relations (DIR) requirements?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "Yes",
+            "No"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "insurance",
+      "title": "Insurance",
+      "fields": [
+        {
+          "id": "generalLiability",
+          "question_number": 1,
+          "label": "All vendors must have General Liability Insurance. Do you have a certificate of insurance that is valid for at least the next six months?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "Yes",
+            "No"
+          ]
+        },
+        {
+          "id": "additionalInsured",
+          "question_number": 2,
+          "label": "In addition to a certificate of insurance, Risk Management requires an “additional endorsement” naming the County of Marin. Do you have that document?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "Yes",
+            "No"
+          ]
+        },
+        {
+          "id": "autoInsurance",
+          "question_number": 3,
+          "label": "Will this contractor be driving as part of their contract—and hence require auto insurance coverage?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "Yes",
+            "No"
+          ]
+        },
+        {
+          "id": "professionalLiability",
+          "question_number": 4,
+          "label": "Will the contractor provide professional services—such as advice, consulting, design, or analysis—where a mistake could cause financial or operational harm to the County?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "Yes",
+            "No"
+          ]
+        },
+        {
+          "id": "businessStructure",
+          "question_number": 5,
+          "label": "Does this company have employees or is it a sole proprietorship?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "Has employees",
+            "Sole proprietorship"
+          ],
+          "option_display_labels": {
+            "Sole proprietorship": "Sole proprietorship (an individual owner with no employees)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "legal",
+      "title": "Legal",
+      "fields": [
+        {
+          "id": "legalIssues",
+          "question_number": 1,
+          "label": "Does the project involve Vendor's standard agreement (not the County's standard template), changes to the County contract template, non-standard terms, hyperlinks/online terms, CEQA, labor, privacy, or public records issues, or procurement-integrity concerns?",
+          "type": "radio",
+          "required": true,
+          "options": [
+            "Yes",
+            "No"
+          ]
+        }
+      ]
+    }
+  ],
+  "checklist": {
+    "title_template": "{{contractTitle}} Checklist",
+    "intro": "Based on the information you provided, the following is a checklist for you as the contract manager to consider before submitting your contract.",
+    "sections": [
+      {
+        "id": "procurement",
+        "title": "Procurement",
+        "render_if": "at_least_one_item",
+        "items": [
+          {
+            "show_if": {
+              "field": "procurementMethod",
+              "equals": "Sole/single sourcing"
+            },
+            "text": "Complete this sole/single source justification form."
+          },
+          {
+            "show_if": {
+              "field": "procurementMethod",
+              "equals": "Sole/single sourcing"
+            },
+            "text": "Consult with Procurement to validate it will suffice."
+          },
+          {
+            "show_if": {
+              "field": "procurementMethod",
+              "equals": "Competitive bidding process"
+            },
+            "text": "Document where you solicited quotes and be ready to include that information in your submission."
+          },
+          {
+            "show_if": {
+              "field": "vendorRegistered",
+              "equals": "No"
+            },
+            "text": "Ask your vendor to register as a vendor."
+          },
+          {
+            "show_if": {
+              "field": "vendorRegistered",
+              "equals": "No"
+            },
+            "text": "Continue to check in to validate they have submitted their registration."
+          },
+          {
+            "show_if": {
+              "field": "vendorRegistered",
+              "equals": "No"
+            },
+            "text": "Check Vendor Central on MUNIS until you see they are officially registered."
+          }
+        ],
+        "meta_if_rendered": [
+          "Contact: Kelly McCubbin",
+          "Further Information: FAQ on HR and Procurement"
+        ],
+        "notes": [
+          "Procurement Method = Other does not generate a checklist action at this time."
+        ]
+      },
+      {
+        "id": "human_resources",
+        "title": "Human Resources",
+        "render_if": "always",
+        "items": [
+          {
+            "text": "Wait to hear back from HR. They received your input and will follow up with next steps."
+          }
+        ],
+        "meta_if_rendered": [
+          "Contact: Kelly McCubbin",
+          "Further Information: FAQ on HR and Procurement"
+        ],
+        "notes": [
+          "The completed intake is intended to be routed to HR in a future implementation."
+        ]
+      },
+      {
+        "id": "information_technology",
+        "title": "Information Technology",
+        "show_if": {
+          "all": [
+            {
+              "field": "contractAction",
+              "equals": "New Contract"
+            },
+            {
+              "any": [
+                {
+                  "field": "technologyInvolved",
+                  "equals": "Yes"
+                },
+                {
+                  "field": "aiInvolved",
+                  "equals": "Yes"
+                }
+              ]
+            }
+          ]
+        },
+        "items": [
+          {
+            "text": "Submit a technology request form so that IST can do a security, data, and AI review."
+          },
+          {
+            "text": "Follow up with IST until you get written approval to proceed—or how to remediate potential issues."
+          },
+          {
+            "text": "Recommended: PDF any emails or documents that substantiate this to submit later."
+          }
+        ],
+        "meta_if_rendered": [
+          "Contact: Kelly McCubbin",
+          "Further Information: FAQ on HR and Procurement"
+        ]
+      },
+      {
+        "id": "risk",
+        "title": "Risk",
+        "show_if": {
+          "any": [
+            {
+              "field": "riskFactors",
+              "equals": "Yes"
+            },
+            {
+              "field": "publicWorks",
+              "equals": "Yes"
+            }
+          ]
+        },
+        "items": [
+          {
+            "text": "Reach out to Risk Management and send them a copy of your answers that was sent to this email, calling attention to the ‘Risk’ section."
+          },
+          {
+            "text": "Follow up with Risk until you get written approval to proceed—or how to remediate potential issues."
+          },
+          {
+            "text": "Recommended: PDF any emails or documents that substantiate this to submit later."
+          }
+        ],
+        "meta_if_rendered": [
+          "Contact: Kelly McCubbin",
+          "Further Information: FAQ on HR and Procurement"
+        ]
+      },
+      {
+        "id": "insurance",
+        "title": "Insurance",
+        "render_if": "at_least_one_item",
+        "items": [
+          {
+            "show_if": {
+              "field": "generalLiability",
+              "equals": "No"
+            },
+            "text": "Reach out to your vendor to ask for a Certificate of Insurance for General Liability."
+          },
+          {
+            "show_if": {
+              "field": "additionalInsured",
+              "equals": "No"
+            },
+            "text": "Reach out to your vendor to ask for an additional insured endorsement with Marin County named."
+          },
+          {
+            "show_if": {
+              "field": "autoInsurance",
+              "equals": "Yes"
+            },
+            "text": "Obtain or confirm Auto Liability insurance coverage."
+          },
+          {
+            "show_if": {
+              "field": "autoInsurance",
+              "equals": "No"
+            },
+            "text": "Reach out to Risk with an exemption request from auto insurance."
+          },
+          {
+            "show_if": {
+              "field": "professionalLiability",
+              "equals": "Yes"
+            },
+            "text": "Obtain or confirm Professional Liability / Errors & Omissions (E&O) insurance."
+          },
+          {
+            "show_if": {
+              "field": "professionalLiability",
+              "equals": "No"
+            },
+            "text": "Reach out to Risk with an exemption request from professional liability."
+          },
+          {
+            "show_if": {
+              "field": "businessStructure",
+              "equals": "Has employees"
+            },
+            "text": "Get Workers’ Compensation insurance COI (typically the same as the original)."
+          },
+          {
+            "show_if": {
+              "field": "businessStructure",
+              "equals": "Sole proprietorship"
+            },
+            "text": "Reach out to Risk for an exemption request from Workers’ Compensation."
+          }
+        ],
+        "append_if_rendered": [
+          "Recommended: PDF any emails or documents that substantiate this to submit later."
+        ],
+        "notes": [
+          "Do not render the Insurance section if no checklist items are generated."
+        ],
+        "meta_if_rendered": [
+          "Contact: Kelly McCubbin",
+          "Further Information: FAQ on HR and Procurement"
+        ]
+      },
+      {
+        "id": "legal",
+        "title": "Legal",
+        "render_if": "always",
+        "items": [
+          {
+            "show_if": {
+              "field": "legalIssues",
+              "equals": "Yes"
+            },
+            "text": "Reach out to County Counsel and let them know you are working on a non-standard agreement."
+          },
+          {
+            "show_if": {
+              "field": "legalIssues",
+              "equals": "Yes"
+            },
+            "text": "Work with them and the vendor’s Counsel until you have a final contract for submission."
+          },
+          {
+            "show_if": {
+              "field": "legalIssues",
+              "equals": "No"
+            },
+            "text": "Prepare a contract using the County’s standard contract."
+          }
+        ],
+        "meta_if_rendered": [
+          "Contact: Kelly McCubbin",
+          "Further Information: FAQ on HR and Procurement"
+        ]
+      }
+    ],
+    "common_section_meta": [
+      "Contact: Kelly McCubbin",
+      "Further Information: FAQ on HR and Procurement"
+    ]
+  },
+  "submission": {
+    "backend_defined": false,
+    "future_requirements": [
+      "Persist form answers",
+      "Route Human Resources answers to HR",
+      "Potentially route triggered sections to Procurement, IST, Risk, or County Counsel",
+      "Generate/store the customized checklist"
+    ]
+  },
+  "known_items_to_confirm_before_production": [
+    "Replace placeholder FAQ text with final URLs or resources.",
+    "Confirm whether Kelly McCubbin is the intended contact for Information Technology and Legal.",
+    "Correct the typo 'Prourement' in placeholder FAQ text when final links are supplied.",
+    "Define backend submission, notifications, record retention, authentication, and access controls.",
+    "Dollar-value routing is not included because it was explicitly deferred."
+  ],
+  "completion_page": {
+    "title": "Thank you",
+    "message_template": "Thank you — we’ve put together a custom checklist for you to successfully execute {{contractTitle}}.",
+    "primary_action": "View my checklist",
+    "next_view": "checklist"
+  }
+}

@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>County of Marin Contract Intake</title>
+  <style>
+    :root {
+      --marin-navy: #173b57;
+      --marin-blue: #246b8f;
+      --marin-teal: #2f7c7a;
+      --marin-light: #f4f8fb;
+      --marin-border: #d7e1e8;
+      --text: #1f2d36;
+      --muted: #647580;
+      --error: #b42318;
+      --white: #ffffff;
+      --shadow: 0 10px 30px rgba(23, 59, 87, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: #eef4f7;
+      line-height: 1.5;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--marin-navy);
+      color: var(--white);
+      padding: 22px 24px;
+      border-bottom: 4px solid var(--marin-teal);
+    }
+
+    .header-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand-kicker {
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.78;
+      margin-bottom: 2px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.45rem, 3vw, 2rem);
+      font-weight: 750;
+    }
+
+    .step-count {
+      font-weight: 700;
+      white-space: nowrap;
+      font-size: 0.95rem;
+      opacity: 0.95;
+    }
+
+    main {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 20px 56px;
+    }
+
+    .progress-wrap {
+      margin-bottom: 18px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: #d9e4ea;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 14.285%;
+      background: var(--marin-teal);
+      transition: width 0.25s ease;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--marin-border);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: clamp(22px, 4vw, 38px);
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .section-kicker {
+      color: var(--marin-blue);
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: clamp(1.55rem, 3vw, 2.15rem);
+      color: var(--marin-navy);
+    }
+
+    .intro {
+      margin: 0 0 28px;
+      color: var(--muted);
+      max-width: 760px;
+    }
+
+    .question {
+      margin: 0 0 28px;
+    }
+
+    label.question-label,
+    legend {
+      display: block;
+      font-weight: 720;
+      margin-bottom: 9px;
+      font-size: 1rem;
+      color: #22343f;
+    }
+
+    .required-mark {
+      color: var(--error);
+      margin-left: 3px;
+    }
+
+    .helper {
+      margin-top: -4px;
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid #bfcdd6;
+      border-radius: 8px;
+      min-height: 46px;
+      padding: 11px 12px;
+      font: inherit;
+      color: var(--text);
+      background: #fff;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--marin-blue);
+      box-shadow: 0 0 0 3px rgba(36, 107, 143, 0.14);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    fieldset {
+      border: 0;
+      padding: 0;
+      margin: 0 0 28px;
+      min-width: 0;
+    }
+
+    .radio-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .radio-grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .radio-card {
+      position: relative;
+      display: block;
+      cursor: pointer;
+    }
+
+    .radio-card input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .radio-card span {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 50px;
+      border: 1px solid #c7d3db;
+      border-radius: 9px;
+      padding: 11px 13px;
+      background: #fff;
+      font-weight: 650;
+      transition: all 0.15s ease;
+    }
+
+    .radio-card span::before {
+      content: "";
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      border: 2px solid #91a4b1;
+      flex: 0 0 auto;
+      box-shadow: inset 0 0 0 4px #fff;
+    }
+
+    .radio-card input:checked + span {
+      border-color: var(--marin-blue);
+      background: #eff7fb;
+      color: var(--marin-navy);
+      box-shadow: 0 0 0 1px var(--marin-blue);
+    }
+
+    .radio-card input:checked + span::before {
+      background: var(--marin-blue);
+      border-color: var(--marin-blue);
+    }
+
+    .radio-card input:focus-visible + span {
+      outline: 3px solid rgba(36, 107, 143, 0.24);
+      outline-offset: 2px;
+    }
+
+    .conditional {
+      display: none;
+      margin-top: 12px;
+      padding: 16px;
+      border-left: 4px solid var(--marin-teal);
+      background: #f5faf9;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .conditional.visible {
+      display: block;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 34px;
+      padding-top: 22px;
+      border-top: 1px solid var(--marin-border);
+    }
+
+    button {
+      border: 0;
+      border-radius: 8px;
+      min-height: 46px;
+      padding: 11px 20px;
+      font: inherit;
+      font-weight: 750;
+      cursor: pointer;
+      transition: transform 0.08s ease, background 0.15s ease;
+    }
+
+    button:active { transform: translateY(1px); }
+
+    .btn-primary {
+      background: var(--marin-navy);
+      color: #fff;
+    }
+
+    .btn-primary:hover { background: #102f47; }
+
+    .btn-secondary {
+      background: #e8eff3;
+      color: var(--marin-navy);
+    }
+
+    .btn-secondary:hover { background: #dce7ed; }
+
+    .error-summary {
+      display: none;
+      border: 1px solid #f3b6b1;
+      border-left: 5px solid var(--error);
+      background: #fff5f4;
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin-bottom: 22px;
+      color: #7a271a;
+      font-weight: 650;
+    }
+
+    .error-summary.visible { display: block; }
+
+    .thank-you {
+      text-align: center;
+      padding: 42px 10px 54px;
+    }
+
+    .thank-you .check {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      background: #e7f4ef;
+      color: #206b55;
+      display: grid;
+      place-items: center;
+      font-size: 2rem;
+      font-weight: 800;
+    }
+
+    .thank-you h2 {
+      margin-bottom: 8px;
+    }
+
+    .checklist-result {
+      padding: 4px 0 8px;
+    }
+
+    .checklist-result h2 {
+      margin-bottom: 8px;
+    }
+
+    .checklist-intro {
+      margin: 0 0 26px;
+      color: var(--muted);
+      max-width: 760px;
+    }
+
+    .checklist-section {
+      border-top: 1px solid var(--marin-border);
+      padding: 24px 0 4px;
+    }
+
+    .checklist-section:first-of-type {
+      border-top: 0;
+      padding-top: 2px;
+    }
+
+    .checklist-section h3 {
+      margin: 0 0 14px;
+      color: var(--marin-navy);
+      font-size: 1.18rem;
+    }
+
+    .checklist-items {
+      display: grid;
+      gap: 10px;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      border: 1px solid #d7e1e8;
+      border-radius: 9px;
+      padding: 12px 13px;
+      background: #fbfdfe;
+      cursor: pointer;
+    }
+
+    .checklist-item input {
+      width: 18px;
+      height: 18px;
+      margin: 2px 0 0;
+      flex: 0 0 auto;
+      accent-color: var(--marin-teal);
+    }
+
+    .checklist-item span {
+      flex: 1;
+    }
+
+    .checklist-item:has(input:checked) span {
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+
+    .checklist-meta {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: var(--marin-light);
+      color: #435661;
+      font-size: 0.92rem;
+    }
+
+    .checklist-meta div + div {
+      margin-top: 4px;
+    }
+
+    .checklist-empty {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .visually-hidden {
+      position: absolute !important;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 760px) {
+      .header-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .radio-grid,
+      .radio-grid.three,
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      main { padding: 20px 12px 36px; }
+      .card { border-radius: 10px; padding: 22px 18px; }
+      .actions { flex-wrap: wrap; }
+      .actions button { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header>
+      <div class="header-inner">
+        <div>
+          <div class="brand-kicker">County of Marin</div>
+          <h1>Contract Intake</h1>
+        </div>
+        <div class="step-count" id="stepCount">Step 1 of 7 — General Information</div>
+      </div>
+    </header>
+
+    <main>
+      <div class="progress-wrap" aria-hidden="true">
+        <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+      </div>
+
+      <form id="contractForm" novalidate>
+        <section class="card page active" data-step="1" data-title="General Information">
+          <div class="section-kicker">Step 1</div>
+          <h2>General Information</h2>
+          <p class="intro">Tell us about the contract or purchase you are preparing.</p>
+          <div class="error-summary" role="alert"></div>
+
+          <div class="question">
+            <label class="question-label" for="name">1. Name<span class="required-mark">*</span></label>
+            <input id="name" name="name" type="text" autocomplete="name" required />
+          </div>
+
+          <div class="question">
+            <label class="question-label" for="email">2. Email<span class="required-mark">*</span></label>
+            <input id="email" name="email" type="email" autocomplete="email" required />
+          </div>
+
+          <div class="question">
+            <label class="question-label" for="department">3. Department<span class="required-mark">*</span></label>
+            <select id="department" name="department" required>
+              <option value="" selected disabled>Select a department</option>
+              <option>Agriculture, Weights, &amp; Measures (AWM)</option>
+              <option>Assessor-Recorder, County Clerk (ARCC)</option>
+              <option>Board of Supervisors (BOS)</option>
+              <option>OCE, Clerk of the Board (OCE)</option>
+              <option>Child Support Services (CSS)</option>
+              <option>Community Development Agency (CDA)</option>
+              <option>County Counsel</option>
+              <option>Cultural Services</option>
+              <option>District Attorney (DA)</option>
+              <option>Elections, Registrar of Voters</option>
+              <option>Finance (DOF)</option>
+              <option>Fire (MCFD)</option>
+              <option>Health &amp; Human Services (HHS)</option>
+              <option>Human Resources (HR)</option>
+              <option>Information Systems &amp; Technology (IST)</option>
+              <option>Library (MCFL)</option>
+              <option>Parks and Open Space</option>
+              <option>Probation</option>
+              <option>Public Defender</option>
+              <option>Public Works (DPW)</option>
+              <option>Retirement (MCERA)</option>
+              <option>Sheriff (MCSO)</option>
+              <option>UCCE</option>
+            </select>
+          </div>
+
+          <div class="question">
+            <label class="question-label" for="division">4. Division or unit<span class="required-mark">*</span></label>
+            <input id="division" name="division" type="text" required />
+          </div>
+
+          <div class="question">
+            <label class="question-label" for="contractTitle">5. Contract Title<span class="required-mark">*</span></label>
+            <input id="contractTitle" name="contractTitle" type="text" required />
+          </div>
+
+          <fieldset>
+            <legend>6. Type of Contract<span class="required-mark">*</span></legend>
+            <div class="radio-grid three">
+              <label class="radio-card"><input type="radio" name="contractType" value="Professional Services Contract" required /><span>Professional Services Contract</span></label>
+              <label class="radio-card"><input type="radio" name="contractType" value="Community Service Contract" /><span>Community Service Contract</span></label>
+              <label class="radio-card"><input type="radio" name="contractType" value="Goods & Services" /><span>Goods &amp; Services</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>7. What type of contract is this?<span class="required-mark">*</span></legend>
+            <div class="radio-grid">
+              <label class="radio-card"><input type="radio" name="contractAction" value="New Contract" required /><span>New Contract</span></label>
+              <label class="radio-card"><input type="radio" name="contractAction" value="Purchase Order" /><span>Purchase Order</span></label>
+              <label class="radio-card"><input type="radio" name="contractAction" value="Change Order" /><span>Change order, e.g., addendum, amendment</span></label>
+              <label class="radio-card"><input type="radio" name="contractAction" value="Renewal" /><span>Renewal</span></label>
+            </div>
+          </fieldset>
+
+          <div class="question">
+            <label class="question-label" for="annualValue">8. What is the expected annual value of your purchase?<span class="required-mark">*</span></label>
+            <input id="annualValue" name="annualValue" type="text" inputmode="decimal" placeholder="$0.00" required />
+          </div>
+
+          <div class="question">
+            <label class="question-label">9. Anticipated timeline<span class="required-mark">*</span></label>
+            <div class="two-col">
+              <div>
+                <label class="helper" for="startDate">Start date</label>
+                <input id="startDate" name="startDate" type="date" required />
+              </div>
+              <div>
+                <label class="helper" for="endDate">End date</label>
+                <input id="endDate" name="endDate" type="date" required />
+              </div>
+            </div>
+          </div>
+
+          <div class="question">
+            <label class="question-label" for="services">10. Describe the services to be provided. What is the business need?<span class="required-mark">*</span></label>
+            <textarea id="services" name="services" required></textarea>
+          </div>
+
+          <div class="actions">
+            <span></span>
+            <button type="button" class="btn-primary next-btn">Next</button>
+          </div>
+        </section>
+
+        <section class="card page" data-step="2" data-title="Procurement Pathway">
+          <div class="section-kicker">Step 2</div>
+          <h2>Procurement Pathway</h2>
+          <p class="intro">Tell us how the vendor and funding were identified.</p>
+          <div class="error-summary" role="alert"></div>
+
+          <fieldset>
+            <legend>1. Have you gone through a competitive bidding process (e.g., RFP, solicitation of price, etc.) or are you sole/single sourcing this?<span class="required-mark">*</span></legend>
+            <div class="radio-grid">
+              <label class="radio-card"><input type="radio" name="procurementMethod" value="Competitive bidding process" required /><span>Yes, I’ve gone through a competitive bidding process</span></label>
+              <label class="radio-card"><input type="radio" name="procurementMethod" value="Sole/single sourcing" /><span>I am sole/single sourcing this contract</span></label>
+              <label class="radio-card"><input type="radio" name="procurementMethod" value="Other" /><span>Other</span></label>
+            </div>
+            <div id="procurementOtherWrap" class="conditional">
+              <label class="question-label" for="procurementOther">Please explain<span class="required-mark">*</span></label>
+              <input id="procurementOther" name="procurementOther" type="text" />
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>2. Have you identified funding for this contract?<span class="required-mark">*</span></legend>
+            <div class="radio-grid three">
+              <label class="radio-card"><input type="radio" name="fundingIdentified" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-card"><input type="radio" name="fundingIdentified" value="No" /><span>No</span></label>
+              <label class="radio-card"><input type="radio" name="fundingIdentified" value="N/A" /><span>N/A</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>3. Will any portion of this purchase be paid for with grant funds?<span class="required-mark">*</span></legend>
+            <div class="radio-grid">
+              <label class="radio-card"><input type="radio" name="grantFunds" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-card"><input type="radio" name="grantFunds" value="No" /><span>No</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>4. Is the vendor registered with the County?<span class="required-mark">*</span></legend>
+            <div class="radio-grid">
+              <label class="radio-card"><input type="radio" name="vendorRegistered" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-card"><input type="radio" name="vendorRegistered" value="No" /><span>No</span></label>
+            </div>
+          </fieldset>
+
+          <div class="actions">
+            <button type="button" class="btn-secondary back-btn">Back</button>
+            <button type="button" class="btn-primary next-btn">Next</button>
+          </div>
+        </section>
+
+        <section class="card page" data-step="3" data-title="Human Resources">
+          <div class="section-kicker">Step 3</div>
+          <h2>Human Resources</h2>
+          <p class="intro">Help identify potential staffing, employee, and labor considerations.</p>
+          <div class="error-summary" role="alert"></div>
+
+          <fieldset>
+            <legend>1. Have you consulted with your Recruitment Analyst to explore staffing solutions?<span class="required-mark">*</span></legend>
+            <div class="radio-grid">
+              <label class="radio-card"><input type="radio" name="consultedRecruitment" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-card"><input type="radio" name="consultedRecruitment" value="No" /><span>No</span></label>
+            </div>
+          </fieldset>
+
+          <div id="renewalQuestion" class="question conditional">
+            <label class="question-label" for="renewalDuration">2. You indicated this contract is a renewal. Approximately how long has this work been contracted out?<span class="required-mark">*</span></label>
+            <input id="renewalDuration" name="renewalDuration" type="text" />
+          </div>
+
+          <div id="newContractQuestion" class="question conditional">
+            <label class="question-label" for="pastPerformance">2. You indicated this is a new contract. How is this work currently performed, or how has it been performed in the past?<span class="required-mark">*</span></label>
+            <textarea id="pastPerformance" name="pastPerformance"></textarea>
+          </div>
+
+          <fieldset>
+            <legend>3. Is there County staff that perform this work?<span class="required-mark">*</span></legend>
+            <div class="radio-grid">
+              <label class="radio-card"><input type="radio" name="countyStaffPerform" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-card"><input type="radio" name="countyStaffPerform" value="No" /><span>No</span></label>
+            </div>
+          </fieldset>
+
+          <div class="question">
+            <label class="question-label" for="contractNecessity">4. Explain why this contract is necessary, including staffing challenges, operational needs, or other reasons, as applicable.<span class="required-mark">*</span></label>
+            <textarea id="contractNecessity" name="contractNecessity" required></textarea>
+          </div>
+
+          <div class="question">
+            <label class="question-label" for="employeeImpacts">5. Describe any impacts to current employees, including changes to terms and conditions of employment, duties, hours, positions, etc.<span class="required-mark">*</span></label>
+            <textarea id="employeeImpacts" name="employeeImpacts" required></textarea>
+          </div>
+
+          <div class="question">
+            <label class="question-label" for="processChanges">6. If the contract for service proceeds, how will this change current processes/procedures?<span class="required-mark">*</span></label>
+            <textarea id="processChanges" name="processChanges" required></textarea>
+          </div>
+
+          <fieldset>
+            <legend>7. Is this an emergency or is there an exigent circumstance that requires this contract?<span class="required-mark">*</span></legend>
+            <div class="radio-grid">
+              <label class="radio-card"><input type="radio" name="emergency" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-card"><input type="radio" name="emergency" value="No" /><span>No</span></label>
+            </div>
+            <div id="emergencyWhyWrap" class="conditional">
+              <label class="question-label" for="emergencyWhy">8. Why is this an emergency or exigent circumstance?<span class="required-mark">*</span></label>
+              <p class="helper"><strong>Emergency:</strong> a sudden, unforeseen threat to public health, safety, or welfare. <strong>Exigent circumstance:</strong> an urgent, uncontrollable situation requiring immediate action to prevent significant harm.</p>
+              <textarea id="emergencyWhy" name="emergencyWhy"></textarea>
+            </div>
+          </fieldset>
+
+          <div class="actions">
+            <button type="button" class="btn-secondary back-btn">Back</button>
+            <button type="button" class="btn-primary next-btn">Next</button>
+          </div>
+        </section>
+
+        <section class="card page" data-step="4" data-title="Information Technology">
+          <div class="section-kicker">Step 4</div>
+          <h2>Information Technology</h2>
+          <p class="intro">Identify purchases that may need technology, data, security, or AI review.</p>
+          <div class="error-summary" role="alert"></div>
+
+          <fieldset>
+            <legend>1. Does this purchase involve any technology that may connect to County systems or handle County data, such as new software, cloud/SaaS, data sharing, integrations, or vendor security concerns?<span class="required-mark">*</span></legend>
+            <div class="radio-grid">
+              <label class="radio-card"><input type="radio" name="technologyInvolved" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-card"><input type="radio" name="technologyInvolved" value="No" /><span>No</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>2. Does this purchase include any tools or features that use artificial intelligence (AI)?<span class="required-mark">*</span></legend>
+            <div class="radio-grid">
+              <label class="radio-card"><input type="radio" name="aiInvolved" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-card"><input type="radio" name="aiInvolved" value="No" /><span>No</span></label>
+            </div>
+          </fieldset>
+
+          <div class="actions">
+            <button type="button" class="btn-secondary back-btn">Back</button>
+            <button type="button" class="btn-primary next-btn">Next</button>
+          </div>
+        </section>
+
+        <section class="card page" data-step="5" data-title="Risk">
+          <div class="section-kicker">Step 5</div>
+          <h2>Risk</h2>
+          <p class="intro">Identify activities that may need additional risk or insurance review.</p>
+          <div class="error-summary" role="alert"></div>
+
+          <fieldset>
+            <legend>1. Does the project involve public-facing work, field work, minors/vulnerable populations, transportation/facilities, unusual insurance or indemnity, or requests to waive/reduce insurance?<span class="required-mark">*</span></legend>
+            <p class="helper">Vulnerable populations are groups at high risk for poor health, exploitation, or harm due to social, economic, or physical disadvantages.</p>
+            <div class="radio-grid">
+              <label class="radio-card"><input type="radio" name="riskFactors" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-card"><input type="radio" name="riskFactors" value="No" /><span>No</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>2. Is this a public works/construction project that is subject to prevailing wage and Department of Industrial Relations (DIR) requirements?<span class="required-mark">*</span></legend>
+            <div class="radio-grid">
+              <label class="radio-card"><input type="radio" name="publicWorks" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-card"><input type="radio" name="publicWorks" value="No" /><span>No</span></label>
+            </div>
+          </fieldset>
+
+          <div class="actions">
+            <button type="button" class="btn-secondary back-btn">Back</button>
+            <button type="button" class="btn-primary next-btn">Next</button>
+          </div>
+        </section>
+
+        <section class="card page" data-step="6" data-title="Insurance">
+          <div class="section-kicker">Step 6</div>
+          <h2>Insurance</h2>
+          <p class="intro">Confirm the vendor’s available insurance coverage and potential coverage needs.</p>
+          <div class="error-summary" role="alert"></div>
+
+          <fieldset>
+            <legend>1. All vendors must have General Liability Insurance. Do you have a certificate of insurance that is valid for at least the next six months?<span class="required-mark">*</span></legend>
+            <div class="radio-grid">
+              <label class="radio-card"><input type="radio" name="generalLiability" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-card"><input type="radio" name="generalLiability" value="No" /><span>No</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>2. In addition to a certificate of insurance, Risk Management requires an “additional endorsement” naming the County of Marin. Do you have that document?<span class="required-mark">*</span></legend>
+            <div class="radio-grid">
+              <label class="radio-card"><input type="radio" name="additionalInsured" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-card"><input type="radio" name="additionalInsured" value="No" /><span>No</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>3. Will this contractor be driving as part of their contract—and hence require auto insurance coverage?<span class="required-mark">*</span></legend>
+            <div class="radio-grid">
+              <label class="radio-card"><input type="radio" name="autoInsurance" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-card"><input type="radio" name="autoInsurance" value="No" /><span>No</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>4. Will the contractor provide professional services—such as advice, consulting, design, or analysis—where a mistake could cause financial or operational harm to the County?<span class="required-mark">*</span></legend>
+            <div class="radio-grid">
+              <label class="radio-card"><input type="radio" name="professionalLiability" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-card"><input type="radio" name="professionalLiability" value="No" /><span>No</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>5. Does this company have employees or is it a sole proprietorship?<span class="required-mark">*</span></legend>
+            <div class="radio-grid">
+              <label class="radio-card"><input type="radio" name="businessStructure" value="Has employees" required /><span>Has employees</span></label>
+              <label class="radio-card"><input type="radio" name="businessStructure" value="Sole proprietorship" /><span>Sole proprietorship (an individual owner with no employees)</span></label>
+            </div>
+          </fieldset>
+
+          <div class="actions">
+            <button type="button" class="btn-secondary back-btn">Back</button>
+            <button type="button" class="btn-primary next-btn">Next</button>
+          </div>
+        </section>
+
+        <section class="card page" data-step="7" data-title="Legal">
+          <div class="section-kicker">Step 7</div>
+          <h2>Legal</h2>
+          <p class="intro">Identify contracts that may need County Counsel review.</p>
+          <div class="error-summary" role="alert"></div>
+
+          <fieldset>
+            <legend>1. Does the project involve the vendor's standard agreement (not the County's standard template), changes to the County contract template, non-standard terms, hyperlinks/online terms, CEQA, labor, privacy, public records issues, or procurement-integrity concerns?<span class="required-mark">*</span></legend>
+            <div class="radio-grid">
+              <label class="radio-card"><input type="radio" name="legalIssues" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-card"><input type="radio" name="legalIssues" value="No" /><span>No</span></label>
+            </div>
+          </fieldset>
+
+          <div class="actions">
+            <button type="button" class="btn-secondary back-btn">Back</button>
+            <button type="submit" class="btn-primary">Submit</button>
+          </div>
+        </section>
+
+        <section class="card page" data-step="8" data-title="Thank You">
+          <div class="thank-you">
+            <div class="check" aria-hidden="true">✓</div>
+            <h2>Thank you</h2>
+            <p class="intro" style="margin-left:auto; margin-right:auto;">We’ve put together a custom checklist for you to successfully execute <strong id="thankYouContractTitle">your contract</strong>.</p>
+            <div class="actions" style="justify-content:center; margin-top:28px;">
+              <button type="button" class="btn-primary" id="viewChecklistBtn">View my checklist</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="card page" data-step="9" data-title="Contract Checklist">
+          <div class="checklist-result">
+            <div class="section-kicker">Your next steps</div>
+            <h2 id="checklistTitle">Contract Checklist</h2>
+            <p class="checklist-intro">Based on the information you provided, the following is a checklist for you as the contract manager to consider before submitting your contract.</p>
+            <div id="checklistSections"></div>
+          </div>
+        </section>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    const form = document.getElementById('contractForm');
+    const pages = [...document.querySelectorAll('.page')];
+    const stepCount = document.getElementById('stepCount');
+    const progressBar = document.getElementById('progressBar');
+    let currentStep = 1;
+
+    const pageTitle = step => pages.find(p => Number(p.dataset.step) === step)?.dataset.title || '';
+
+    function isNewContract() {
+      return checkedValue('contractAction') === 'New Contract';
+    }
+
+    function workflowSteps() {
+      // Information Technology (step 4) is only part of the workflow for new contracts.
+      const steps = [1, 2, 3, 5, 6, 7];
+      if (isNewContract()) steps.splice(3, 0, 4);
+      return steps;
+    }
+
+    function showStep(step) {
+      // If Information Technology is not applicable, never display that page.
+      if (step === 4 && !isNewContract()) step = 5;
+
+      currentStep = step;
+      pages.forEach(page => page.classList.toggle('active', Number(page.dataset.step) === step));
+
+      if (step <= 7) {
+        const steps = workflowSteps();
+        const position = steps.indexOf(step) + 1;
+        stepCount.textContent = `Step ${position} of ${steps.length} — ${pageTitle(step)}`;
+        progressBar.style.width = `${(position / steps.length) * 100}%`;
+      } else if (step === 8) {
+        stepCount.textContent = 'Complete — Thank You';
+        progressBar.style.width = '100%';
+      } else {
+        stepCount.textContent = 'Complete — Contract Checklist';
+        progressBar.style.width = '100%';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      syncConditionals();
+    }
+
+    function getCurrentPage() {
+      return pages.find(p => Number(p.dataset.step) === currentStep);
+    }
+
+    function validateCurrentPage() {
+      const page = getCurrentPage();
+      const errorSummary = page.querySelector('.error-summary');
+      errorSummary.classList.remove('visible');
+      errorSummary.textContent = '';
+
+      const controls = [...page.querySelectorAll('input, select, textarea')].filter(el => {
+        if (el.disabled) return false;
+        if (el.closest('.conditional') && !el.closest('.conditional').classList.contains('visible')) return false;
+        return true;
+      });
+
+      let firstInvalid = null;
+      for (const control of controls) {
+        if (!control.checkValidity()) {
+          firstInvalid = firstInvalid || control;
+        }
+      }
+
+      if (firstInvalid) {
+        errorSummary.textContent = 'Please answer all required questions before continuing.';
+        errorSummary.classList.add('visible');
+        firstInvalid.focus();
+        firstInvalid.reportValidity();
+        return false;
+      }
+      return true;
+    }
+
+    document.querySelectorAll('.next-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (!validateCurrentPage()) return;
+        const steps = workflowSteps();
+        const index = steps.indexOf(currentStep);
+        if (index >= 0 && index < steps.length - 1) showStep(steps[index + 1]);
+      });
+    });
+
+    document.querySelectorAll('.back-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const steps = workflowSteps();
+        const index = steps.indexOf(currentStep);
+        if (index > 0) showStep(steps[index - 1]);
+      });
+    });
+
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      if (validateCurrentPage()) {
+        buildChecklist();
+        const contractTitle = document.getElementById('contractTitle').value.trim();
+        document.getElementById('thankYouContractTitle').textContent = contractTitle || 'your contract';
+        showStep(8);
+      }
+    });
+
+    document.getElementById('viewChecklistBtn').addEventListener('click', () => {
+      showStep(9);
+    });
+
+    function checkedValue(name) {
+      return document.querySelector(`input[name="${name}"]:checked`)?.value || '';
+    }
+
+    function addChecklistSection(container, title, items, meta = []) {
+      if (!items.length) return;
+
+      const section = document.createElement('section');
+      section.className = 'checklist-section';
+
+      const heading = document.createElement('h3');
+      heading.textContent = title;
+      section.appendChild(heading);
+
+      const list = document.createElement('div');
+      list.className = 'checklist-items';
+
+      items.forEach(itemText => {
+        const label = document.createElement('label');
+        label.className = 'checklist-item';
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+
+        const text = document.createElement('span');
+        text.textContent = itemText;
+
+        label.append(checkbox, text);
+        list.appendChild(label);
+      });
+
+      section.appendChild(list);
+
+      if (meta.length) {
+        const metaBox = document.createElement('div');
+        metaBox.className = 'checklist-meta';
+        meta.forEach(line => {
+          const row = document.createElement('div');
+          row.textContent = line;
+          metaBox.appendChild(row);
+        });
+        section.appendChild(metaBox);
+      }
+
+      container.appendChild(section);
+    }
+
+    function buildChecklist() {
+      const container = document.getElementById('checklistSections');
+      const title = document.getElementById('checklistTitle');
+      container.replaceChildren();
+
+      const commonChecklistMeta = [
+        'Contact: Kelly McCubbin',
+        'Further Information: FAQ on HR and Procurement'
+      ];
+
+      const contractTitle = document.getElementById('contractTitle').value.trim();
+      title.textContent = contractTitle ? `${contractTitle} Checklist` : 'Contract Checklist';
+
+      // Procurement
+      const procurementItems = [];
+      const procurementMethod = checkedValue('procurementMethod');
+      if (procurementMethod === 'Sole/single sourcing') {
+        procurementItems.push('Complete this sole/single source justification form.');
+        procurementItems.push('Consult with Procurement to validate it will suffice.');
+      } else if (procurementMethod === 'Competitive bidding process') {
+        procurementItems.push('Document where you solicited quotes and be ready to include that information in your submission.');
+      }
+
+      if (checkedValue('vendorRegistered') === 'No') {
+        procurementItems.push('Ask your vendor to register as a vendor.');
+        procurementItems.push('Continue to check in to validate they have submitted their registration.');
+        procurementItems.push('Check Vendor Central on MUNIS until you see they are officially registered.');
+      }
+
+      addChecklistSection(
+        container,
+        'Procurement',
+        procurementItems,
+        procurementItems.length ? commonChecklistMeta : []
+      );
+
+      // Human Resources — always show.
+      addChecklistSection(
+        container,
+        'Human Resources',
+        ['Wait to hear back from HR. They received your input and will follow up with next steps.'],
+        commonChecklistMeta
+      );
+
+      // Information Technology — only for a new contract when either IT question is Yes.
+      if (isNewContract() && (checkedValue('technologyInvolved') === 'Yes' || checkedValue('aiInvolved') === 'Yes')) {
+        addChecklistSection(
+          container,
+          'Information Technology',
+          [
+            'Submit a technology request form so that IST can do a security, data, and AI review.',
+            'Follow up with IST until you get written approval to proceed—or how to remediate potential issues.',
+            'Recommended: PDF any emails or documents that substantiate this to submit later.'
+          ],
+          commonChecklistMeta
+        );
+      }
+
+      // Risk — show if either Risk answer is Yes.
+      if (checkedValue('riskFactors') === 'Yes' || checkedValue('publicWorks') === 'Yes') {
+        addChecklistSection(
+          container,
+          'Risk',
+          [
+            'Reach out to Risk Management and send them a copy of your answers that was sent to this email, calling attention to the “Risk” section.',
+            'Follow up with Risk until you get written approval to proceed—or how to remediate potential issues.',
+            'Recommended: PDF any emails or documents that substantiate this to submit later.'
+          ],
+          commonChecklistMeta
+        );
+      }
+
+      // Insurance — only render if there is at least one outstanding action.
+      const insuranceItems = [];
+      if (checkedValue('generalLiability') === 'No') {
+        insuranceItems.push('Reach out to your vendor to ask for a Certificate of Insurance for General Liability.');
+      }
+      if (checkedValue('additionalInsured') === 'No') {
+        insuranceItems.push('Reach out to your vendor to ask for an additional insured endorsement with Marin County named.');
+      }
+      if (checkedValue('autoInsurance') === 'Yes') {
+        insuranceItems.push('Obtain or confirm Auto Liability insurance coverage.');
+      } else if (checkedValue('autoInsurance') === 'No') {
+        insuranceItems.push('Reach out to Risk with an exemption request from auto insurance.');
+      }
+      if (checkedValue('professionalLiability') === 'Yes') {
+        insuranceItems.push('Obtain or confirm Professional Liability / Errors & Omissions (E&O) insurance.');
+      } else if (checkedValue('professionalLiability') === 'No') {
+        insuranceItems.push('Reach out to Risk with an exemption request from professional liability.');
+      }
+      if (checkedValue('businessStructure') === 'Has employees') {
+        insuranceItems.push('Get Workers’ Compensation insurance COI (typically the same as the original).');
+      } else if (checkedValue('businessStructure') === 'Sole proprietorship') {
+        insuranceItems.push('Reach out to Risk for an exemption request from Workers’ Compensation.');
+      }
+      if (insuranceItems.length) {
+        insuranceItems.push('Recommended: PDF any emails or documents that substantiate this to submit later.');
+      }
+      addChecklistSection(container, 'Insurance', insuranceItems, insuranceItems.length ? commonChecklistMeta : []);
+
+      // Legal — always show, with the action determined by the answer.
+      const legalItems = checkedValue('legalIssues') === 'Yes'
+        ? [
+            'Reach out to County Counsel and let them know you are working on a non-standard agreement.',
+            'Work with them and the vendor’s Counsel until you have a final contract for submission.'
+          ]
+        : ['Prepare a contract using the County’s standard contract.'];
+
+      addChecklistSection(
+        container,
+        'Legal',
+        legalItems,
+        commonChecklistMeta
+      );
+    }
+
+    function setConditional(wrapper, field, visible) {
+      wrapper.classList.toggle('visible', visible);
+      field.required = visible;
+      field.disabled = !visible;
+      if (!visible) field.value = '';
+    }
+
+    function syncConditionals() {
+      const procurementOtherWrap = document.getElementById('procurementOtherWrap');
+      const procurementOther = document.getElementById('procurementOther');
+      setConditional(procurementOtherWrap, procurementOther, checkedValue('procurementMethod') === 'Other');
+
+      const action = checkedValue('contractAction');
+      const renewalQuestion = document.getElementById('renewalQuestion');
+      const renewalDuration = document.getElementById('renewalDuration');
+      const newContractQuestion = document.getElementById('newContractQuestion');
+      const pastPerformance = document.getElementById('pastPerformance');
+      setConditional(renewalQuestion, renewalDuration, action === 'Renewal');
+      setConditional(newContractQuestion, pastPerformance, action === 'New Contract');
+
+      const emergencyWhyWrap = document.getElementById('emergencyWhyWrap');
+      const emergencyWhy = document.getElementById('emergencyWhy');
+      setConditional(emergencyWhyWrap, emergencyWhy, checkedValue('emergency') === 'Yes');
+
+      // Disable IT fields entirely when this is not a new contract so they are neither
+      // required nor included in a future submission payload.
+      const itPage = pages.find(page => Number(page.dataset.step) === 4);
+      const itApplies = action === 'New Contract';
+      itPage.querySelectorAll('input, select, textarea').forEach(field => {
+        field.disabled = !itApplies;
+      });
+    }
+
+    form.addEventListener('change', syncConditionals);
+
+    const annualValue = document.getElementById('annualValue');
+    annualValue.addEventListener('focus', () => {
+      annualValue.value = annualValue.value.replace(/[^0-9.]/g, '');
+    });
+    annualValue.addEventListener('blur', () => {
+      const numeric = Number(annualValue.value.replace(/[^0-9.]/g, ''));
+      if (!Number.isNaN(numeric) && annualValue.value.trim() !== '') {
+        annualValue.value = numeric.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+      }
+    });
+
+    const startDate = document.getElementById('startDate');
+    const endDate = document.getElementById('endDate');
+    startDate.addEventListener('change', () => {
+      endDate.min = startDate.value;
+      if (endDate.value && endDate.value < startDate.value) endDate.value = '';
+    });
+
+    syncConditionals();
+  </script>
+</body>
+</html>
