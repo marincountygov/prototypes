@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>County of Marin Contract Intake</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ProcureMarin FirstStop</title>
+<style>
     :root {
       --marin-navy: #173b57;
       --marin-blue: #246b8f;
@@ -458,405 +459,396 @@
       .actions { flex-wrap: wrap; }
       .actions button { flex: 1; }
     }
-  </style>
+  
+
+    .timeline-note {
+      display: none;
+      margin-top: 30px;
+      padding: 16px 18px;
+      border: 1px solid #d92d20;
+      border-radius: 9px;
+      background: #fff5f4;
+      color: var(--error);
+      font-weight: 700;
+    }
+
+    .timeline-note.visible { display: block; }
+
+    .welcome-page { padding-top: clamp(34px, 6vw, 64px); padding-bottom: clamp(34px, 6vw, 64px); }
+    .welcome-page h2 { font-size: clamp(2rem, 5vw, 3rem); }
+    .welcome-page .intro { font-size: 1.08rem; max-width: 820px; line-height: 1.7; }
+    .welcome-actions { margin-top: 34px; }
+</style>
 </head>
 <body>
-  <div class="app-shell">
-    <header>
-      <div class="header-inner">
-        <div>
-          <div class="brand-kicker">County of Marin</div>
-          <h1>Contract Intake</h1>
-        </div>
-        <div class="step-count" id="stepCount">Step 1 of 7 — General Information</div>
-      </div>
-    </header>
+<div class="app-shell">
+<header>
+<div class="header-inner">
+<div>
+<div class="brand-kicker">County of Marin</div>
+<h1>ProcureMarin FirstStop</h1>
+</div>
+<div class="step-count" id="stepCount">ProcureMarin FirstStop</div>
+</div>
+</header>
+<main>
+<div aria-hidden="true" class="progress-wrap" id="progressWrap">
+<div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+</div>
+<form id="contractForm" novalidate=""><section class="card page active welcome-page" data-step="0" data-title="ProcureMarin FirstStop">
+<div class="section-kicker">County of Marin</div>
+<h2>ProcureMarin FirstStop</h2>
+<p class="intro">FirstStop allows contract managers to answer questions in 5 minutes or less to get a personalized check-list of action items recommended to complete before processing a DAP.<br/>It is completely optional—with resource guides and points of contact if you have any questions.</p>
+<div class="actions welcome-actions">
+<span></span>
+<button class="btn-primary" id="welcomeStartBtn" type="button">Click here to get started</button>
+</div>
+</section>
+<section class="card page" data-step="1" data-title="General Information">
+<div class="section-kicker">Step 1</div>
+<h2>General Information</h2>
+<p class="intro">Tell us about the contract or purchase you are preparing.</p>
+<div class="error-summary" role="alert"></div>
+<div class="question">
+<label class="question-label" for="name">1. Name<span class="required-mark">*</span></label>
+<input autocomplete="name" id="name" name="name" required="" type="text"/>
+</div>
+<div class="question">
+<label class="question-label" for="email">2. Email<span class="required-mark">*</span></label>
+<input autocomplete="email" id="email" name="email" required="" type="email"/>
+</div>
+<div class="question">
+<label class="question-label" for="department">3. Department<span class="required-mark">*</span></label>
+<select id="department" name="department" required="">
+<option disabled="" selected="" value="">Select a department</option>
+<option>Agriculture, Weights, &amp; Measures (AWM)</option>
+<option>Assessor-Recorder, County Clerk (ARCC)</option>
+<option>Board of Supervisors (BOS)</option>
+<option>OCE, Clerk of the Board (OCE)</option>
+<option>Child Support Services (CSS)</option>
+<option>Community Development Agency (CDA)</option>
+<option>County Counsel</option>
+<option>Cultural Services</option>
+<option>District Attorney (DA)</option>
+<option>Elections, Registrar of Voters</option>
+<option>Finance (DOF)</option>
+<option>Fire (MCFD)</option>
+<option>Health &amp; Human Services (HHS)</option>
+<option>Human Resources (HR)</option>
+<option>Information Systems &amp; Technology (IST)</option>
+<option>Library (MCFL)</option>
+<option>Parks and Open Space</option>
+<option>Probation</option>
+<option>Public Defender</option>
+<option>Public Works (DPW)</option>
+<option>Retirement (MCERA)</option>
+<option>Sheriff (MCSO)</option>
+<option>UCCE</option>
+</select>
+</div>
+<div class="question">
+<label class="question-label" for="division">4. Division or unit <span class="helper" style="display:inline; margin:0;">(optional)</span></label>
+<input id="division" name="division" type="text"/>
+</div>
+<div class="question">
+<label class="question-label" for="contractTitle">5. Contract Title<span class="required-mark">*</span></label>
+<input id="contractTitle" name="contractTitle" required="" type="text"/>
+</div>
+<fieldset>
+<legend>6. Type of Contract<span class="required-mark">*</span></legend>
+<div class="radio-grid three">
+<label class="radio-card"><input name="contractType" required="" type="radio" value="Professional Services Contract"/><span>Professional Services Contract</span></label>
+<label class="radio-card"><input name="contractType" type="radio" value="Community Service Contract"/><span>Community Service Contract</span></label>
+<label class="radio-card"><input name="contractType" type="radio" value="Goods &amp; Services"/><span>Goods &amp; Services</span></label>
+</div>
+</fieldset>
+<fieldset>
+<legend>7. What type of contract is this?<span class="required-mark">*</span></legend>
+<div class="radio-grid">
+<label class="radio-card"><input name="contractAction" required="" type="radio" value="New Contract"/><span>New Contract</span></label>
+<label class="radio-card"><input name="contractAction" type="radio" value="Purchase Order"/><span>Purchase Order</span></label>
+<label class="radio-card"><input name="contractAction" type="radio" value="Change Order"/><span>Change order, e.g., addendum, amendment</span></label>
+<label class="radio-card"><input name="contractAction" type="radio" value="Renewal"/><span>Renewal</span></label>
+<label class="radio-card"><input name="contractAction" type="radio" value="Other"/><span>Other</span></label></div>
+<div class="conditional" id="contractActionOtherWrap">
+<label class="question-label" for="contractActionOther">Please describe the other contract type<span class="required-mark">*</span></label>
+<input id="contractActionOther" name="contractActionOther" type="text"/>
+</div></fieldset>
+<div class="question">
+<label class="question-label" for="annualValue">8. What is the expected annual value of your purchase?<span class="required-mark">*</span></label>
+<input id="annualValue" inputmode="decimal" name="annualValue" placeholder="$0.00" required="" type="text"/>
+</div>
+<div class="question">
+<label class="question-label">9. Anticipated timeline<span class="required-mark">*</span></label>
+<div class="two-col">
+<div>
+<label class="helper" for="startDate">Start date</label>
+<input id="startDate" min="2026-07-01" name="startDate" required="" type="date"/>
+</div>
+<div>
+<label class="helper" for="endDate">End date</label>
+<input id="endDate" name="endDate" required="" type="date"/>
+</div>
+</div>
+</div>
 
-    <main>
-      <div class="progress-wrap" aria-hidden="true">
-        <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
-      </div>
+<div class="actions">
+<span></span>
+<button class="btn-primary next-btn" type="button">Next</button>
+</div>
+</section>
+<section class="card page" data-step="2" data-title="Procurement Pathway">
+<div class="section-kicker">Step 2</div>
+<h2>Procurement Pathway</h2>
+<p class="intro">Tell us how the vendor and funding were identified.</p>
+<div class="error-summary" role="alert"></div>
+<fieldset>
+<legend>1. Have you gone through a competitive bidding process (e.g., RFP, solicitation of price, etc.) or are you sole/single sourcing this?<span class="required-mark">*</span></legend>
+<div class="radio-grid">
+<label class="radio-card"><input name="procurementMethod" required="" type="radio" value="Competitive bidding process"/><span>Yes, I’ve gone through a competitive bidding process</span></label>
+<label class="radio-card"><input name="procurementMethod" type="radio" value="Sole/single sourcing"/><span>I am sole/single sourcing this contract</span></label>
+<label class="radio-card"><input name="procurementMethod" type="radio" value="Other"/><span>Other</span></label>
+<label class="radio-card"><input name="procurementMethod" type="radio" value="I don't know"/><span>I don't know</span></label>
+</div>
+<div class="conditional" id="procurementOtherWrap">
+<label class="question-label" for="procurementOther">Please explain<span class="required-mark">*</span></label>
+<input id="procurementOther" name="procurementOther" type="text"/>
+</div>
+</fieldset>
+<fieldset>
+<legend>2. Have you identified funding for this contract?<span class="required-mark">*</span></legend>
+<div class="radio-grid three">
+<label class="radio-card"><input name="fundingIdentified" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="fundingIdentified" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
+<label class="radio-card"><input name="fundingIdentified" type="radio" value="N/A"/><span>N/A</span></label>
+</div>
+</fieldset>
+<fieldset>
+<legend>3. Will any portion of this purchase be paid for with grant funds?<span class="required-mark">*</span></legend>
+<div class="radio-grid">
+<label class="radio-card"><input name="grantFunds" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="grantFunds" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
+</div>
+</fieldset>
+<fieldset>
+<legend>4. Is the vendor <a href="https://marincountycamunisapp.tylerhost.net/4912prod/munis/munisnet/AppHost/VendorCentral/search-results" rel="noopener noreferrer" target="_blank">registered with the County</a>?<span class="required-mark">*</span></legend>
+<p class="helper"><a href="https://marincountycamunisapp.tylerhost.net/4912prod/munis/munisnet/AppHost/VendorCentral/search-results" rel="noopener noreferrer" target="_blank">Click here</a> to see if your vendor is registered.</p>
+<div class="radio-grid">
+<label class="radio-card"><input name="vendorRegistered" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="vendorRegistered" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
+</div>
+</fieldset>
+<div class="actions">
+<button class="btn-secondary back-btn" type="button">Back</button>
+<button class="btn-primary next-btn" type="button">Next</button>
+</div>
+</section>
+<section class="card page" data-step="3" data-title="Human Resources">
+<div class="section-kicker">Step 3</div>
+<h2>Human Resources</h2>
+<p class="intro">Help identify potential staffing, employee, and labor considerations.</p>
+<div class="error-summary" role="alert"></div>
+<fieldset>
+<legend>1. Have you consulted with your Recruitment Analyst to explore staffing solutions?<span class="required-mark">*</span></legend>
+<p class="helper"><a href="https://www.hr.marincounty.gov/our-divisions/recruitment" rel="noopener noreferrer" target="_blank">Click here to find out who your analyst is.</a></p>
+<div class="radio-grid">
+<label class="radio-card"><input name="consultedRecruitment" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="consultedRecruitment" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
+</div>
+</fieldset>
+<div class="question conditional" id="renewalQuestion">
+<label class="question-label" for="renewalDuration">2. You indicated this contract is a renewal. Approximately how long has this work been contracted out?<span class="required-mark">*</span></label>
+<input id="renewalDuration" name="renewalDuration" type="text"/>
+</div>
+<div class="question conditional" id="newContractQuestion">
+<label class="question-label" for="pastPerformance">2. You indicated this is a new contract. How is this work currently performed, or how has it been performed in the past?<span class="required-mark">*</span></label>
+<textarea id="pastPerformance" name="pastPerformance"></textarea>
+</div>
+<fieldset>
+<legend><span id="countyStaffNum">3.</span> Is there County staff that perform this work?<span class="required-mark">*</span></legend>
+<div class="radio-grid">
+<label class="radio-card"><input name="countyStaffPerform" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="countyStaffPerform" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
 
-      <form id="contractForm" novalidate>
-        <section class="card page active" data-step="1" data-title="General Information">
-          <div class="section-kicker">Step 1</div>
-          <h2>General Information</h2>
-          <p class="intro">Tell us about the contract or purchase you are preparing.</p>
-          <div class="error-summary" role="alert"></div>
+</div>
+</fieldset>
+<div class="question">
+<label class="question-label" for="contractNecessity"><span id="contractNecessityNum">4.</span> Explain why this contract is necessary, including staffing challenges, operational needs, or other reasons, as applicable.<span class="required-mark">*</span></label>
+<textarea id="contractNecessity" name="contractNecessity" required=""></textarea>
+</div>
+<div class="question">
+<label class="question-label" for="employeeImpacts"><span id="employeeImpactsNum">5.</span> Describe any impacts to current employees, including changes to terms and conditions of employment, duties, hours, positions, etc.<span class="required-mark">*</span></label>
+<textarea id="employeeImpacts" name="employeeImpacts" required=""></textarea>
+</div>
+<div class="question">
+<label class="question-label" for="processChanges"><span id="processChangesNum">6.</span> If the contract for service proceeds, how will this change current processes/procedures?<span class="required-mark">*</span></label>
+<textarea id="processChanges" name="processChanges" required=""></textarea>
+</div>
+<fieldset>
+<legend><span id="emergencyNum">7.</span> Is this an emergency or is there an exigent circumstance that requires this contract?<span class="required-mark">*</span></legend>
+<div class="radio-grid">
+<label class="radio-card"><input name="emergency" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="emergency" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
+</div>
+<div class="conditional" id="emergencyWhyWrap">
+<label class="question-label" for="emergencyWhy"><span id="emergencyWhyNum">8.</span> Why is this an emergency or exigent circumstance?<span class="required-mark">*</span></label>
+<p class="helper"><strong>Emergency:</strong> a sudden, unforeseen threat to public health, safety, or welfare. <strong>Exigent circumstance:</strong> an urgent, uncontrollable situation requiring immediate action to prevent significant harm.</p>
+<textarea id="emergencyWhy" name="emergencyWhy"></textarea>
+</div>
+</fieldset>
+<div class="actions">
+<button class="btn-secondary back-btn" type="button">Back</button>
+<button class="btn-primary next-btn" type="button">Next</button>
+</div>
+</section>
+<section class="card page" data-step="4" data-title="Information Technology">
+<div class="section-kicker">Step 4</div>
+<h2>Information Technology</h2>
+<p class="intro">Identify purchases that may need technology, data, security, or AI review.</p>
+<div class="error-summary" role="alert"></div>
+<fieldset>
+<legend>1. Does this purchase involve any technology that may connect to County systems or handle County data, such as new software, cloud/SaaS, data sharing, integrations, or vendor security concerns?<span class="required-mark">*</span></legend>
+<div class="radio-grid">
+<label class="radio-card"><input name="technologyInvolved" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="technologyInvolved" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
+</div>
+</fieldset>
+<fieldset>
+<legend>2. Does this purchase include any tools or features that use artificial intelligence (AI)?<span class="required-mark">*</span></legend>
+<div class="radio-grid">
+<label class="radio-card"><input name="aiInvolved" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="aiInvolved" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
+</div>
+</fieldset>
+<div class="actions">
+<button class="btn-secondary back-btn" type="button">Back</button>
+<button class="btn-primary next-btn" type="button">Next</button>
+</div>
+</section>
+<section class="card page" data-step="5" data-title="Risk">
+<div class="section-kicker">Step 5</div>
+<h2>Risk</h2>
+<p class="intro">Identify activities that may need additional risk or insurance review.</p>
+<div class="error-summary" role="alert"></div>
+<fieldset>
+<legend>1. Does the project involve public-facing work, field work, minors/vulnerable populations, transportation/facilities, unusual insurance or indemnity, or requests to waive/reduce insurance?<span class="required-mark">*</span></legend>
+<p class="helper">Vulnerable populations are groups at high risk for poor health, exploitation, or harm due to social, economic, or physical disadvantages.</p>
+<div class="radio-grid">
+<label class="radio-card"><input name="riskFactors" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="riskFactors" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
 
-          <div class="question">
-            <label class="question-label" for="name">1. Name<span class="required-mark">*</span></label>
-            <input id="name" name="name" type="text" autocomplete="name" required />
-          </div>
+</div>
+</fieldset>
+<fieldset>
+<legend>2. Is this a public works/construction project that is subject to prevailing wage and Department of Industrial Relations (DIR) requirements?<span class="required-mark">*</span></legend>
+<div class="radio-grid">
+<label class="radio-card"><input name="publicWorks" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="publicWorks" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
 
-          <div class="question">
-            <label class="question-label" for="email">2. Email<span class="required-mark">*</span></label>
-            <input id="email" name="email" type="email" autocomplete="email" required />
-          </div>
+</div>
+</fieldset>
+<div class="actions">
+<button class="btn-secondary back-btn" type="button">Back</button>
+<button class="btn-primary next-btn" type="button">Next</button>
+</div>
+</section>
+<section class="card page" data-step="6" data-title="Insurance">
+<div class="section-kicker">Step 6</div>
+<h2>Insurance</h2>
+<p class="intro">Confirm the vendor’s available insurance coverage and potential coverage needs.</p>
+<div class="error-summary" role="alert"></div>
+<fieldset>
+<legend>1. All vendors must have General Liability Insurance. Do you have a certificate of insurance that is valid for at least the next six months?<span class="required-mark">*</span></legend>
+<div class="radio-grid">
+<label class="radio-card"><input name="generalLiability" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="generalLiability" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
 
-          <div class="question">
-            <label class="question-label" for="department">3. Department<span class="required-mark">*</span></label>
-            <select id="department" name="department" required>
-              <option value="" selected disabled>Select a department</option>
-              <option>Agriculture, Weights, &amp; Measures (AWM)</option>
-              <option>Assessor-Recorder, County Clerk (ARCC)</option>
-              <option>Board of Supervisors (BOS)</option>
-              <option>OCE, Clerk of the Board (OCE)</option>
-              <option>Child Support Services (CSS)</option>
-              <option>Community Development Agency (CDA)</option>
-              <option>County Counsel</option>
-              <option>Cultural Services</option>
-              <option>District Attorney (DA)</option>
-              <option>Elections, Registrar of Voters</option>
-              <option>Finance (DOF)</option>
-              <option>Fire (MCFD)</option>
-              <option>Health &amp; Human Services (HHS)</option>
-              <option>Human Resources (HR)</option>
-              <option>Information Systems &amp; Technology (IST)</option>
-              <option>Library (MCFL)</option>
-              <option>Parks and Open Space</option>
-              <option>Probation</option>
-              <option>Public Defender</option>
-              <option>Public Works (DPW)</option>
-              <option>Retirement (MCERA)</option>
-              <option>Sheriff (MCSO)</option>
-              <option>UCCE</option>
-            </select>
-          </div>
+</div>
+</fieldset>
+<fieldset>
+<legend>2. In addition to a certificate of insurance, Risk Management requires an “additional endorsement” naming the County of Marin. Do you have that document?<span class="required-mark">*</span></legend>
+<div class="radio-grid">
+<label class="radio-card"><input name="additionalInsured" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="additionalInsured" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
 
-          <div class="question">
-            <label class="question-label" for="division">4. Division or unit<span class="required-mark">*</span></label>
-            <input id="division" name="division" type="text" required />
-          </div>
+</div>
+</fieldset>
+<fieldset>
+<legend>3. Will this contractor be driving as part of their contract—and hence require auto insurance coverage?<span class="required-mark">*</span></legend>
+<div class="radio-grid">
+<label class="radio-card"><input name="autoInsurance" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="autoInsurance" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
 
-          <div class="question">
-            <label class="question-label" for="contractTitle">5. Contract Title<span class="required-mark">*</span></label>
-            <input id="contractTitle" name="contractTitle" type="text" required />
-          </div>
+</div>
+</fieldset>
+<fieldset>
+<legend>4. Will the contractor provide professional services—such as advice, consulting, design, or analysis—where a mistake could cause financial or operational harm to the County?<span class="required-mark">*</span></legend>
+<div class="radio-grid">
+<label class="radio-card"><input name="professionalLiability" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="professionalLiability" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
 
-          <fieldset>
-            <legend>6. Type of Contract<span class="required-mark">*</span></legend>
-            <div class="radio-grid three">
-              <label class="radio-card"><input type="radio" name="contractType" value="Professional Services Contract" required /><span>Professional Services Contract</span></label>
-              <label class="radio-card"><input type="radio" name="contractType" value="Community Service Contract" /><span>Community Service Contract</span></label>
-              <label class="radio-card"><input type="radio" name="contractType" value="Goods & Services" /><span>Goods &amp; Services</span></label>
-            </div>
-          </fieldset>
+</div>
+</fieldset>
+<fieldset>
+<legend>5. Does this company have employees or is it a sole proprietorship?<span class="required-mark">*</span></legend>
+<div class="radio-grid">
+<label class="radio-card"><input name="businessStructure" required="" type="radio" value="Has employees"/><span>Has employees</span></label>
+<label class="radio-card"><input name="businessStructure" type="radio" value="Sole proprietorship"/><span>Sole proprietorship (an individual owner with no employees)</span></label>
+<label class="radio-card"><input name="businessStructure" type="radio" value="I don't know"/><span>I don't know</span></label>
+</div>
+</fieldset>
+<div class="actions">
+<button class="btn-secondary back-btn" type="button">Back</button>
+<button class="btn-primary next-btn" type="button">Next</button>
+</div>
+</section>
+<section class="card page" data-step="7" data-title="Legal">
+<div class="section-kicker">Step 7</div>
+<h2>Legal</h2>
+<p class="intro">Identify contracts that may need County Counsel review.</p>
+<div class="error-summary" role="alert"></div>
+<fieldset>
+<legend>1. Are you using the standard Professional Services Contract (PSC) to execute this contract?<span class="required-mark">*</span></legend>
+<div class="radio-grid">
+<label class="radio-card"><input name="legalIssues" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="legalIssues" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
 
-          <fieldset>
-            <legend>7. What type of contract is this?<span class="required-mark">*</span></legend>
-            <div class="radio-grid">
-              <label class="radio-card"><input type="radio" name="contractAction" value="New Contract" required /><span>New Contract</span></label>
-              <label class="radio-card"><input type="radio" name="contractAction" value="Purchase Order" /><span>Purchase Order</span></label>
-              <label class="radio-card"><input type="radio" name="contractAction" value="Change Order" /><span>Change order, e.g., addendum, amendment</span></label>
-              <label class="radio-card"><input type="radio" name="contractAction" value="Renewal" /><span>Renewal</span></label>
-            </div>
-          </fieldset>
-
-          <div class="question">
-            <label class="question-label" for="annualValue">8. What is the expected annual value of your purchase?<span class="required-mark">*</span></label>
-            <input id="annualValue" name="annualValue" type="text" inputmode="decimal" placeholder="$0.00" required />
-          </div>
-
-          <div class="question">
-            <label class="question-label">9. Anticipated timeline<span class="required-mark">*</span></label>
-            <div class="two-col">
-              <div>
-                <label class="helper" for="startDate">Start date</label>
-                <input id="startDate" name="startDate" type="date" required />
-              </div>
-              <div>
-                <label class="helper" for="endDate">End date</label>
-                <input id="endDate" name="endDate" type="date" required />
-              </div>
-            </div>
-          </div>
-
-          <div class="question">
-            <label class="question-label" for="services">10. Describe the services to be provided. What is the business need?<span class="required-mark">*</span></label>
-            <textarea id="services" name="services" required></textarea>
-          </div>
-
-          <div class="actions">
-            <span></span>
-            <button type="button" class="btn-primary next-btn">Next</button>
-          </div>
-        </section>
-
-        <section class="card page" data-step="2" data-title="Procurement Pathway">
-          <div class="section-kicker">Step 2</div>
-          <h2>Procurement Pathway</h2>
-          <p class="intro">Tell us how the vendor and funding were identified.</p>
-          <div class="error-summary" role="alert"></div>
-
-          <fieldset>
-            <legend>1. Have you gone through a competitive bidding process (e.g., RFP, solicitation of price, etc.) or are you sole/single sourcing this?<span class="required-mark">*</span></legend>
-            <div class="radio-grid">
-              <label class="radio-card"><input type="radio" name="procurementMethod" value="Competitive bidding process" required /><span>Yes, I’ve gone through a competitive bidding process</span></label>
-              <label class="radio-card"><input type="radio" name="procurementMethod" value="Sole/single sourcing" /><span>I am sole/single sourcing this contract</span></label>
-              <label class="radio-card"><input type="radio" name="procurementMethod" value="Other" /><span>Other</span></label>
-            </div>
-            <div id="procurementOtherWrap" class="conditional">
-              <label class="question-label" for="procurementOther">Please explain<span class="required-mark">*</span></label>
-              <input id="procurementOther" name="procurementOther" type="text" />
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend>2. Have you identified funding for this contract?<span class="required-mark">*</span></legend>
-            <div class="radio-grid three">
-              <label class="radio-card"><input type="radio" name="fundingIdentified" value="Yes" required /><span>Yes</span></label>
-              <label class="radio-card"><input type="radio" name="fundingIdentified" value="No" /><span>No</span></label>
-              <label class="radio-card"><input type="radio" name="fundingIdentified" value="N/A" /><span>N/A</span></label>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend>3. Will any portion of this purchase be paid for with grant funds?<span class="required-mark">*</span></legend>
-            <div class="radio-grid">
-              <label class="radio-card"><input type="radio" name="grantFunds" value="Yes" required /><span>Yes</span></label>
-              <label class="radio-card"><input type="radio" name="grantFunds" value="No" /><span>No</span></label>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend>4. Is the vendor registered with the County?<span class="required-mark">*</span></legend>
-            <div class="radio-grid">
-              <label class="radio-card"><input type="radio" name="vendorRegistered" value="Yes" required /><span>Yes</span></label>
-              <label class="radio-card"><input type="radio" name="vendorRegistered" value="No" /><span>No</span></label>
-            </div>
-          </fieldset>
-
-          <div class="actions">
-            <button type="button" class="btn-secondary back-btn">Back</button>
-            <button type="button" class="btn-primary next-btn">Next</button>
-          </div>
-        </section>
-
-        <section class="card page" data-step="3" data-title="Human Resources">
-          <div class="section-kicker">Step 3</div>
-          <h2>Human Resources</h2>
-          <p class="intro">Help identify potential staffing, employee, and labor considerations.</p>
-          <div class="error-summary" role="alert"></div>
-
-          <fieldset>
-            <legend>1. Have you consulted with your Recruitment Analyst to explore staffing solutions?<span class="required-mark">*</span></legend>
-            <div class="radio-grid">
-              <label class="radio-card"><input type="radio" name="consultedRecruitment" value="Yes" required /><span>Yes</span></label>
-              <label class="radio-card"><input type="radio" name="consultedRecruitment" value="No" /><span>No</span></label>
-            </div>
-          </fieldset>
-
-          <div id="renewalQuestion" class="question conditional">
-            <label class="question-label" for="renewalDuration">2. You indicated this contract is a renewal. Approximately how long has this work been contracted out?<span class="required-mark">*</span></label>
-            <input id="renewalDuration" name="renewalDuration" type="text" />
-          </div>
-
-          <div id="newContractQuestion" class="question conditional">
-            <label class="question-label" for="pastPerformance">2. You indicated this is a new contract. How is this work currently performed, or how has it been performed in the past?<span class="required-mark">*</span></label>
-            <textarea id="pastPerformance" name="pastPerformance"></textarea>
-          </div>
-
-          <fieldset>
-            <legend>3. Is there County staff that perform this work?<span class="required-mark">*</span></legend>
-            <div class="radio-grid">
-              <label class="radio-card"><input type="radio" name="countyStaffPerform" value="Yes" required /><span>Yes</span></label>
-              <label class="radio-card"><input type="radio" name="countyStaffPerform" value="No" /><span>No</span></label>
-            </div>
-          </fieldset>
-
-          <div class="question">
-            <label class="question-label" for="contractNecessity">4. Explain why this contract is necessary, including staffing challenges, operational needs, or other reasons, as applicable.<span class="required-mark">*</span></label>
-            <textarea id="contractNecessity" name="contractNecessity" required></textarea>
-          </div>
-
-          <div class="question">
-            <label class="question-label" for="employeeImpacts">5. Describe any impacts to current employees, including changes to terms and conditions of employment, duties, hours, positions, etc.<span class="required-mark">*</span></label>
-            <textarea id="employeeImpacts" name="employeeImpacts" required></textarea>
-          </div>
-
-          <div class="question">
-            <label class="question-label" for="processChanges">6. If the contract for service proceeds, how will this change current processes/procedures?<span class="required-mark">*</span></label>
-            <textarea id="processChanges" name="processChanges" required></textarea>
-          </div>
-
-          <fieldset>
-            <legend>7. Is this an emergency or is there an exigent circumstance that requires this contract?<span class="required-mark">*</span></legend>
-            <div class="radio-grid">
-              <label class="radio-card"><input type="radio" name="emergency" value="Yes" required /><span>Yes</span></label>
-              <label class="radio-card"><input type="radio" name="emergency" value="No" /><span>No</span></label>
-            </div>
-            <div id="emergencyWhyWrap" class="conditional">
-              <label class="question-label" for="emergencyWhy">8. Why is this an emergency or exigent circumstance?<span class="required-mark">*</span></label>
-              <p class="helper"><strong>Emergency:</strong> a sudden, unforeseen threat to public health, safety, or welfare. <strong>Exigent circumstance:</strong> an urgent, uncontrollable situation requiring immediate action to prevent significant harm.</p>
-              <textarea id="emergencyWhy" name="emergencyWhy"></textarea>
-            </div>
-          </fieldset>
-
-          <div class="actions">
-            <button type="button" class="btn-secondary back-btn">Back</button>
-            <button type="button" class="btn-primary next-btn">Next</button>
-          </div>
-        </section>
-
-        <section class="card page" data-step="4" data-title="Information Technology">
-          <div class="section-kicker">Step 4</div>
-          <h2>Information Technology</h2>
-          <p class="intro">Identify purchases that may need technology, data, security, or AI review.</p>
-          <div class="error-summary" role="alert"></div>
-
-          <fieldset>
-            <legend>1. Does this purchase involve any technology that may connect to County systems or handle County data, such as new software, cloud/SaaS, data sharing, integrations, or vendor security concerns?<span class="required-mark">*</span></legend>
-            <div class="radio-grid">
-              <label class="radio-card"><input type="radio" name="technologyInvolved" value="Yes" required /><span>Yes</span></label>
-              <label class="radio-card"><input type="radio" name="technologyInvolved" value="No" /><span>No</span></label>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend>2. Does this purchase include any tools or features that use artificial intelligence (AI)?<span class="required-mark">*</span></legend>
-            <div class="radio-grid">
-              <label class="radio-card"><input type="radio" name="aiInvolved" value="Yes" required /><span>Yes</span></label>
-              <label class="radio-card"><input type="radio" name="aiInvolved" value="No" /><span>No</span></label>
-            </div>
-          </fieldset>
-
-          <div class="actions">
-            <button type="button" class="btn-secondary back-btn">Back</button>
-            <button type="button" class="btn-primary next-btn">Next</button>
-          </div>
-        </section>
-
-        <section class="card page" data-step="5" data-title="Risk">
-          <div class="section-kicker">Step 5</div>
-          <h2>Risk</h2>
-          <p class="intro">Identify activities that may need additional risk or insurance review.</p>
-          <div class="error-summary" role="alert"></div>
-
-          <fieldset>
-            <legend>1. Does the project involve public-facing work, field work, minors/vulnerable populations, transportation/facilities, unusual insurance or indemnity, or requests to waive/reduce insurance?<span class="required-mark">*</span></legend>
-            <p class="helper">Vulnerable populations are groups at high risk for poor health, exploitation, or harm due to social, economic, or physical disadvantages.</p>
-            <div class="radio-grid">
-              <label class="radio-card"><input type="radio" name="riskFactors" value="Yes" required /><span>Yes</span></label>
-              <label class="radio-card"><input type="radio" name="riskFactors" value="No" /><span>No</span></label>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend>2. Is this a public works/construction project that is subject to prevailing wage and Department of Industrial Relations (DIR) requirements?<span class="required-mark">*</span></legend>
-            <div class="radio-grid">
-              <label class="radio-card"><input type="radio" name="publicWorks" value="Yes" required /><span>Yes</span></label>
-              <label class="radio-card"><input type="radio" name="publicWorks" value="No" /><span>No</span></label>
-            </div>
-          </fieldset>
-
-          <div class="actions">
-            <button type="button" class="btn-secondary back-btn">Back</button>
-            <button type="button" class="btn-primary next-btn">Next</button>
-          </div>
-        </section>
-
-        <section class="card page" data-step="6" data-title="Insurance">
-          <div class="section-kicker">Step 6</div>
-          <h2>Insurance</h2>
-          <p class="intro">Confirm the vendor’s available insurance coverage and potential coverage needs.</p>
-          <div class="error-summary" role="alert"></div>
-
-          <fieldset>
-            <legend>1. All vendors must have General Liability Insurance. Do you have a certificate of insurance that is valid for at least the next six months?<span class="required-mark">*</span></legend>
-            <div class="radio-grid">
-              <label class="radio-card"><input type="radio" name="generalLiability" value="Yes" required /><span>Yes</span></label>
-              <label class="radio-card"><input type="radio" name="generalLiability" value="No" /><span>No</span></label>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend>2. In addition to a certificate of insurance, Risk Management requires an “additional endorsement” naming the County of Marin. Do you have that document?<span class="required-mark">*</span></legend>
-            <div class="radio-grid">
-              <label class="radio-card"><input type="radio" name="additionalInsured" value="Yes" required /><span>Yes</span></label>
-              <label class="radio-card"><input type="radio" name="additionalInsured" value="No" /><span>No</span></label>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend>3. Will this contractor be driving as part of their contract—and hence require auto insurance coverage?<span class="required-mark">*</span></legend>
-            <div class="radio-grid">
-              <label class="radio-card"><input type="radio" name="autoInsurance" value="Yes" required /><span>Yes</span></label>
-              <label class="radio-card"><input type="radio" name="autoInsurance" value="No" /><span>No</span></label>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend>4. Will the contractor provide professional services—such as advice, consulting, design, or analysis—where a mistake could cause financial or operational harm to the County?<span class="required-mark">*</span></legend>
-            <div class="radio-grid">
-              <label class="radio-card"><input type="radio" name="professionalLiability" value="Yes" required /><span>Yes</span></label>
-              <label class="radio-card"><input type="radio" name="professionalLiability" value="No" /><span>No</span></label>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend>5. Does this company have employees or is it a sole proprietorship?<span class="required-mark">*</span></legend>
-            <div class="radio-grid">
-              <label class="radio-card"><input type="radio" name="businessStructure" value="Has employees" required /><span>Has employees</span></label>
-              <label class="radio-card"><input type="radio" name="businessStructure" value="Sole proprietorship" /><span>Sole proprietorship (an individual owner with no employees)</span></label>
-            </div>
-          </fieldset>
-
-          <div class="actions">
-            <button type="button" class="btn-secondary back-btn">Back</button>
-            <button type="button" class="btn-primary next-btn">Next</button>
-          </div>
-        </section>
-
-        <section class="card page" data-step="7" data-title="Legal">
-          <div class="section-kicker">Step 7</div>
-          <h2>Legal</h2>
-          <p class="intro">Identify contracts that may need County Counsel review.</p>
-          <div class="error-summary" role="alert"></div>
-
-          <fieldset>
-            <legend>1. Does the project involve the vendor's standard agreement (not the County's standard template), changes to the County contract template, non-standard terms, hyperlinks/online terms, CEQA, labor, privacy, public records issues, or procurement-integrity concerns?<span class="required-mark">*</span></legend>
-            <div class="radio-grid">
-              <label class="radio-card"><input type="radio" name="legalIssues" value="Yes" required /><span>Yes</span></label>
-              <label class="radio-card"><input type="radio" name="legalIssues" value="No" /><span>No</span></label>
-            </div>
-          </fieldset>
-
-          <div class="actions">
-            <button type="button" class="btn-secondary back-btn">Back</button>
-            <button type="submit" class="btn-primary">Submit</button>
-          </div>
-        </section>
-
-        <section class="card page" data-step="8" data-title="Thank You">
-          <div class="thank-you">
-            <div class="check" aria-hidden="true">✓</div>
-            <h2>Thank you</h2>
-            <p class="intro" style="margin-left:auto; margin-right:auto;">We’ve put together a custom checklist for you to successfully execute <strong id="thankYouContractTitle">your contract</strong>.</p>
-            <div class="actions" style="justify-content:center; margin-top:28px;">
-              <button type="button" class="btn-primary" id="viewChecklistBtn">View my checklist</button>
-            </div>
-          </div>
-        </section>
-
-        <section class="card page" data-step="9" data-title="Contract Checklist">
-          <div class="checklist-result">
-            <div class="section-kicker">Your next steps</div>
-            <h2 id="checklistTitle">Contract Checklist</h2>
-            <p class="checklist-intro">Based on the information you provided, the following is a checklist for you as the contract manager to consider before submitting your contract.</p>
-            <div id="checklistSections"></div>
-          </div>
-        </section>
-      </form>
-    </main>
-  </div>
-
-  <script>
+</div>
+</fieldset>
+<div class="actions">
+<button class="btn-secondary back-btn" type="button">Back</button>
+<button class="btn-primary" type="submit">Submit</button>
+</div>
+</section>
+<section class="card page" data-step="8" data-title="Thank You">
+<div class="thank-you">
+<div aria-hidden="true" class="check">✓</div>
+<h2>Thank you</h2>
+<p class="intro" style="margin-left:auto; margin-right:auto;">We’ve put together a custom checklist for you to successfully execute <strong id="thankYouContractTitle">your contract</strong>.</p>
+<div class="actions" style="justify-content:center; margin-top:28px;">
+<button class="btn-primary" id="viewChecklistBtn" type="button">View my checklist</button>
+</div>
+</div>
+</section>
+<section class="card page" data-step="9" data-title="Contract Checklist">
+<div class="checklist-result">
+<div class="section-kicker">Your next steps</div>
+<h2 id="checklistTitle">Contract Checklist</h2>
+<p class="checklist-intro">Based on the information you provided, the following is a checklist for you as the contract manager to consider before submitting your contract.</p>
+<div id="checklistSections"></div>
+<div aria-live="polite" class="timeline-note" id="timelineNote"></div>
+</div>
+</section>
+</form>
+</main>
+</div>
+<script>
     const form = document.getElementById('contractForm');
     const pages = [...document.querySelectorAll('.page')];
     const stepCount = document.getElementById('stepCount');
     const progressBar = document.getElementById('progressBar');
-    let currentStep = 1;
+    const progressWrap = document.getElementById('progressWrap');
+    let currentStep = 0;
 
     const pageTitle = step => pages.find(p => Number(p.dataset.step) === step)?.dataset.title || '';
 
@@ -878,17 +870,23 @@
       currentStep = step;
       pages.forEach(page => page.classList.toggle('active', Number(page.dataset.step) === step));
 
-      if (step <= 7) {
-        const steps = workflowSteps();
-        const position = steps.indexOf(step) + 1;
-        stepCount.textContent = `Step ${position} of ${steps.length} — ${pageTitle(step)}`;
-        progressBar.style.width = `${(position / steps.length) * 100}%`;
-      } else if (step === 8) {
-        stepCount.textContent = 'Complete — Thank You';
-        progressBar.style.width = '100%';
+      if (step === 0) {
+        stepCount.textContent = 'ProcureMarin FirstStop';
+        progressWrap.style.display = 'none';
       } else {
-        stepCount.textContent = 'Complete — Contract Checklist';
-        progressBar.style.width = '100%';
+        progressWrap.style.display = 'block';
+        if (step <= 7) {
+          const steps = workflowSteps();
+          const position = steps.indexOf(step) + 1;
+          stepCount.textContent = `Step ${position} of ${steps.length} — ${pageTitle(step)}`;
+          progressBar.style.width = `${(position / steps.length) * 100}%`;
+        } else if (step === 8) {
+          stepCount.textContent = 'Complete — Thank You';
+          progressBar.style.width = '100%';
+        } else {
+          stepCount.textContent = 'Complete — Contract Checklist';
+          progressBar.style.width = '100%';
+        }
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
       syncConditionals();
@@ -926,6 +924,8 @@
       }
       return true;
     }
+
+    document.getElementById('welcomeStartBtn').addEventListener('click', () => showStep(1));
 
     document.querySelectorAll('.next-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -1026,9 +1026,20 @@
         procurementItems.push('Consult with Procurement to validate it will suffice.');
       } else if (procurementMethod === 'Competitive bidding process') {
         procurementItems.push('Document where you solicited quotes and be ready to include that information in your submission.');
+      } else if (procurementMethod === "I don't know") {
+        procurementItems.push("You indicated you didn't know if your solicitation went through a competitive bidding process. Reach out to Procurement or your Department's administrative staff to seek clarity.");
       }
 
-      if (checkedValue('vendorRegistered') === 'No') {
+      if (checkedValue('fundingIdentified') === "No / I don't know") {
+        procurementItems.push('Work with your department’s leadership and finance team to identify a clear “organization” and “object” code for this funding.');
+      }
+
+      const annualValueNumeric = Number(document.getElementById('annualValue').value.replace(/[^0-9.]/g, '')) || 0;
+      if (annualValueNumeric > 10000) {
+        procurementItems.push('Draft executive memo and share with your department head for feedback as appropriate.');
+      }
+
+      if (checkedValue('vendorRegistered') === "No / I don't know") {
         procurementItems.push('Ask your vendor to register as a vendor.');
         procurementItems.push('Continue to check in to validate they have submitted their registration.');
         procurementItems.push('Check Vendor Central on MUNIS until you see they are officially registered.');
@@ -1079,26 +1090,28 @@
 
       // Insurance — only render if there is at least one outstanding action.
       const insuranceItems = [];
-      if (checkedValue('generalLiability') === 'No') {
-        insuranceItems.push('Reach out to your vendor to ask for a Certificate of Insurance for General Liability.');
+      if (checkedValue('generalLiability') === "No / I don't know") {
+        insuranceItems.push('Confirm whether you have a current General Liability Certificate of Insurance; if not, obtain one from the vendor.');
       }
-      if (checkedValue('additionalInsured') === 'No') {
-        insuranceItems.push('Reach out to your vendor to ask for an additional insured endorsement with Marin County named.');
+      if (checkedValue('additionalInsured') === "No / I don't know") {
+        insuranceItems.push('Confirm whether you have an additional insured endorsement naming the County of Marin; if not, obtain one from the vendor.');
       }
       if (checkedValue('autoInsurance') === 'Yes') {
         insuranceItems.push('Obtain or confirm Auto Liability insurance coverage.');
-      } else if (checkedValue('autoInsurance') === 'No') {
-        insuranceItems.push('Reach out to Risk with an exemption request from auto insurance.');
+      } else if (checkedValue('autoInsurance') === "No / I don't know") {
+        insuranceItems.push('Confirm with Risk Management whether Auto Liability insurance is required; if not, request an exemption.');
       }
       if (checkedValue('professionalLiability') === 'Yes') {
         insuranceItems.push('Obtain or confirm Professional Liability / Errors & Omissions (E&O) insurance.');
-      } else if (checkedValue('professionalLiability') === 'No') {
-        insuranceItems.push('Reach out to Risk with an exemption request from professional liability.');
+      } else if (checkedValue('professionalLiability') === "No / I don't know") {
+        insuranceItems.push('Confirm with Risk Management whether Professional Liability / Errors & Omissions (E&O) insurance is required; if not, request an exemption.');
       }
       if (checkedValue('businessStructure') === 'Has employees') {
         insuranceItems.push('Get Workers’ Compensation insurance COI (typically the same as the original).');
       } else if (checkedValue('businessStructure') === 'Sole proprietorship') {
         insuranceItems.push('Reach out to Risk for an exemption request from Workers’ Compensation.');
+      } else if (checkedValue('businessStructure') === "I don't know") {
+        insuranceItems.push('Confirm whether the vendor has employees. If so, obtain a Workers’ Compensation insurance COI; if it is a sole proprietorship, request an exemption from Risk Management.');
       }
       if (insuranceItems.length) {
         insuranceItems.push('Recommended: PDF any emails or documents that substantiate this to submit later.');
@@ -1106,12 +1119,13 @@
       addChecklistSection(container, 'Insurance', insuranceItems, insuranceItems.length ? commonChecklistMeta : []);
 
       // Legal — always show, with the action determined by the answer.
-      const legalItems = checkedValue('legalIssues') === 'Yes'
-        ? [
-            'Reach out to County Counsel and let them know you are working on a non-standard agreement.',
-            'Work with them and the vendor’s Counsel until you have a final contract for submission.'
-          ]
-        : ['Prepare a contract using the County’s standard contract.'];
+      const legalAnswer = checkedValue('legalIssues');
+      const legalItems = legalAnswer === 'Yes'
+        ? ['Prepare the contract using the County’s standard Professional Services Contract (PSC).']
+        : [
+            'Reach out to County Counsel and let them know you are working on a non-standard agreement or are unsure which agreement to use.',
+            'Work with County Counsel and the vendor’s Counsel, as applicable, until you have a final contract for submission.'
+          ];
 
       addChecklistSection(
         container,
@@ -1119,6 +1133,46 @@
         legalItems,
         commonChecklistMeta
       );
+
+      updateTimelineNote();
+    }
+
+    function parseDateInput(value) {
+      if (!value) return null;
+      const [year, month, day] = value.split('-').map(Number);
+      if (!year || !month || !day) return null;
+      return new Date(year, month - 1, day);
+    }
+
+    function formatLongDate(date) {
+      return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
+    }
+
+    function addDays(date, days) {
+      const copy = new Date(date);
+      copy.setDate(copy.getDate() + days);
+      return copy;
+    }
+
+    function updateTimelineNote() {
+      const note = document.getElementById('timelineNote');
+      const start = parseDateInput(document.getElementById('startDate').value);
+      if (!note || !start) return;
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      start.setHours(0, 0, 0, 0);
+      const daysUntilStart = Math.ceil((start - today) / 86400000);
+      const recommendedSubmitDate = addDays(start, -30);
+
+      if (daysUntilStart <= 30) {
+        note.textContent = 'Your anticipated start date is in 30 days or less. We recommend completing this checklist and submitting a DAP ASAP to meet this tight timeline.';
+      } else if (daysUntilStart < 60) {
+        note.textContent = `Your anticipated start date is between 30 and 60 days from now. This is a relatively tight timeline. We recommend completing this checklist and submitting a DAP at least by ${formatLongDate(recommendedSubmitDate)}.`;
+      } else {
+        note.textContent = `Your anticipated start date is 60 or more days from now. Congrats on getting started early. We still recommend you submit a DAP at least by ${formatLongDate(recommendedSubmitDate)} to execute your contract on time.`;
+      }
+      note.classList.add('visible');
     }
 
     function setConditional(wrapper, field, visible) {
@@ -1126,6 +1180,20 @@
       field.required = visible;
       field.disabled = !visible;
       if (!visible) field.value = '';
+    }
+
+    function syncHRNumbering() {
+      const action = checkedValue('contractAction');
+      const contractActionOtherWrap = document.getElementById('contractActionOtherWrap');
+      const contractActionOther = document.getElementById('contractActionOther');
+      setConditional(contractActionOtherWrap, contractActionOther, action === 'Other');
+      const hasConditionalQuestion = action === 'Renewal' || action === 'New Contract';
+      const start = hasConditionalQuestion ? 3 : 2;
+      const ids = ['countyStaffNum', 'contractNecessityNum', 'employeeImpactsNum', 'processChangesNum', 'emergencyNum', 'emergencyWhyNum'];
+      ids.forEach((id, index) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = `${start + index}.`;
+      });
     }
 
     function syncConditionals() {
@@ -1140,6 +1208,7 @@
       const pastPerformance = document.getElementById('pastPerformance');
       setConditional(renewalQuestion, renewalDuration, action === 'Renewal');
       setConditional(newContractQuestion, pastPerformance, action === 'New Contract');
+      syncHRNumbering();
 
       const emergencyWhyWrap = document.getElementById('emergencyWhyWrap');
       const emergencyWhy = document.getElementById('emergencyWhy');
@@ -1169,12 +1238,37 @@
 
     const startDate = document.getElementById('startDate');
     const endDate = document.getElementById('endDate');
-    startDate.addEventListener('change', () => {
-      endDate.min = startDate.value;
-      if (endDate.value && endDate.value < startDate.value) endDate.value = '';
-    });
+
+    function syncDateConstraints() {
+      startDate.setCustomValidity('');
+      endDate.setCustomValidity('');
+
+      if (startDate.value && startDate.value < '2026-07-01') {
+        startDate.setCustomValidity('The anticipated start date cannot be before July 1, 2026.');
+      }
+
+      if (startDate.value) {
+        const start = parseDateInput(startDate.value);
+        const nextDay = addDays(start, 1);
+        const yyyy = nextDay.getFullYear();
+        const mm = String(nextDay.getMonth() + 1).padStart(2, '0');
+        const dd = String(nextDay.getDate()).padStart(2, '0');
+        endDate.min = `${yyyy}-${mm}-${dd}`;
+      } else {
+        endDate.removeAttribute('min');
+      }
+
+      if (startDate.value && endDate.value && endDate.value <= startDate.value) {
+        endDate.setCustomValidity('The anticipated end date must be after the anticipated start date.');
+      }
+    }
+
+    startDate.addEventListener('change', syncDateConstraints);
+    endDate.addEventListener('change', syncDateConstraints);
+    syncDateConstraints();
 
     syncConditionals();
+    showStep(0);
   </script>
 </body>
 </html>
