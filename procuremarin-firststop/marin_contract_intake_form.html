@@ -583,11 +583,11 @@
 <div class="two-col">
 <div>
 <label class="helper" for="startDate">Start date</label>
-<input id="startDate" min="2026-07-01" name="startDate" required="" type="date"/>
+<input id="startDate" name="startDate" placeholder="MM/DD/YYYY" inputmode="numeric" autocomplete="off" required="" type="text"/>
 </div>
 <div>
 <label class="helper" for="endDate">End date</label>
-<input id="endDate" name="endDate" required="" type="date"/>
+<input id="endDate" name="endDate" placeholder="MM/DD/YYYY" inputmode="numeric" autocomplete="off" required="" type="text"/>
 </div>
 </div>
 </div>
@@ -718,6 +718,13 @@
 <div class="radio-grid">
 <label class="radio-card"><input name="aiInvolved" required="" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="aiInvolved" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
+</div>
+</fieldset>
+<fieldset>
+<legend>3. Will any personally identifiable information (PII) be shared with another organization as part of this work?<span class="required-mark">*</span></legend>
+<div class="radio-grid">
+<label class="radio-card"><input name="piiShared" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="piiShared" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
 </div>
 </fieldset>
 <div class="actions">
@@ -1011,7 +1018,7 @@
       container.replaceChildren();
 
       const commonChecklistMeta = [
-        'Contact: Kelly McCubbin',
+        'Contact: Jane Doe',
         'Further Information: FAQ on HR and Procurement'
       ];
 
@@ -1139,9 +1146,32 @@
 
     function parseDateInput(value) {
       if (!value) return null;
-      const [year, month, day] = value.split('-').map(Number);
-      if (!year || !month || !day) return null;
-      return new Date(year, month - 1, day);
+      const raw = value.trim();
+      let year, month, day;
+
+      let match = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+      if (match) {
+        month = Number(match[1]);
+        day = Number(match[2]);
+        year = Number(match[3]);
+      } else {
+        match = raw.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+        if (!match) return null;
+        year = Number(match[1]);
+        month = Number(match[2]);
+        day = Number(match[3]);
+      }
+
+      const date = new Date(year, month - 1, day);
+      if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) return null;
+      return date;
+    }
+
+    function formatShortDate(date) {
+      const mm = String(date.getMonth() + 1).padStart(2, '0');
+      const dd = String(date.getDate()).padStart(2, '0');
+      const yyyy = date.getFullYear();
+      return `${mm}/${dd}/${yyyy}`;
     }
 
     function formatLongDate(date) {
@@ -1243,28 +1273,33 @@
       startDate.setCustomValidity('');
       endDate.setCustomValidity('');
 
-      if (startDate.value && startDate.value < '2026-07-01') {
+      const start = startDate.value ? parseDateInput(startDate.value) : null;
+      const end = endDate.value ? parseDateInput(endDate.value) : null;
+      const minimumStart = new Date(2026, 6, 1);
+
+      if (startDate.value && !start) {
+        startDate.setCustomValidity('Enter the anticipated start date as MM/DD/YYYY, for example 12/12/2028.');
+      } else if (start && start < minimumStart) {
         startDate.setCustomValidity('The anticipated start date cannot be before July 1, 2026.');
       }
 
-      if (startDate.value) {
-        const start = parseDateInput(startDate.value);
-        const nextDay = addDays(start, 1);
-        const yyyy = nextDay.getFullYear();
-        const mm = String(nextDay.getMonth() + 1).padStart(2, '0');
-        const dd = String(nextDay.getDate()).padStart(2, '0');
-        endDate.min = `${yyyy}-${mm}-${dd}`;
-      } else {
-        endDate.removeAttribute('min');
-      }
-
-      if (startDate.value && endDate.value && endDate.value <= startDate.value) {
+      if (endDate.value && !end) {
+        endDate.setCustomValidity('Enter the anticipated end date as MM/DD/YYYY, for example 12/12/2028.');
+      } else if (start && end && end <= start) {
         endDate.setCustomValidity('The anticipated end date must be after the anticipated start date.');
       }
     }
 
-    startDate.addEventListener('change', syncDateConstraints);
-    endDate.addEventListener('change', syncDateConstraints);
+    function normalizeDateField(field) {
+      const parsed = parseDateInput(field.value);
+      if (parsed) field.value = formatShortDate(parsed);
+      syncDateConstraints();
+    }
+
+    startDate.addEventListener('input', syncDateConstraints);
+    endDate.addEventListener('input', syncDateConstraints);
+    startDate.addEventListener('blur', () => normalizeDateField(startDate));
+    endDate.addEventListener('blur', () => normalizeDateField(endDate));
     syncDateConstraints();
 
     syncConditionals();
