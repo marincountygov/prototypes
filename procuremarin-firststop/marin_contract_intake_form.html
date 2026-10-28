@@ -500,12 +500,11 @@
 <div class="section-kicker">County of Marin</div>
 <h2>ProcureMarin FirstStop</h2>
 <p class="intro">FirstStop allows contract managers to answer questions in 5 minutes or less to get a personalized check-list of action items recommended to complete before processing a DAP.</p>
-<p class="intro" style="margin-top:16px;">It is completely optional—with resource guides and points of contact if you have any questions.</p>
 <div class="actions welcome-actions">
 <span></span>
 <button class="btn-primary" id="welcomeStartBtn" type="button">Click here to get started</button>
 </div>
-<p class="welcome-note"><em>This is an optional tool to help contract managers be successful. You will have to input some of this information again in DAP when you're ready.</em></p>
+<p class="welcome-note"><em>This is an <strong>optional</strong> tool to help contract managers be successful. You will have to input some of this information again in DAP until we move to a more integrated system.</em></p>
 </section>
 <section class="card page" data-step="1" data-title="General Information">
 <div class="section-kicker">Step 1</div>
@@ -1113,7 +1112,7 @@
           [
             'Submit a technology request form so that IST can conduct a technology evaluation (e.g., security, accessibility).',
             'Follow up with IST until you get written approval to proceed—or how to remediate potential issues.',
-            'Recommended: PDF any emails or documents that substantiate this to submit with your DAP.'
+            'Recommended: PDF any emails or documents that substantiate IST approval to submit with your DAP.'
           ],
           itMeta
         );
@@ -1138,7 +1137,7 @@
         const insuranceItems = [];
         if (checkedValue('generalLiability') === "No / I don't know") {
           insuranceItems.push('Check with your department admin team to see if you have any Certificates of Insurance and/or an “additional endorsement” on file for this vendor. If not, request them from your vendor.');
-          insuranceItems.push({ html: 'Confirm the certificate of insurance <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">covers general liability</a>.' });
+          insuranceItems.push({ html: 'Confirm the certificate of insurance covers general liability.' });
         }
         if (checkedValue('additionalInsured') === "No / I don't know") {
           insuranceItems.push('Confirm the additional endorsement meets Risk’s requirements.');
