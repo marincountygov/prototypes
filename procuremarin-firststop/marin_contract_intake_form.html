@@ -606,8 +606,8 @@
 <h2>Procurement Pathway</h2>
 <p class="intro">Tell us how the vendor and funding were identified.</p>
 <div class="error-summary" role="alert"></div>
-<fieldset>
-<legend>1. Have you gone through a competitive bidding process (e.g., RFP, solicitation of price, etc.) or are you sole/single sourcing this?<span class="required-mark">*</span></legend>
+<fieldset class="conditional visible" id="procurementMethodQuestion">
+<legend><span id="procurementMethodNum">1.</span> Have you gone through a competitive bidding process (e.g., RFP, solicitation of price, etc.) or are you sole/single sourcing this?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="procurementMethod" required="" type="radio" value="Competitive bidding process"/><span>Yes, I’ve gone through a competitive bidding process</span></label>
 <label class="radio-card"><input name="procurementMethod" type="radio" value="Sole/single sourcing"/><span>I am sole/single sourcing this contract</span></label>
@@ -620,7 +620,7 @@
 </div>
 </fieldset>
 <fieldset>
-<legend>2. Have you identified funding for this contract?<span class="required-mark">*</span></legend>
+<legend><span id="fundingIdentifiedNum">2.</span> Have you identified funding for this contract?<span class="required-mark">*</span></legend>
 <div class="radio-grid three">
 <label class="radio-card"><input name="fundingIdentified" required="" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="fundingIdentified" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
@@ -628,14 +628,14 @@
 </div>
 </fieldset>
 <fieldset>
-<legend>3. Will any portion of this purchase be paid for with grant funds?<span class="required-mark">*</span></legend>
+<legend><span id="grantFundsNum">3.</span> Will any portion of this purchase be paid for with grant funds?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="grantFunds" required="" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="grantFunds" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
 </div>
 </fieldset>
 <fieldset>
-<legend>4. Is the vendor <a href="https://marincountycamunisapp.tylerhost.net/4912prod/munis/munisnet/AppHost/VendorCentral/search-results" rel="noopener noreferrer" target="_blank">registered with the County</a>?<span class="required-mark">*</span></legend>
+<legend><span id="vendorRegisteredNum">4.</span> Is the vendor <a href="https://marincountycamunisapp.tylerhost.net/4912prod/munis/munisnet/AppHost/VendorCentral/search-results" rel="noopener noreferrer" target="_blank">registered with the County</a>?<span class="required-mark">*</span></legend>
 <p class="helper"><a href="https://marincountycamunisapp.tylerhost.net/4912prod/munis/munisnet/AppHost/VendorCentral/search-results" rel="noopener noreferrer" target="_blank">Click here</a> to see if your vendor is registered.</p>
 <div class="radio-grid">
 <label class="radio-card"><input name="vendorRegistered" required="" type="radio" value="Yes"/><span>Yes</span></label>
@@ -654,7 +654,6 @@
 <div class="error-summary" role="alert"></div>
 <fieldset>
 <legend>1. Have you consulted with your Recruitment Analyst to explore staffing solutions?<span class="required-mark">*</span></legend>
-<p class="helper"><a href="https://www.hr.marincounty.gov/our-divisions/recruitment" rel="noopener noreferrer" target="_blank">Click here to find out who your analyst is.</a></p>
 <div class="radio-grid">
 <label class="radio-card"><input name="consultedRecruitment" required="" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="consultedRecruitment" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
@@ -846,8 +845,8 @@
 <div class="section-kicker">Your next steps</div>
 <h2 id="checklistTitle">Contract Checklist</h2>
 <p class="checklist-intro">Based on the information you provided, the following is a checklist for you as the contract manager to consider before submitting your contract.</p>
-<div id="checklistSections"></div>
 <div aria-live="polite" class="timeline-note" id="timelineNote"></div>
+<div id="checklistSections"></div>
 </div>
 </section>
 </form>
@@ -875,18 +874,28 @@
       return checkedValue('contractType') === 'Software (\"SaaS\")';
     }
 
+    function isCommunityServiceContract() {
+      return checkedValue('contractType') === 'Community Service Contract';
+    }
+
     function workflowSteps() {
-      // Information Technology (step 4) is only asked for new contracts.
-      // Legal (step 7) is only asked for Professional Services Contracts.
-      const steps = [1, 2, 3, 5, 6];
-      if (isNewContract()) steps.splice(3, 0, 4);
+      // HR and Legal only apply to Professional Services Contracts.
+      // IT questions are only asked for New Contracts.
+      // Community Service Contracts skip Insurance and Legal.
+      const steps = [1, 2];
+      if (isProfessionalServicesContract()) steps.push(3);
+      if (isNewContract()) steps.push(4);
+      steps.push(5);
+      if (!isCommunityServiceContract()) steps.push(6);
       if (isProfessionalServicesContract()) steps.push(7);
       return steps;
     }
 
     function showStep(step) {
       // If a conditional page is not applicable, route to the next applicable page.
+      if (step === 3 && !isProfessionalServicesContract()) step = isNewContract() ? 4 : 5;
       if (step === 4 && !isNewContract()) step = 5;
+      if (step === 6 && isCommunityServiceContract()) step = isProfessionalServicesContract() ? 7 : 8;
       if (step === 7 && !isProfessionalServicesContract()) step = 8;
 
       currentStep = step;
@@ -1003,7 +1012,7 @@
       const list = document.createElement('div');
       list.className = 'checklist-items';
 
-      items.forEach(itemText => {
+      items.forEach(item => {
         const label = document.createElement('label');
         label.className = 'checklist-item';
 
@@ -1011,7 +1020,11 @@
         checkbox.type = 'checkbox';
 
         const text = document.createElement('span');
-        text.textContent = itemText;
+        if (typeof item === 'object' && item.html) {
+          text.innerHTML = item.html;
+        } else {
+          text.textContent = typeof item === 'object' ? item.text : item;
+        }
 
         label.append(checkbox, text);
         list.appendChild(label);
@@ -1038,10 +1051,11 @@
       const title = document.getElementById('checklistTitle');
       container.replaceChildren();
 
-      const commonChecklistMeta = [
-        'Contact: Jane Doe',
-        'Resources: FAQ on HR and Procurement'
-      ];
+      const procurementMeta = ['Contact: TBD', 'Resources: TBD'];
+      const hrMeta = ['Contact: Lorena Cseszlyar (Lorena.Cseszlyar@MarinCounty.gov)', 'Resources: TBD'];
+      const itMeta = ['Contact: Tracylihn Monks (Tracylihn.Monks@MarinCounty.gov)', 'Resources: TBD'];
+      const riskMeta = ['Contact: Julia Young (Julia.Young@marincounty.gov)', 'Resources: TBD'];
+      const defaultMeta = ['Contact: TBD', 'Resources: TBD'];
 
       const contractTitle = document.getElementById('contractTitle').value.trim();
       title.textContent = contractTitle ? `${contractTitle} Checklist` : 'Contract Checklist';
@@ -1071,28 +1085,25 @@
       }
 
       if (checkedValue('vendorRegistered') === "No / I don't know") {
-        procurementItems.push('Ask your vendor to register as a vendor.');
-        procurementItems.push('Continue to check in to validate they have submitted their registration.');
-        procurementItems.push('Check Vendor Central on MUNIS until you see they are officially registered.');
+        procurementItems.push('Ask your vendor to register as a vendor. Check Vendor Central on MUNIS until you see they are officially registered.');
       }
 
       addChecklistSection(
         container,
         'Procurement',
         procurementItems,
-        procurementItems.length ? commonChecklistMeta : []
+        procurementItems.length ? procurementMeta : []
       );
 
-      // Human Resources — always show.
-      addChecklistSection(
-        container,
-        'Human Resources',
-        ['Wait to hear back from HR. They received your input and will follow up with next steps.'],
-        [
-          'Contact: Lorena Cseszlyar (Lorena.Cseszlyar@MarinCounty.gov)',
-          'Resources: FAQ on HR and Procurement'
-        ]
-      );
+      // Human Resources — Professional Services Contracts only.
+      if (isProfessionalServicesContract()) {
+        addChecklistSection(
+          container,
+          'Human Resources',
+          ['Wait to hear back from HR. They received your input and will follow up with next steps.'],
+          hrMeta
+        );
+      }
 
       // Information Technology — show for SaaS, or for a new contract when either defined IT review question is Yes.
       if (isSaaSContract() || (isNewContract() && (checkedValue('technologyInvolved') === 'Yes' || checkedValue('aiInvolved') === 'Yes'))) {
@@ -1100,11 +1111,11 @@
           container,
           'Information Technology',
           [
-            'Submit a technology request form so that IST can do a security, data, and AI review.',
+            'Submit a technology request form so that IST can conduct a technology evaluation (e.g., security, accessibility).',
             'Follow up with IST until you get written approval to proceed—or how to remediate potential issues.',
-            'Recommended: PDF any emails or documents that substantiate this to submit later.'
+            'Recommended: PDF any emails or documents that substantiate this to submit with your DAP.'
           ],
-          commonChecklistMeta
+          itMeta
         );
       }
 
@@ -1116,41 +1127,44 @@
           [
             'Reach out to Risk Management and send them a copy of your answers that was sent to this email, calling attention to the “Risk” section.',
             'Follow up with Risk until you get written approval to proceed—or how to remediate potential issues.',
-            'Recommended: PDF any emails or documents that substantiate this to submit later.'
+            'Recommended: PDF any emails or documents that substantiate this to submit with your DAP.'
           ],
-          commonChecklistMeta
+          riskMeta
         );
       }
 
-      // Insurance — only render if there is at least one outstanding action.
-      const insuranceItems = [];
-      if (checkedValue('generalLiability') === "No / I don't know") {
-        insuranceItems.push('Confirm whether you have a current General Liability Certificate of Insurance; if not, obtain one from the vendor.');
+      // Insurance — Community Service Contracts skip this section entirely.
+      if (!isCommunityServiceContract()) {
+        const insuranceItems = [];
+        if (checkedValue('generalLiability') === "No / I don't know") {
+          insuranceItems.push('Check with your department admin team to see if you have any Certificates of Insurance and/or an “additional endorsement” on file for this vendor. If not, request them from your vendor.');
+          insuranceItems.push({ html: 'Confirm the certificate of insurance <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">covers general liability</a>.' });
+        }
+        if (checkedValue('additionalInsured') === "No / I don't know") {
+          insuranceItems.push('Confirm the additional endorsement meets Risk’s requirements.');
+        }
+        if (checkedValue('autoInsurance') === 'Yes') {
+          insuranceItems.push('Obtain or confirm Auto Liability insurance coverage.');
+        } else if (checkedValue('autoInsurance') === "No / I don't know") {
+          insuranceItems.push('Confirm with Risk Management whether Auto Liability insurance is required; if not, request an exemption.');
+        }
+        if (checkedValue('professionalLiability') === 'Yes') {
+          insuranceItems.push('Obtain or confirm Professional Liability / Errors & Omissions (E&O) insurance.');
+        } else if (checkedValue('professionalLiability') === "No / I don't know") {
+          insuranceItems.push('Confirm with Risk Management whether Professional Liability / Errors & Omissions (E&O) insurance is required; if not, request an exemption.');
+        }
+        if (checkedValue('businessStructure') === 'Has employees') {
+          insuranceItems.push('Get Workers’ Compensation insurance COI (typically the same as the original).');
+        } else if (checkedValue('businessStructure') === 'Sole proprietorship') {
+          insuranceItems.push('Reach out to Risk for an exemption request from Workers’ Compensation.');
+        } else if (checkedValue('businessStructure') === "I don't know") {
+          insuranceItems.push('Confirm the vendor has Workers Compensation insurance in its certificate of insurance.');
+        }
+        if (insuranceItems.length) {
+          insuranceItems.push('Recommended: PDF any emails or documents that substantiate this to submit with your DAP.');
+        }
+        addChecklistSection(container, 'Insurance', insuranceItems, insuranceItems.length ? defaultMeta : []);
       }
-      if (checkedValue('additionalInsured') === "No / I don't know") {
-        insuranceItems.push('Confirm whether you have an additional insured endorsement naming the County of Marin; if not, obtain one from the vendor.');
-      }
-      if (checkedValue('autoInsurance') === 'Yes') {
-        insuranceItems.push('Obtain or confirm Auto Liability insurance coverage.');
-      } else if (checkedValue('autoInsurance') === "No / I don't know") {
-        insuranceItems.push('Confirm with Risk Management whether Auto Liability insurance is required; if not, request an exemption.');
-      }
-      if (checkedValue('professionalLiability') === 'Yes') {
-        insuranceItems.push('Obtain or confirm Professional Liability / Errors & Omissions (E&O) insurance.');
-      } else if (checkedValue('professionalLiability') === "No / I don't know") {
-        insuranceItems.push('Confirm with Risk Management whether Professional Liability / Errors & Omissions (E&O) insurance is required; if not, request an exemption.');
-      }
-      if (checkedValue('businessStructure') === 'Has employees') {
-        insuranceItems.push('Get Workers’ Compensation insurance COI (typically the same as the original).');
-      } else if (checkedValue('businessStructure') === 'Sole proprietorship') {
-        insuranceItems.push('Reach out to Risk for an exemption request from Workers’ Compensation.');
-      } else if (checkedValue('businessStructure') === "I don't know") {
-        insuranceItems.push('Confirm whether the vendor has employees. If so, obtain a Workers’ Compensation insurance COI; if it is a sole proprietorship, request an exemption from Risk Management.');
-      }
-      if (insuranceItems.length) {
-        insuranceItems.push('Recommended: PDF any emails or documents that substantiate this to submit later.');
-      }
-      addChecklistSection(container, 'Insurance', insuranceItems, insuranceItems.length ? commonChecklistMeta : []);
 
       // Legal — only applies to Professional Services Contracts.
       if (isProfessionalServicesContract()) {
@@ -1166,7 +1180,7 @@
           container,
           'Legal',
           legalItems,
-          commonChecklistMeta
+          defaultMeta
         );
       }
 
@@ -1255,12 +1269,34 @@
       });
     }
 
+    function syncProcurementNumbering() {
+      const renewal = checkedValue('contractAction') === 'Renewal';
+      const nums = renewal
+        ? { fundingIdentifiedNum: 1, grantFundsNum: 2, vendorRegisteredNum: 3 }
+        : { procurementMethodNum: 1, fundingIdentifiedNum: 2, grantFundsNum: 3, vendorRegisteredNum: 4 };
+      Object.entries(nums).forEach(([id, value]) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = `${value}.`;
+      });
+    }
+
     function syncConditionals() {
+      const action = checkedValue('contractAction');
+      const procurementMethodQuestion = document.getElementById('procurementMethodQuestion');
+      const procurementMethodInputs = [...document.querySelectorAll('input[name="procurementMethod"]')];
+      const procurementMethodApplies = action !== 'Renewal';
+      procurementMethodQuestion.classList.toggle('visible', procurementMethodApplies);
+      procurementMethodInputs.forEach((field, index) => {
+        field.disabled = !procurementMethodApplies;
+        field.required = procurementMethodApplies && index === 0;
+        if (!procurementMethodApplies) field.checked = false;
+      });
+
       const procurementOtherWrap = document.getElementById('procurementOtherWrap');
       const procurementOther = document.getElementById('procurementOther');
-      setConditional(procurementOtherWrap, procurementOther, checkedValue('procurementMethod') === 'Other');
+      setConditional(procurementOtherWrap, procurementOther, procurementMethodApplies && checkedValue('procurementMethod') === 'Other');
+      syncProcurementNumbering();
 
-      const action = checkedValue('contractAction');
       const renewalQuestion = document.getElementById('renewalQuestion');
       const renewalDuration = document.getElementById('renewalDuration');
       const newContractQuestion = document.getElementById('newContractQuestion');
@@ -1273,12 +1309,30 @@
       const emergencyWhy = document.getElementById('emergencyWhy');
       setConditional(emergencyWhyWrap, emergencyWhy, checkedValue('emergency') === 'Yes');
 
+      const hrPage = pages.find(page => Number(page.dataset.step) === 3);
+      const hrApplies = isProfessionalServicesContract();
+      hrPage.querySelectorAll('input, select, textarea').forEach(field => {
+        field.disabled = !hrApplies;
+      });
+      if (hrApplies) {
+        // Restore the correct enabled/disabled state for HR's conditional fields.
+        setConditional(renewalQuestion, renewalDuration, action === 'Renewal');
+        setConditional(newContractQuestion, pastPerformance, action === 'New Contract');
+        setConditional(emergencyWhyWrap, emergencyWhy, checkedValue('emergency') === 'Yes');
+      }
+
       // Disable IT fields entirely when this is not a new contract so they are neither
       // required nor included in a future submission payload.
       const itPage = pages.find(page => Number(page.dataset.step) === 4);
       const itApplies = action === 'New Contract';
       itPage.querySelectorAll('input, select, textarea').forEach(field => {
         field.disabled = !itApplies;
+      });
+
+      const insurancePage = pages.find(page => Number(page.dataset.step) === 6);
+      const insuranceApplies = !isCommunityServiceContract();
+      insurancePage.querySelectorAll('input, select, textarea').forEach(field => {
+        field.disabled = !insuranceApplies;
       });
 
       const legalPage = pages.find(page => Number(page.dataset.step) === 7);
