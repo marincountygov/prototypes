@@ -499,7 +499,8 @@
 <form id="contractForm" novalidate=""><section class="card page active welcome-page" data-step="0" data-title="ProcureMarin FirstStop">
 <div class="section-kicker">County of Marin</div>
 <h2>ProcureMarin FirstStop</h2>
-<p class="intro">FirstStop allows contract managers to answer questions in 5 minutes or less to get a personalized check-list of action items recommended to complete before processing a DAP.<br/>It is completely optional—with resource guides and points of contact if you have any questions.</p>
+<p class="intro">FirstStop allows contract managers to answer questions in 5 minutes or less to get a personalized check-list of action items recommended to complete before processing a DAP.</p>
+<p class="intro" style="margin-top:16px;">It is completely optional—with resource guides and points of contact if you have any questions.</p>
 <div class="actions welcome-actions">
 <span></span>
 <button class="btn-primary" id="welcomeStartBtn" type="button">Click here to get started</button>
@@ -562,6 +563,7 @@
 <label class="radio-card"><input name="contractType" required="" type="radio" value="Professional Services Contract"/><span>Professional Services Contract</span></label>
 <label class="radio-card"><input name="contractType" type="radio" value="Community Service Contract"/><span>Community Service Contract</span></label>
 <label class="radio-card"><input name="contractType" type="radio" value="Goods &amp; Services"/><span>Goods &amp; Services</span></label>
+<label class="radio-card"><input name="contractType" type="radio" value='Software ("SaaS")'/><span>Software (&quot;SaaS&quot;)</span></label>
 </div>
 </fieldset>
 <fieldset>
@@ -865,16 +867,27 @@
       return checkedValue('contractAction') === 'New Contract';
     }
 
+    function isProfessionalServicesContract() {
+      return checkedValue('contractType') === 'Professional Services Contract';
+    }
+
+    function isSaaSContract() {
+      return checkedValue('contractType') === 'Software (\"SaaS\")';
+    }
+
     function workflowSteps() {
-      // Information Technology (step 4) is only part of the workflow for new contracts.
-      const steps = [1, 2, 3, 5, 6, 7];
+      // Information Technology (step 4) is only asked for new contracts.
+      // Legal (step 7) is only asked for Professional Services Contracts.
+      const steps = [1, 2, 3, 5, 6];
       if (isNewContract()) steps.splice(3, 0, 4);
+      if (isProfessionalServicesContract()) steps.push(7);
       return steps;
     }
 
     function showStep(step) {
-      // If Information Technology is not applicable, never display that page.
+      // If a conditional page is not applicable, route to the next applicable page.
       if (step === 4 && !isNewContract()) step = 5;
+      if (step === 7 && !isProfessionalServicesContract()) step = 8;
 
       currentStep = step;
       pages.forEach(page => page.classList.toggle('active', Number(page.dataset.step) === step));
@@ -936,12 +949,23 @@
 
     document.getElementById('welcomeStartBtn').addEventListener('click', () => showStep(1));
 
+    function finishForm() {
+      buildChecklist();
+      const contractTitle = document.getElementById('contractTitle').value.trim();
+      document.getElementById('thankYouContractTitle').textContent = contractTitle || 'your contract';
+      showStep(8);
+    }
+
     document.querySelectorAll('.next-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         if (!validateCurrentPage()) return;
         const steps = workflowSteps();
         const index = steps.indexOf(currentStep);
-        if (index >= 0 && index < steps.length - 1) showStep(steps[index + 1]);
+        if (index >= 0 && index < steps.length - 1) {
+          showStep(steps[index + 1]);
+        } else if (index === steps.length - 1) {
+          finishForm();
+        }
       });
     });
 
@@ -955,12 +979,7 @@
 
     form.addEventListener('submit', event => {
       event.preventDefault();
-      if (validateCurrentPage()) {
-        buildChecklist();
-        const contractTitle = document.getElementById('contractTitle').value.trim();
-        document.getElementById('thankYouContractTitle').textContent = contractTitle || 'your contract';
-        showStep(8);
-      }
+      if (validateCurrentPage()) finishForm();
     });
 
     document.getElementById('viewChecklistBtn').addEventListener('click', () => {
@@ -1021,7 +1040,7 @@
 
       const commonChecklistMeta = [
         'Contact: Jane Doe',
-        'Further Information: FAQ on HR and Procurement'
+        'Resources: FAQ on HR and Procurement'
       ];
 
       const contractTitle = document.getElementById('contractTitle').value.trim();
@@ -1031,8 +1050,7 @@
       const procurementItems = [];
       const procurementMethod = checkedValue('procurementMethod');
       if (procurementMethod === 'Sole/single sourcing') {
-        procurementItems.push('Complete this sole/single source justification form.');
-        procurementItems.push('Consult with Procurement to validate it will suffice.');
+        procurementItems.push('Complete this sole/single source justification form. Consult with Procurement to validate it will suffice.');
       } else if (procurementMethod === 'Competitive bidding process') {
         procurementItems.push('Document where you solicited quotes and be ready to include that information in your submission.');
       } else if (procurementMethod === "I don't know") {
@@ -1041,6 +1059,10 @@
 
       if (checkedValue('fundingIdentified') === "No / I don't know") {
         procurementItems.push('Work with your department’s leadership and finance team to identify a clear “organization” and “object” code for this funding.');
+      }
+
+      if (checkedValue('grantFunds') === 'Yes') {
+        procurementItems.push('Review your grant requirements and contact Procurement if you need clarity on whether or not this contract will meet those requirements.');
       }
 
       const annualValueNumeric = Number(document.getElementById('annualValue').value.replace(/[^0-9.]/g, '')) || 0;
@@ -1066,11 +1088,14 @@
         container,
         'Human Resources',
         ['Wait to hear back from HR. They received your input and will follow up with next steps.'],
-        commonChecklistMeta
+        [
+          'Contact: Lorena Cseszlyar (Lorena.Cseszlyar@MarinCounty.gov)',
+          'Resources: FAQ on HR and Procurement'
+        ]
       );
 
-      // Information Technology — only for a new contract when either IT question is Yes.
-      if (isNewContract() && (checkedValue('technologyInvolved') === 'Yes' || checkedValue('aiInvolved') === 'Yes')) {
+      // Information Technology — show for SaaS, or for a new contract when either defined IT review question is Yes.
+      if (isSaaSContract() || (isNewContract() && (checkedValue('technologyInvolved') === 'Yes' || checkedValue('aiInvolved') === 'Yes'))) {
         addChecklistSection(
           container,
           'Information Technology',
@@ -1127,21 +1152,23 @@
       }
       addChecklistSection(container, 'Insurance', insuranceItems, insuranceItems.length ? commonChecklistMeta : []);
 
-      // Legal — always show, with the action determined by the answer.
-      const legalAnswer = checkedValue('legalIssues');
-      const legalItems = legalAnswer === 'Yes'
-        ? ['Prepare the contract using the County’s standard Professional Services Contract (PSC).']
-        : [
-            'Reach out to County Counsel and let them know you are working on a non-standard agreement or are unsure which agreement to use.',
-            'Work with County Counsel and the vendor’s Counsel, as applicable, until you have a final contract for submission.'
-          ];
+      // Legal — only applies to Professional Services Contracts.
+      if (isProfessionalServicesContract()) {
+        const legalAnswer = checkedValue('legalIssues');
+        const legalItems = legalAnswer === 'Yes'
+          ? ['Prepare the contract using the County’s standard Professional Services Contract (PSC).']
+          : [
+              'Reach out to County Counsel and let them know you are working on a non-standard agreement or are unsure which agreement to use.',
+              'Work with County Counsel and the vendor’s Counsel, as applicable, until you have a final contract for submission.'
+            ];
 
-      addChecklistSection(
-        container,
-        'Legal',
-        legalItems,
-        commonChecklistMeta
-      );
+        addChecklistSection(
+          container,
+          'Legal',
+          legalItems,
+          commonChecklistMeta
+        );
+      }
 
       updateTimelineNote();
     }
@@ -1252,6 +1279,12 @@
       const itApplies = action === 'New Contract';
       itPage.querySelectorAll('input, select, textarea').forEach(field => {
         field.disabled = !itApplies;
+      });
+
+      const legalPage = pages.find(page => Number(page.dataset.step) === 7);
+      const legalApplies = isProfessionalServicesContract();
+      legalPage.querySelectorAll('input, select, textarea').forEach(field => {
+        field.disabled = !legalApplies;
       });
     }
 
