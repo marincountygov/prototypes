@@ -276,6 +276,14 @@
       display: block;
     }
 
+    #procurementMethodQuestion {
+      margin-top: 0;
+      padding: 0;
+      border-left: 0;
+      background: transparent;
+      border-radius: 0;
+    }
+
     .actions {
       display: flex;
       justify-content: space-between;
@@ -499,12 +507,12 @@
 <form id="contractForm" novalidate=""><section class="card page active welcome-page" data-step="0" data-title="ProcureMarin FirstStop">
 <div class="section-kicker">County of Marin</div>
 <h2>ProcureMarin FirstStop</h2>
-<p class="intro">FirstStop allows contract managers to answer questions in 5 minutes or less to get a personalized check-list of action items recommended to complete before processing a DAP.</p>
+<p class="intro">FirstStop allows contract managers to get a personalized check-list of action items to complete before processing a DAP.</p>
 <div class="actions welcome-actions">
 <span></span>
 <button class="btn-primary" id="welcomeStartBtn" type="button">Click here to get started</button>
 </div>
-<p class="welcome-note"><em>This is an <strong>optional</strong> tool to help contract managers be successful. You will have to input some of this information again in DAP until we move to a more integrated system.</em></p>
+<p class="welcome-note"><em>This is an <strong>optional</strong> tool to help contract managers be successful. <strong>Note:</strong> You will have to input some of this information again in DAP until we move to a more integrated system.</em></p>
 </section>
 <section class="card page" data-step="1" data-title="General Information">
 <div class="section-kicker">Step 1</div>
@@ -712,21 +720,24 @@
 <legend>1. Does this purchase involve any technology that may connect to County systems or handle County data, such as new software, cloud/SaaS, data sharing, integrations, or vendor security concerns?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="technologyInvolved" required="" type="radio" value="Yes"/><span>Yes</span></label>
-<label class="radio-card"><input name="technologyInvolved" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
+<label class="radio-card"><input name="technologyInvolved" type="radio" value="No"/><span>No</span></label>
+<label class="radio-card"><input name="technologyInvolved" type="radio" value="I don't know"/><span>I don't know</span></label>
 </div>
 </fieldset>
 <fieldset>
 <legend>2. Does this purchase include any tools or features that use artificial intelligence (AI)?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="aiInvolved" required="" type="radio" value="Yes"/><span>Yes</span></label>
-<label class="radio-card"><input name="aiInvolved" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
+<label class="radio-card"><input name="aiInvolved" type="radio" value="No"/><span>No</span></label>
+<label class="radio-card"><input name="aiInvolved" type="radio" value="I don't know"/><span>I don't know</span></label>
 </div>
 </fieldset>
 <fieldset>
 <legend>3. Will any personally identifiable information (PII) be shared with another organization as part of this work?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="piiShared" required="" type="radio" value="Yes"/><span>Yes</span></label>
-<label class="radio-card"><input name="piiShared" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
+<label class="radio-card"><input name="piiShared" type="radio" value="No"/><span>No</span></label>
+<label class="radio-card"><input name="piiShared" type="radio" value="I don't know"/><span>I don't know</span></label>
 </div>
 </fieldset>
 <div class="actions">
@@ -829,6 +840,14 @@
 <button class="btn-primary" type="submit">Submit</button>
 </div>
 </section>
+
+<section class="card page" data-step="10" data-title="Board of Supervisors">
+<div class="thank-you">
+<div class="section-kicker">Contract routing</div>
+<h2>Board of Supervisors Required</h2>
+<p class="intro" style="margin-left:auto; margin-right:auto;"><strong>Your contract is over $200,000 and must go to the Board of Supervisors.</strong></p>
+</div>
+</section>
 <section class="card page" data-step="8" data-title="Thank You">
 <div class="thank-you">
 <div aria-hidden="true" class="check">✓</div>
@@ -877,6 +896,14 @@
       return checkedValue('contractType') === 'Community Service Contract';
     }
 
+    function annualValueNumber() {
+      return Number(document.getElementById('annualValue').value.replace(/[^0-9.]/g, '')) || 0;
+    }
+
+    function requiresBoardApproval() {
+      return annualValueNumber() > 200000;
+    }
+
     function workflowSteps() {
       // HR and Legal only apply to Professional Services Contracts.
       // IT questions are only asked for New Contracts.
@@ -912,6 +939,9 @@
           progressBar.style.width = `${(position / steps.length) * 100}%`;
         } else if (step === 8) {
           stepCount.textContent = 'Complete — Thank You';
+          progressBar.style.width = '100%';
+        } else if (step === 10) {
+          stepCount.textContent = 'Complete — Board of Supervisors';
           progressBar.style.width = '100%';
         } else {
           stepCount.textContent = 'Complete — Contract Checklist';
@@ -967,6 +997,10 @@
     document.querySelectorAll('.next-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         if (!validateCurrentPage()) return;
+        if (currentStep === 1 && requiresBoardApproval()) {
+          showStep(10);
+          return;
+        }
         const steps = workflowSteps();
         const index = steps.indexOf(currentStep);
         if (index >= 0 && index < steps.length - 1) {
@@ -1078,7 +1112,7 @@
         procurementItems.push('Review your grant requirements and contact Procurement if you need clarity on whether or not this contract will meet those requirements.');
       }
 
-      const annualValueNumeric = Number(document.getElementById('annualValue').value.replace(/[^0-9.]/g, '')) || 0;
+      const annualValueNumeric = annualValueNumber();
       if (annualValueNumeric > 10000) {
         procurementItems.push('Draft executive memo and share with your department head for feedback as appropriate.');
       }
@@ -1104,19 +1138,23 @@
         );
       }
 
-      // Information Technology — show for SaaS, or for a new contract when either defined IT review question is Yes.
-      if (isSaaSContract() || (isNewContract() && (checkedValue('technologyInvolved') === 'Yes' || checkedValue('aiInvolved') === 'Yes'))) {
-        addChecklistSection(
-          container,
-          'Information Technology',
-          [
-            'Submit a technology request form so that IST can conduct a technology evaluation (e.g., security, accessibility).',
-            'Follow up with IST until you get written approval to proceed—or how to remediate potential issues.',
-            'Recommended: PDF any emails or documents that substantiate IST approval to submit with your DAP.'
-          ],
-          itMeta
+      // Information Technology — SaaS or a Yes on any IT question triggers the standard evaluation checklist.
+      // An "I don't know" response adds a clarification action.
+      const itAnswers = [checkedValue('technologyInvolved'), checkedValue('aiInvolved'), checkedValue('piiShared')];
+      const anyItYes = itAnswers.includes('Yes');
+      const anyItUnknown = itAnswers.includes("I don't know");
+      const itItems = [];
+      if (isSaaSContract() || (isNewContract() && anyItYes)) {
+        itItems.push(
+          'Submit a technology request form so that IST can conduct a technology evaluation (e.g., security, accessibility).',
+          'Follow up with IST until you get written approval to proceed—or how to remediate potential issues.',
+          'Recommended: PDF any emails or documents that substantiate IST approval to submit with your DAP.'
         );
       }
+      if (isNewContract() && anyItUnknown) {
+        itItems.push('Reach out to IST (see contact information below) to clarify if you need a technology evaluation (e.g., cybersecurity).');
+      }
+      addChecklistSection(container, 'Information Technology', itItems, itItems.length ? itMeta : []);
 
       // Risk — show if either Risk answer is Yes.
       if (checkedValue('riskFactors') === 'Yes' || checkedValue('publicWorks') === 'Yes') {
