@@ -766,7 +766,7 @@
 </fieldset>
 
 <fieldset>
-<legend><span id="hhsInfoTypesNum">7.</span> What kinds of information about people? <span class="helper" style="display:inline; margin:0;">(Select all that apply.)</span><span class="required-mark">*</span></legend>
+<legend><span id="hhsInfoTypesNum">7.</span> What kinds of information about people will the vendor collect? <span class="helper" style="display:inline; margin:0;">(Select all that apply.)</span><span class="required-mark">*</span></legend>
 <div class="checkbox-grid" id="hhsInfoTypesGroup">
 <label class="checkbox-card"><input name="hhsInfoTypes" type="checkbox" value="Names and contact information"/><span>Names and contact information</span></label>
 <label class="checkbox-card"><input name="hhsInfoTypes" type="checkbox" value="ID numbers"/><span>ID numbers (SSN, driver's license, client or case numbers)</span></label>
@@ -779,7 +779,7 @@
 </div>
 </fieldset>
 
-<fieldset>
+<fieldset class="conditional visible" id="hhsStorageQuestion">
 <legend><span id="hhsStorageNum">8.</span> Where will the information be stored?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="hhsStorage" type="radio" value="County systems only"/><span>County systems only</span></label>
@@ -790,7 +790,7 @@
 </div>
 </fieldset>
 
-<fieldset>
+<fieldset class="conditional visible" id="hhsVendorAccessQuestion">
 <legend><span id="hhsVendorAccessNum">9.</span> Will the vendor's staff or subcontractors be able to see individual records?<span class="required-mark">*</span></legend>
 <div class="radio-grid three">
 <label class="radio-card"><input name="hhsVendorAccess" type="radio" value="Yes"/><span>Yes</span></label>
@@ -1376,7 +1376,7 @@
       if (!isCommunityServiceContract()) {
         const insuranceItems = [];
         if (checkedValue('generalLiability') === "No / I don't know") {
-          insuranceItems.push('Check with your department admin team or your own folders and collect any existing insurance documentation on this vendor. If you do not have a Certificate of Insurance and "additional endorsement," ask your vendor to request one, or for them to request one from their insurer.');
+          insuranceItems.push('Check with your department admin team or your own folders and collect any existing insurance documentation on this vendor. If you do not have a Certificate of Insurance and "additional endorsement," request one from your vendor, or for them to request one from their insurer.');
           insuranceItems.push({ html: 'Confirm the certificate of insurance covers general liability.' });
         }
         if (checkedValue('additionalInsured') === "No / I don't know") {
@@ -1538,10 +1538,11 @@
       assign('grantFundsNum', procurementApplies);
       assign('vendorRegisteredNum', procurementApplies);
       assign('dpwCUPCCAANum', dpwVisible);
+      const hhsNoneSelected = hhsVisible && [...document.querySelectorAll('input[name="hhsInfoTypes"]')].some(input => input.value === 'None of these' && input.checked);
       assign('hhsFederalTechNum', hhsVisible);
       assign('hhsInfoTypesNum', hhsVisible);
-      assign('hhsStorageNum', hhsVisible);
-      assign('hhsVendorAccessNum', hhsVisible);
+      assign('hhsStorageNum', hhsVisible && !hhsNoneSelected);
+      assign('hhsVendorAccessNum', hhsVisible && !hhsNoneSelected);
       assign('hhsSystemConnectionNum', hhsVisible);
     }
 
@@ -1610,6 +1611,23 @@
         });
         document.querySelectorAll('input[name="hhsInfoTypes"]').forEach(field => field.disabled = false);
       }
+
+      const hhsNoneSelected = hhsApplies && [...document.querySelectorAll('input[name="hhsInfoTypes"]')].some(input => input.value === 'None of these' && input.checked);
+      const hhsStorageQuestion = document.getElementById('hhsStorageQuestion');
+      const hhsVendorAccessQuestion = document.getElementById('hhsVendorAccessQuestion');
+      [
+        ['hhsStorage', hhsStorageQuestion],
+        ['hhsVendorAccess', hhsVendorAccessQuestion]
+      ].forEach(([name, wrapper]) => {
+        const show = hhsApplies && !hhsNoneSelected;
+        wrapper.classList.toggle('visible', show);
+        const group = [...document.querySelectorAll(`input[name="${name}"]`)];
+        group.forEach((field, index) => {
+          field.disabled = !show;
+          field.required = show && index === 0;
+          if (!show) field.checked = false;
+        });
+      });
 
       syncProcurementNumbering();
 
