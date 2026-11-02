@@ -647,12 +647,20 @@
 <label class="question-label" for="division">4. Division or unit <span class="helper" style="display:inline; margin:0;">(optional)</span></label>
 <input id="division" name="division" type="text"/>
 </div>
+<fieldset class="conditional" id="dpwCUPCCAAQuestion">
+<legend><span id="dpwCUPCCAANum">5.</span> Is this a public project that DPW is delivering under CUPCCAA? <span class="helper" style="display:inline; margin:0;">(optional)</span></legend>
+<div class="radio-grid three">
+<label class="radio-card"><input name="dpwCUPCCAA" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="dpwCUPCCAA" type="radio" value="No"/><span>No</span></label>
+<label class="radio-card"><input name="dpwCUPCCAA" type="radio" value="I don't know"/><span>I don't know</span></label>
+</div>
+</fieldset>
 <div class="question">
-<label class="question-label" for="contractTitle">5. Contract Title<span class="required-mark">*</span></label>
+<label class="question-label" for="contractTitle"><span id="contractTitleNum">5.</span> Contract Title<span class="required-mark">*</span></label>
 <input id="contractTitle" name="contractTitle" required="" type="text"/>
 </div>
 <fieldset>
-<legend>6. What type of contract or purchase?<span class="required-mark">*</span></legend>
+<legend><span id="contractTypeNum">6.</span> What type of contract or purchase?<span class="required-mark">*</span></legend>
 <div class="radio-grid three">
 <label class="radio-card"><input name="contractType" required="" type="radio" value="Professional Services Contract"/><span>Professional Services Contract</span></label>
 <label class="radio-card"><input name="contractType" type="radio" value="Public Works / Construction"/><span>Public Works / Construction</span></label>
@@ -662,7 +670,7 @@
 </div>
 </fieldset>
 <fieldset>
-<legend>7. What are you doing with this contract or purchase?<span class="required-mark">*</span></legend>
+<legend><span id="contractActionNum">7.</span> What are you doing with this contract or purchase?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="contractAction" required="" type="radio" value="New Contract"/><span>New Contract</span></label>
 <label class="radio-card"><input name="contractAction" type="radio" value="Purchase Order"/><span>Purchase Order</span></label>
@@ -674,11 +682,11 @@
 <input id="contractActionOther" name="contractActionOther" type="text"/>
 </div></fieldset>
 <div class="question">
-<label class="question-label" for="annualValue">8. What is the expected annual value of your purchase?<span class="required-mark">*</span></label>
+<label class="question-label" for="annualValue"><span id="annualValueNum">8.</span> What is the expected annual value of your purchase?<span class="required-mark">*</span></label>
 <input id="annualValue" inputmode="decimal" name="annualValue" placeholder="$0.00" required="" type="text"/>
 </div>
 <div class="question">
-<label class="question-label">9. Anticipated timeline<span class="required-mark">*</span></label>
+<label class="question-label"><span id="timelineNum">9.</span> Anticipated timeline<span class="required-mark">*</span></label>
 <div class="two-col">
 <div>
 <label class="helper" for="startDate">Start date</label>
@@ -709,7 +717,8 @@
 <label class="radio-card"><input name="transactionExempt" type="radio" value="I don't know"/><span>I don't know</span></label>
 </div>
 </fieldset>
-<fieldset class="conditional visible" id="procurementMethodQuestion">
+<div class="conditional visible" id="procurementMethodQuestion">
+<fieldset id="standardProcurementMethodQuestion">
 <legend><span id="procurementMethodNum">2.</span> Have you gone through a competitive bidding process (e.g., RFP, solicitation of price, etc.) or are you sole/single sourcing this?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="procurementMethod" required="" type="radio" value="Competitive bidding process"/><span>Yes, I’ve gone through a competitive bidding process</span></label>
@@ -722,6 +731,24 @@
 <input id="procurementOther" name="procurementOther" type="text"/>
 </div>
 </fieldset>
+<div class="conditional" id="cupccaaLowNotice">
+<p class="intro" style="margin:0;"><strong><span id="cupccaaLowNum">1.</span> This public DPW project falls under CUPCCAA and is $75,000 or less. No competitive bidding is required.</strong></p>
+</div>
+<fieldset class="conditional" id="cupccaaInformalQuestion">
+<legend><span id="cupccaaInformalNum">1.</span> This public DPW project falls under CUPCCAA and is $75,001–$220,000. Have you solicited informal bids or quotes as part of this project?<span class="required-mark">*</span></legend>
+<div class="radio-grid three">
+<label class="radio-card"><input name="cupccaaInformalBids" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="cupccaaInformalBids" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
+</div>
+</fieldset>
+<fieldset class="conditional" id="cupccaaFormalQuestion">
+<legend><span id="cupccaaFormalNum">1.</span> Formal competitive bidding is generally required. Have you gone through a competitive bidding process (e.g., RFP, solicitation of price, etc.)?<span class="required-mark">*</span></legend>
+<div class="radio-grid three">
+<label class="radio-card"><input name="cupccaaFormalBids" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="cupccaaFormalBids" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
+</div>
+</fieldset>
+</div>
 <fieldset id="fundingIdentifiedQuestion">
 <legend><span id="fundingIdentifiedNum">3.</span> Have you identified funding for this contract?<span class="required-mark">*</span></legend>
 <div class="radio-grid three">
@@ -743,15 +770,6 @@
 <div class="radio-grid">
 <label class="radio-card"><input name="vendorRegistered" required="" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="vendorRegistered" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
-</div>
-</fieldset>
-
-<fieldset class="conditional" id="dpwCUPCCAAQuestion">
-<legend><span id="dpwCUPCCAANum">6.</span> Is this a public project that DPW is delivering under CUPCCAA?<span class="required-mark">*</span></legend>
-<div class="radio-grid three">
-<label class="radio-card"><input name="dpwCUPCCAA" type="radio" value="Yes"/><span>Yes</span></label>
-<label class="radio-card"><input name="dpwCUPCCAA" type="radio" value="No"/><span>No</span></label>
-<label class="radio-card"><input name="dpwCUPCCAA" type="radio" value="I don't know"/><span>I don't know</span></label>
 </div>
 </fieldset>
 
@@ -1088,15 +1106,27 @@
       return annualValueNumber() >= 10000;
     }
 
+    function isCUPCCAAProject() {
+      return isDPWDepartment() && checkedValue('dpwCUPCCAA') === 'Yes';
+    }
+
+    function cupccaaRange() {
+      if (!isCUPCCAAProject()) return '';
+      const value = annualValueNumber();
+      if (value <= 75000) return 'low';
+      if (value <= 220000) return 'middle';
+      return 'high';
+    }
+
     function workflowSteps() {
       // Contracts under $10,000 skip Procurement Pathway but continue through all other applicable questions.
       // HR and Legal only apply to Professional Services Contracts.
-      // IT questions are only asked for New Contracts.
+      // IT questions are only asked for Software (SaaS) purchases.
       // Community Service Contracts skip Insurance and Legal.
       const steps = [1];
       if (requiresProcurementPathway()) steps.push(2);
       if (isProfessionalServicesContract()) steps.push(3);
-      if (isNewContract()) steps.push(4);
+      if (isSaaSContract()) steps.push(4);
       steps.push(5);
       if (!isCommunityServiceContract()) steps.push(6);
       if (isProfessionalServicesContract()) steps.push(7);
@@ -1105,9 +1135,9 @@
 
     function showStep(step) {
       // If a conditional page is not applicable, route to the next applicable page.
-      if (step === 2 && !requiresProcurementPathway()) step = isProfessionalServicesContract() ? 3 : (isNewContract() ? 4 : 5);
-      if (step === 3 && !isProfessionalServicesContract()) step = isNewContract() ? 4 : 5;
-      if (step === 4 && !isNewContract()) step = 5;
+      if (step === 2 && !requiresProcurementPathway()) step = isProfessionalServicesContract() ? 3 : (isSaaSContract() ? 4 : 5);
+      if (step === 3 && !isProfessionalServicesContract()) step = isSaaSContract() ? 4 : 5;
+      if (step === 4 && !isSaaSContract()) step = 5;
       if (step === 6 && isCommunityServiceContract()) step = isProfessionalServicesContract() ? 7 : 8;
       if (step === 7 && !isProfessionalServicesContract()) step = 8;
 
@@ -1194,7 +1224,7 @@
     document.querySelectorAll('.next-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         if (!validateCurrentPage()) return;
-        if (currentStep === 1 && requiresBoardApproval()) {
+        if (currentStep === 1 && requiresBoardApproval() && !isCUPCCAAProject()) {
           showStep(10);
           return;
         }
@@ -1297,13 +1327,21 @@
       if (annualValueNumeric < 10000) {
         procurementItems.push('Since your contract is less than $10,000 it does not need to go through the DAP process.');
       } else {
-        const procurementMethod = checkedValue('procurementMethod');
-        if (procurementMethod === 'Sole/single sourcing') {
-          procurementItems.push('Complete this sole/single source justification form. Consult with Procurement to validate it will suffice.');
-        } else if (procurementMethod === 'Competitive bidding process') {
-          procurementItems.push('Document where you solicited quotes and be ready to include that information in your submission.');
-        } else if (procurementMethod === "I don't know") {
-          procurementItems.push("You indicated you didn't know if your solicitation went through a competitive bidding process. Reach out to Procurement or your Department's administrative staff to seek clarity.");
+        const range = cupccaaRange();
+        if (range === 'middle' && checkedValue('cupccaaInformalBids') === "No / I don't know") {
+          procurementItems.push('As a CUPCCAA project between $75K–$220K, reach out to vendors to request informal bids or quotes.');
+          procurementItems.push('For bids and quotes, save any emails as PDFs to include as part of your procurement packet to substantiate your outreach.');
+        } else if (range === 'high' && checkedValue('cupccaaFormalBids') === "No / I don't know") {
+          procurementItems.push('As a CUPCCAA project over $220K, reach out to Procurement for support in conducting a competitive bidding process.');
+        } else if (!range) {
+          const procurementMethod = checkedValue('procurementMethod');
+          if (procurementMethod === 'Sole/single sourcing') {
+            procurementItems.push('Complete this sole/single source justification form. Consult with Procurement to validate it will suffice.');
+          } else if (procurementMethod === 'Competitive bidding process') {
+            procurementItems.push('Document where you solicited quotes and be ready to include that information in your submission.');
+          } else if (procurementMethod === "I don't know") {
+            procurementItems.push("You indicated you didn't know if your solicitation went through a competitive bidding process. Reach out to Procurement or your Department's administrative staff to seek clarity.");
+          }
         }
 
         if (checkedValue('fundingIdentified') === "No / I don't know") {
@@ -1340,20 +1378,20 @@
         );
       }
 
-      // Information Technology — SaaS or a Yes on any IT question triggers the standard evaluation checklist.
+      // Information Technology — only SaaS purchases receive the IT questions and IT checklist logic.
       // An "I don't know" response adds a clarification action.
       const itAnswers = [checkedValue('technologyInvolved'), checkedValue('aiInvolved'), checkedValue('piiShared')];
       const anyItYes = itAnswers.includes('Yes');
       const anyItUnknown = itAnswers.includes("I don't know");
       const itItems = [];
-      if (isSaaSContract() || (isNewContract() && anyItYes)) {
+      if (isSaaSContract()) {
         itItems.push(
           'Submit a technology request form so that IST can conduct a technology evaluation (e.g., security, accessibility).',
           'Follow up with IST until you get written approval to proceed—or how to remediate potential issues.',
           'Recommended: PDF any emails or documents that substantiate IST approval to submit with your DAP.'
         );
       }
-      if (isNewContract() && anyItUnknown) {
+      if (isSaaSContract() && anyItUnknown) {
         itItems.push('Reach out to IST (see contact information below) to clarify if you need a technology evaluation (e.g., cybersecurity).');
       }
       addChecklistSection(container, 'Information Technology', itItems, itItems.length ? itMeta : []);
@@ -1518,6 +1556,18 @@
       });
     }
 
+    function syncGeneralInfoNumbering() {
+      let n = 5;
+      const dpwVisible = isDPWDepartment();
+      const dpwNum = document.getElementById('dpwCUPCCAANum');
+      if (dpwVisible && dpwNum) dpwNum.textContent = `${n++}.`;
+      const ids = ['contractTitleNum', 'contractTypeNum', 'contractActionNum', 'annualValueNum', 'timelineNum'];
+      ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = `${n++}.`;
+      });
+    }
+
     function syncProcurementNumbering() {
       let n = 1;
       const assign = (id, visible) => {
@@ -1528,16 +1578,19 @@
 
       const procurementApplies = requiresProcurementPathway();
       const exemptVisible = procurementApplies && !isPublicWorksContract();
-      const methodVisible = procurementApplies && checkedValue('contractAction') !== 'Renewal';
-      const dpwVisible = procurementApplies && isDPWDepartment();
+      const actionAllowsMethod = procurementApplies && checkedValue('contractAction') !== 'Renewal';
+      const range = actionAllowsMethod ? cupccaaRange() : '';
+      const standardMethodVisible = actionAllowsMethod && !range;
       const hhsVisible = procurementApplies && isHHSDepartment();
 
       assign('transactionExemptNum', exemptVisible);
-      assign('procurementMethodNum', methodVisible);
+      assign('procurementMethodNum', standardMethodVisible);
+      assign('cupccaaLowNum', range === 'low');
+      assign('cupccaaInformalNum', range === 'middle');
+      assign('cupccaaFormalNum', range === 'high');
       assign('fundingIdentifiedNum', procurementApplies);
       assign('grantFundsNum', procurementApplies);
       assign('vendorRegisteredNum', procurementApplies);
-      assign('dpwCUPCCAANum', dpwVisible);
       const hhsNoneSelected = hhsVisible && [...document.querySelectorAll('input[name="hhsInfoTypes"]')].some(input => input.value === 'None of these' && input.checked);
       assign('hhsFederalTechNum', hhsVisible);
       assign('hhsInfoTypesNum', hhsVisible);
@@ -1565,28 +1618,54 @@
       });
 
       const procurementMethodQuestion = document.getElementById('procurementMethodQuestion');
+      const standardProcurementMethodQuestion = document.getElementById('standardProcurementMethodQuestion');
       const procurementMethodInputs = [...document.querySelectorAll('input[name="procurementMethod"]')];
-      const procurementMethodApplies = procurementApplies && action !== 'Renewal';
-      procurementMethodQuestion.classList.toggle('visible', procurementMethodApplies);
+      const actionAllowsMethod = procurementApplies && action !== 'Renewal';
+      const range = actionAllowsMethod ? cupccaaRange() : '';
+      const standardMethodApplies = actionAllowsMethod && !range;
+      procurementMethodQuestion.classList.toggle('visible', actionAllowsMethod);
+      standardProcurementMethodQuestion.style.display = standardMethodApplies ? '' : 'none';
       procurementMethodInputs.forEach((field, index) => {
-        field.disabled = !procurementMethodApplies;
-        field.required = procurementMethodApplies && index === 0;
-        if (!procurementMethodApplies) field.checked = false;
+        field.disabled = !standardMethodApplies;
+        field.required = standardMethodApplies && index === 0;
+        if (!standardMethodApplies) field.checked = false;
       });
 
       const procurementOtherWrap = document.getElementById('procurementOtherWrap');
       const procurementOther = document.getElementById('procurementOther');
-      setConditional(procurementOtherWrap, procurementOther, procurementMethodApplies && checkedValue('procurementMethod') === 'Other');
+      setConditional(procurementOtherWrap, procurementOther, standardMethodApplies && checkedValue('procurementMethod') === 'Other');
+
+      const cupccaaLowNotice = document.getElementById('cupccaaLowNotice');
+      cupccaaLowNotice.classList.toggle('visible', range === 'low');
+
+      const cupccaaInformalQuestion = document.getElementById('cupccaaInformalQuestion');
+      const cupccaaInformalInputs = [...document.querySelectorAll('input[name="cupccaaInformalBids"]')];
+      cupccaaInformalQuestion.classList.toggle('visible', range === 'middle');
+      cupccaaInformalInputs.forEach((field, index) => {
+        field.disabled = range !== 'middle';
+        field.required = range === 'middle' && index === 0;
+        if (range !== 'middle') field.checked = false;
+      });
+
+      const cupccaaFormalQuestion = document.getElementById('cupccaaFormalQuestion');
+      const cupccaaFormalInputs = [...document.querySelectorAll('input[name="cupccaaFormalBids"]')];
+      cupccaaFormalQuestion.classList.toggle('visible', range === 'high');
+      cupccaaFormalInputs.forEach((field, index) => {
+        field.disabled = range !== 'high';
+        field.required = range === 'high' && index === 0;
+        if (range !== 'high') field.checked = false;
+      });
 
       const dpwQuestion = document.getElementById('dpwCUPCCAAQuestion');
       const dpwInputs = [...document.querySelectorAll('input[name="dpwCUPCCAA"]')];
-      const dpwApplies = procurementApplies && isDPWDepartment();
+      const dpwApplies = isDPWDepartment();
       dpwQuestion.classList.toggle('visible', dpwApplies);
-      dpwInputs.forEach((field, index) => {
+      dpwInputs.forEach(field => {
         field.disabled = !dpwApplies;
-        field.required = dpwApplies && index === 0;
+        field.required = false;
         if (!dpwApplies) field.checked = false;
       });
+      syncGeneralInfoNumbering();
 
       const hhsQuestions = document.getElementById('hhsProcurementQuestions');
       const hhsFields = [...hhsQuestions.querySelectorAll('input, select, textarea')];
