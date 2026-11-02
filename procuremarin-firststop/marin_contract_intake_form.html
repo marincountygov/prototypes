@@ -279,6 +279,64 @@
       outline-offset: 2px;
     }
 
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .checkbox-card {
+      position: relative;
+      display: block;
+      cursor: pointer;
+    }
+
+    .checkbox-card input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .checkbox-card span {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 50px;
+      border: 1px solid #c7d3db;
+      border-radius: 9px;
+      padding: 11px 13px;
+      background: #fff;
+      font-weight: 650;
+      transition: all 0.15s ease;
+    }
+
+    .checkbox-card span::before {
+      content: "";
+      width: 17px;
+      height: 17px;
+      border-radius: 4px;
+      border: 2px solid #91a4b1;
+      flex: 0 0 auto;
+      box-shadow: inset 0 0 0 3px #fff;
+    }
+
+    .checkbox-card input:checked + span {
+      border-color: var(--marin-blue);
+      background: #eff7fb;
+      color: var(--marin-navy);
+      box-shadow: 0 0 0 1px var(--marin-blue);
+    }
+
+    .checkbox-card input:checked + span::before {
+      background: var(--marin-blue);
+      border-color: var(--marin-blue);
+    }
+
+    .checkbox-card input:focus-visible + span {
+      outline: 3px solid rgba(36, 107, 143, 0.24);
+      outline-offset: 2px;
+    }
+
     .conditional {
       display: none;
       margin-top: 12px;
@@ -292,12 +350,19 @@
       display: block;
     }
 
-    #procurementMethodQuestion {
-      margin-top: 0;
+    #procurementMethodQuestion,
+    #transactionExemptQuestion,
+    #dpwCUPCCAAQuestion,
+    #hhsProcurementQuestions {
       padding: 0;
       border-left: 0;
       background: transparent;
       border-radius: 0;
+    }
+
+    #procurementMethodQuestion,
+    #transactionExemptQuestion {
+      margin-top: 0;
     }
 
     .actions {
@@ -587,16 +652,17 @@
 <input id="contractTitle" name="contractTitle" required="" type="text"/>
 </div>
 <fieldset>
-<legend>6. Type of Contract<span class="required-mark">*</span></legend>
+<legend>6. What type of contract or purchase?<span class="required-mark">*</span></legend>
 <div class="radio-grid three">
 <label class="radio-card"><input name="contractType" required="" type="radio" value="Professional Services Contract"/><span>Professional Services Contract</span></label>
-<label class="radio-card"><input name="contractType" type="radio" value="Community Service Contract"/><span>Community Service Contract</span></label>
-<label class="radio-card"><input name="contractType" type="radio" value="Goods &amp; Services"/><span>Goods &amp; Services</span></label>
+<label class="radio-card"><input name="contractType" type="radio" value="Public Works / Construction"/><span>Public Works / Construction</span></label>
 <label class="radio-card"><input name="contractType" type="radio" value='Software ("SaaS")'/><span>Software (&quot;SaaS&quot;)</span></label>
+<label class="radio-card"><input name="contractType" type="radio" value="Community Service Contract"/><span>Community Service Contract</span></label>
+<label class="radio-card"><input name="contractType" type="radio" value="Goods"/><span>Goods</span></label>
 </div>
 </fieldset>
 <fieldset>
-<legend>7. What type of contract is this?<span class="required-mark">*</span></legend>
+<legend>7. What are you doing with this contract or purchase?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="contractAction" required="" type="radio" value="New Contract"/><span>New Contract</span></label>
 <label class="radio-card"><input name="contractAction" type="radio" value="Purchase Order"/><span>Purchase Order</span></label>
@@ -635,8 +701,16 @@
 <h2>Procurement Pathway</h2>
 <p class="intro">Tell us how the vendor and funding were identified.</p>
 <div class="error-summary" role="alert"></div>
+<fieldset class="conditional visible" id="transactionExemptQuestion">
+<legend><span id="transactionExemptNum">1.</span> Is this transaction exempt from traditional procurement rules and policies? E.g., utilities, election services.<span class="required-mark">*</span></legend>
+<div class="radio-grid three">
+<label class="radio-card"><input name="transactionExempt" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="transactionExempt" type="radio" value="No"/><span>No</span></label>
+<label class="radio-card"><input name="transactionExempt" type="radio" value="I don't know"/><span>I don't know</span></label>
+</div>
+</fieldset>
 <fieldset class="conditional visible" id="procurementMethodQuestion">
-<legend><span id="procurementMethodNum">1.</span> Have you gone through a competitive bidding process (e.g., RFP, solicitation of price, etc.) or are you sole/single sourcing this?<span class="required-mark">*</span></legend>
+<legend><span id="procurementMethodNum">2.</span> Have you gone through a competitive bidding process (e.g., RFP, solicitation of price, etc.) or are you sole/single sourcing this?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="procurementMethod" required="" type="radio" value="Competitive bidding process"/><span>Yes, I’ve gone through a competitive bidding process</span></label>
 <label class="radio-card"><input name="procurementMethod" type="radio" value="Sole/single sourcing"/><span>I am sole/single sourcing this contract</span></label>
@@ -648,29 +722,92 @@
 <input id="procurementOther" name="procurementOther" type="text"/>
 </div>
 </fieldset>
-<fieldset>
-<legend><span id="fundingIdentifiedNum">2.</span> Have you identified funding for this contract?<span class="required-mark">*</span></legend>
+<fieldset id="fundingIdentifiedQuestion">
+<legend><span id="fundingIdentifiedNum">3.</span> Have you identified funding for this contract?<span class="required-mark">*</span></legend>
 <div class="radio-grid three">
 <label class="radio-card"><input name="fundingIdentified" required="" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="fundingIdentified" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
 <label class="radio-card"><input name="fundingIdentified" type="radio" value="N/A"/><span>N/A</span></label>
 </div>
 </fieldset>
-<fieldset>
-<legend><span id="grantFundsNum">3.</span> Will any portion of this purchase be paid for with grant funds?<span class="required-mark">*</span></legend>
+<fieldset id="grantFundsQuestion">
+<legend><span id="grantFundsNum">4.</span> Will any portion of this purchase be paid for with grant funds?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="grantFunds" required="" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="grantFunds" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
 </div>
 </fieldset>
-<fieldset>
-<legend><span id="vendorRegisteredNum">4.</span> Is the vendor <a href="https://marincountycamunisapp.tylerhost.net/4912prod/munis/munisnet/AppHost/VendorCentral/search-results" rel="noopener noreferrer" target="_blank">registered with the County</a>?<span class="required-mark">*</span></legend>
+<fieldset id="vendorRegisteredQuestion">
+<legend><span id="vendorRegisteredNum">5.</span> Is the vendor <a href="https://marincountycamunisapp.tylerhost.net/4912prod/munis/munisnet/AppHost/VendorCentral/search-results" rel="noopener noreferrer" target="_blank">registered with the County</a>?<span class="required-mark">*</span></legend>
 <p class="helper"><a href="https://marincountycamunisapp.tylerhost.net/4912prod/munis/munisnet/AppHost/VendorCentral/search-results" rel="noopener noreferrer" target="_blank">Click here</a> to see if your vendor is registered.</p>
 <div class="radio-grid">
 <label class="radio-card"><input name="vendorRegistered" required="" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="vendorRegistered" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
 </div>
 </fieldset>
+
+<fieldset class="conditional" id="dpwCUPCCAAQuestion">
+<legend><span id="dpwCUPCCAANum">6.</span> Is this a public project that DPW is delivering under CUPCCAA?<span class="required-mark">*</span></legend>
+<div class="radio-grid three">
+<label class="radio-card"><input name="dpwCUPCCAA" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="dpwCUPCCAA" type="radio" value="No"/><span>No</span></label>
+<label class="radio-card"><input name="dpwCUPCCAA" type="radio" value="I don't know"/><span>I don't know</span></label>
+</div>
+</fieldset>
+
+<div class="conditional" id="hhsProcurementQuestions">
+<fieldset>
+<legend><span id="hhsFederalTechNum">6.</span> Is this a Social Services purchase of electronic equipment, software, or EDP services for a federally funded program?<span class="required-mark">*</span></legend>
+<div class="radio-grid three">
+<label class="radio-card"><input name="hhsFederalTech" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="hhsFederalTech" type="radio" value="No"/><span>No</span></label>
+<label class="radio-card"><input name="hhsFederalTech" type="radio" value="I don't know"/><span>I don't know</span></label>
+</div>
+</fieldset>
+
+<fieldset>
+<legend><span id="hhsInfoTypesNum">7.</span> What kinds of information about people? <span class="helper" style="display:inline; margin:0;">(Select all that apply.)</span><span class="required-mark">*</span></legend>
+<div class="checkbox-grid" id="hhsInfoTypesGroup">
+<label class="checkbox-card"><input name="hhsInfoTypes" type="checkbox" value="Names and contact information"/><span>Names and contact information</span></label>
+<label class="checkbox-card"><input name="hhsInfoTypes" type="checkbox" value="ID numbers"/><span>ID numbers (SSN, driver's license, client or case numbers)</span></label>
+<label class="checkbox-card"><input name="hhsInfoTypes" type="checkbox" value="Financial or bank information"/><span>Financial or bank information</span></label>
+<label class="checkbox-card"><input name="hhsInfoTypes" type="checkbox" value="Health, medical, or mental health information"/><span>Health, medical, or mental health information</span></label>
+<label class="checkbox-card"><input name="hhsInfoTypes" type="checkbox" value="Substance use treatment information"/><span>Substance use treatment information</span></label>
+<label class="checkbox-card"><input name="hhsInfoTypes" type="checkbox" value="Information about children or foster youth"/><span>Information about children or foster youth</span></label>
+<label class="checkbox-card"><input name="hhsInfoTypes" type="checkbox" value="Benefits eligibility or case records"/><span>Benefits eligibility or case records</span></label>
+<label class="checkbox-card"><input name="hhsInfoTypes" type="checkbox" value="None of these"/><span>None of these</span></label>
+</div>
+</fieldset>
+
+<fieldset>
+<legend><span id="hhsStorageNum">8.</span> Where will the information be stored?<span class="required-mark">*</span></legend>
+<div class="radio-grid">
+<label class="radio-card"><input name="hhsStorage" type="radio" value="County systems only"/><span>County systems only</span></label>
+<label class="radio-card"><input name="hhsStorage" type="radio" value="Vendor's cloud or hosted service"/><span>Vendor's cloud or hosted service</span></label>
+<label class="radio-card"><input name="hhsStorage" type="radio" value="Vendor's own devices"/><span>Vendor's own devices</span></label>
+<label class="radio-card"><input name="hhsStorage" type="radio" value="Outside the United States"/><span>Outside the United States</span></label>
+<label class="radio-card"><input name="hhsStorage" type="radio" value="Not sure"/><span>Not sure</span></label>
+</div>
+</fieldset>
+
+<fieldset>
+<legend><span id="hhsVendorAccessNum">9.</span> Will the vendor's staff or subcontractors be able to see individual records?<span class="required-mark">*</span></legend>
+<div class="radio-grid three">
+<label class="radio-card"><input name="hhsVendorAccess" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="hhsVendorAccess" type="radio" value="No"/><span>No</span></label>
+<label class="radio-card"><input name="hhsVendorAccess" type="radio" value="Not sure"/><span>Not sure</span></label>
+</div>
+</fieldset>
+
+<fieldset>
+<legend><span id="hhsSystemConnectionNum">10.</span> Will the product connect to a County or State system, such as an electronic health record or CalSAWS?<span class="required-mark">*</span></legend>
+<div class="radio-grid three">
+<label class="radio-card"><input name="hhsSystemConnection" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="hhsSystemConnection" type="radio" value="No"/><span>No</span></label>
+<label class="radio-card"><input name="hhsSystemConnection" type="radio" value="Not sure"/><span>Not sure</span></label>
+</div>
+</fieldset>
+</div>
 <div class="actions">
 <button class="btn-secondary back-btn" type="button">Back</button>
 <button class="btn-primary next-btn" type="button">Next</button>
@@ -923,6 +1060,22 @@
       return checkedValue('contractType') === 'Community Service Contract';
     }
 
+    function isPublicWorksContract() {
+      return checkedValue('contractType') === 'Public Works / Construction';
+    }
+
+    function selectedDepartment() {
+      return document.getElementById('department').value || '';
+    }
+
+    function isDPWDepartment() {
+      return selectedDepartment() === 'Public Works (DPW)';
+    }
+
+    function isHHSDepartment() {
+      return selectedDepartment() === 'Health & Human Services (HHS)';
+    }
+
     function annualValueNumber() {
       return Number(document.getElementById('annualValue').value.replace(/[^0-9.]/g, '')) || 0;
     }
@@ -931,11 +1084,17 @@
       return annualValueNumber() > 200000;
     }
 
+    function requiresProcurementPathway() {
+      return annualValueNumber() >= 10000;
+    }
+
     function workflowSteps() {
+      // Contracts under $10,000 skip Procurement Pathway but continue through all other applicable questions.
       // HR and Legal only apply to Professional Services Contracts.
       // IT questions are only asked for New Contracts.
       // Community Service Contracts skip Insurance and Legal.
-      const steps = [1, 2];
+      const steps = [1];
+      if (requiresProcurementPathway()) steps.push(2);
       if (isProfessionalServicesContract()) steps.push(3);
       if (isNewContract()) steps.push(4);
       steps.push(5);
@@ -946,6 +1105,7 @@
 
     function showStep(step) {
       // If a conditional page is not applicable, route to the next applicable page.
+      if (step === 2 && !requiresProcurementPathway()) step = isProfessionalServicesContract() ? 3 : (isNewContract() ? 4 : 5);
       if (step === 3 && !isProfessionalServicesContract()) step = isNewContract() ? 4 : 5;
       if (step === 4 && !isNewContract()) step = 5;
       if (step === 6 && isCommunityServiceContract()) step = isProfessionalServicesContract() ? 7 : 8;
@@ -996,6 +1156,16 @@
       });
 
       let firstInvalid = null;
+
+      // HHS information-type question is a required "select all that apply" group.
+      const hhsInfoInputs = [...document.querySelectorAll('input[name="hhsInfoTypes"]')];
+      if (currentStep === 2 && isHHSDepartment() && requiresProcurementPathway() && hhsInfoInputs.length) {
+        const anyHhsInfoChecked = hhsInfoInputs.some(input => input.checked);
+        hhsInfoInputs[0].setCustomValidity(anyHhsInfoChecked ? '' : 'Please select at least one option.');
+      } else if (hhsInfoInputs.length) {
+        hhsInfoInputs[0].setCustomValidity('');
+      }
+
       for (const control of controls) {
         if (!control.checkValidity()) {
           firstInvalid = firstInvalid || control;
@@ -1122,30 +1292,35 @@
 
       // Procurement
       const procurementItems = [];
-      const procurementMethod = checkedValue('procurementMethod');
-      if (procurementMethod === 'Sole/single sourcing') {
-        procurementItems.push('Complete this sole/single source justification form. Consult with Procurement to validate it will suffice.');
-      } else if (procurementMethod === 'Competitive bidding process') {
-        procurementItems.push('Document where you solicited quotes and be ready to include that information in your submission.');
-      } else if (procurementMethod === "I don't know") {
-        procurementItems.push("You indicated you didn't know if your solicitation went through a competitive bidding process. Reach out to Procurement or your Department's administrative staff to seek clarity.");
-      }
-
-      if (checkedValue('fundingIdentified') === "No / I don't know") {
-        procurementItems.push(`Identify funding with your department's leadership, including a clear "organization" and "object" code.`);
-      }
-
-      if (checkedValue('grantFunds') === 'Yes') {
-        procurementItems.push('Review your grant requirements and contact Procurement if you need clarity on whether or not this contract will meet those requirements.');
-      }
-
       const annualValueNumeric = annualValueNumber();
-      if (annualValueNumeric > 50000) {
-        procurementItems.push('Draft executive memo and share with your department head for feedback as appropriate.');
-      }
 
-      if (checkedValue('vendorRegistered') === "No / I don't know") {
-        procurementItems.push('Ask your vendor to register as a vendor. Check Vendor Central on MUNIS until you see they are officially registered.');
+      if (annualValueNumeric < 10000) {
+        procurementItems.push('Since your contract is less than $10,000 it does not need to go through the DAP process.');
+      } else {
+        const procurementMethod = checkedValue('procurementMethod');
+        if (procurementMethod === 'Sole/single sourcing') {
+          procurementItems.push('Complete this sole/single source justification form. Consult with Procurement to validate it will suffice.');
+        } else if (procurementMethod === 'Competitive bidding process') {
+          procurementItems.push('Document where you solicited quotes and be ready to include that information in your submission.');
+        } else if (procurementMethod === "I don't know") {
+          procurementItems.push("You indicated you didn't know if your solicitation went through a competitive bidding process. Reach out to Procurement or your Department's administrative staff to seek clarity.");
+        }
+
+        if (checkedValue('fundingIdentified') === "No / I don't know") {
+          procurementItems.push(`Identify funding with your department's leadership, including a clear "organization" and "object" code.`);
+        }
+
+        if (checkedValue('grantFunds') === 'Yes') {
+          procurementItems.push('Review your grant requirements and contact Procurement if you need clarity on whether or not this contract will meet those requirements.');
+        }
+
+        if (annualValueNumeric > 50000) {
+          procurementItems.push('Draft executive memo and share with your department head for feedback as appropriate.');
+        }
+
+        if (checkedValue('vendorRegistered') === "No / I don't know") {
+          procurementItems.push('Ask your vendor to register as a vendor. Check Vendor Central on MUNIS until you see they are officially registered.');
+        }
       }
 
       addChecklistSection(
@@ -1344,21 +1519,53 @@
     }
 
     function syncProcurementNumbering() {
-      const renewal = checkedValue('contractAction') === 'Renewal';
-      const nums = renewal
-        ? { fundingIdentifiedNum: 1, grantFundsNum: 2, vendorRegisteredNum: 3 }
-        : { procurementMethodNum: 1, fundingIdentifiedNum: 2, grantFundsNum: 3, vendorRegisteredNum: 4 };
-      Object.entries(nums).forEach(([id, value]) => {
+      let n = 1;
+      const assign = (id, visible) => {
+        if (!visible) return;
         const el = document.getElementById(id);
-        if (el) el.textContent = `${value}.`;
-      });
+        if (el) el.textContent = `${n++}.`;
+      };
+
+      const procurementApplies = requiresProcurementPathway();
+      const exemptVisible = procurementApplies && !isPublicWorksContract();
+      const methodVisible = procurementApplies && checkedValue('contractAction') !== 'Renewal';
+      const dpwVisible = procurementApplies && isDPWDepartment();
+      const hhsVisible = procurementApplies && isHHSDepartment();
+
+      assign('transactionExemptNum', exemptVisible);
+      assign('procurementMethodNum', methodVisible);
+      assign('fundingIdentifiedNum', procurementApplies);
+      assign('grantFundsNum', procurementApplies);
+      assign('vendorRegisteredNum', procurementApplies);
+      assign('dpwCUPCCAANum', dpwVisible);
+      assign('hhsFederalTechNum', hhsVisible);
+      assign('hhsInfoTypesNum', hhsVisible);
+      assign('hhsStorageNum', hhsVisible);
+      assign('hhsVendorAccessNum', hhsVisible);
+      assign('hhsSystemConnectionNum', hhsVisible);
     }
 
     function syncConditionals() {
       const action = checkedValue('contractAction');
+      const procurementPage = pages.find(page => Number(page.dataset.step) === 2);
+      const procurementApplies = requiresProcurementPathway();
+      procurementPage.querySelectorAll('input, select, textarea').forEach(field => {
+        field.disabled = !procurementApplies;
+      });
+
+      const transactionExemptQuestion = document.getElementById('transactionExemptQuestion');
+      const transactionExemptInputs = [...document.querySelectorAll('input[name="transactionExempt"]')];
+      const transactionExemptApplies = procurementApplies && !isPublicWorksContract();
+      transactionExemptQuestion.classList.toggle('visible', transactionExemptApplies);
+      transactionExemptInputs.forEach((field, index) => {
+        field.disabled = !transactionExemptApplies;
+        field.required = transactionExemptApplies && index === 0;
+        if (!transactionExemptApplies) field.checked = false;
+      });
+
       const procurementMethodQuestion = document.getElementById('procurementMethodQuestion');
       const procurementMethodInputs = [...document.querySelectorAll('input[name="procurementMethod"]')];
-      const procurementMethodApplies = action !== 'Renewal';
+      const procurementMethodApplies = procurementApplies && action !== 'Renewal';
       procurementMethodQuestion.classList.toggle('visible', procurementMethodApplies);
       procurementMethodInputs.forEach((field, index) => {
         field.disabled = !procurementMethodApplies;
@@ -1369,6 +1576,41 @@
       const procurementOtherWrap = document.getElementById('procurementOtherWrap');
       const procurementOther = document.getElementById('procurementOther');
       setConditional(procurementOtherWrap, procurementOther, procurementMethodApplies && checkedValue('procurementMethod') === 'Other');
+
+      const dpwQuestion = document.getElementById('dpwCUPCCAAQuestion');
+      const dpwInputs = [...document.querySelectorAll('input[name="dpwCUPCCAA"]')];
+      const dpwApplies = procurementApplies && isDPWDepartment();
+      dpwQuestion.classList.toggle('visible', dpwApplies);
+      dpwInputs.forEach((field, index) => {
+        field.disabled = !dpwApplies;
+        field.required = dpwApplies && index === 0;
+        if (!dpwApplies) field.checked = false;
+      });
+
+      const hhsQuestions = document.getElementById('hhsProcurementQuestions');
+      const hhsFields = [...hhsQuestions.querySelectorAll('input, select, textarea')];
+      const hhsApplies = procurementApplies && isHHSDepartment();
+      hhsQuestions.classList.toggle('visible', hhsApplies);
+      hhsFields.forEach(field => {
+        field.disabled = !hhsApplies;
+        if (!hhsApplies) {
+          if (field.type === 'radio' || field.type === 'checkbox') field.checked = false;
+          else field.value = '';
+          field.required = false;
+        }
+      });
+      if (hhsApplies) {
+        const requiredRadioGroups = ['hhsFederalTech', 'hhsStorage', 'hhsVendorAccess', 'hhsSystemConnection'];
+        requiredRadioGroups.forEach(name => {
+          const group = [...document.querySelectorAll(`input[name="${name}"]`)];
+          group.forEach((field, index) => {
+            field.disabled = false;
+            field.required = index === 0;
+          });
+        });
+        document.querySelectorAll('input[name="hhsInfoTypes"]').forEach(field => field.disabled = false);
+      }
+
       syncProcurementNumbering();
 
       const renewalQuestion = document.getElementById('renewalQuestion');
@@ -1416,6 +1658,21 @@
       });
     }
 
+    document.querySelectorAll('input[name="hhsInfoTypes"]').forEach(input => {
+      input.addEventListener('change', event => {
+        const group = [...document.querySelectorAll('input[name="hhsInfoTypes"]')];
+        if (event.target.value === 'None of these' && event.target.checked) {
+          group.forEach(item => {
+            if (item !== event.target) item.checked = false;
+          });
+        } else if (event.target.value !== 'None of these' && event.target.checked) {
+          const none = group.find(item => item.value === 'None of these');
+          if (none) none.checked = false;
+        }
+        if (group[0]) group[0].setCustomValidity('');
+      });
+    });
+
     form.addEventListener('change', syncConditionals);
 
     const annualValue = document.getElementById('annualValue');
@@ -1427,6 +1684,7 @@
       if (!Number.isNaN(numeric) && annualValue.value.trim() !== '') {
         annualValue.value = numeric.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
       }
+      syncConditionals();
     });
 
     const startDate = document.getElementById('startDate');
