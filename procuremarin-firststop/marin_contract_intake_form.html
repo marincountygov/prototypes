@@ -573,8 +573,21 @@
     .welcome-page .intro { font-size: 1.08rem; max-width: 820px; line-height: 1.7; }
     .welcome-actions { margin-top: 34px; }
     .welcome-note { margin: 48px auto 0; max-width: 760px; text-align: center; font-style: italic; color: var(--muted); line-height: 1.55; }
-    .welcome-footnote { margin: 8px auto 0; max-width: 760px; text-align: center; font-size: 0.82rem; color: var(--muted); line-height: 1.45; }
+    .welcome-footnote {
+      margin: 54px 0 0;
+      max-width: 560px;
+      text-align: left;
+      font-size: 0.68rem;
+      color: #8a8f98;
+      line-height: 1.35;
+    }
     .welcome-footnote sup, .welcome-note sup { font-size: 0.72em; vertical-align: super; }
+
+    .optional-footnote {
+      font-size: inherit;
+      color: inherit;
+    }
+
 </style>
 </head>
 <body>
@@ -602,7 +615,7 @@
 <button class="btn-primary" id="welcomeStartBtn" type="button">Click here to get started</button>
 </div>
 <p class="welcome-note"><em>This is an <strong>optional<sup>1</sup></strong> tool to help contract managers be successful. <strong>Note:</strong> You will have to input some of this information again in DAP until we move to a more integrated system.</em></p>
-<p class="welcome-footnote"><sup>1</sup> Exception: All new Professional Services Contracts should complete this form for HR review. Otherwise, it could be a blocker during DAP.</p>
+<p class="welcome-footnote"><sup>1</sup> <span class="optional-footnote">Exception: All new Professional Services Contracts should complete this form for HR review.</span></p>
 </section>
 <section class="card page" data-step="1" data-title="General Information">
 <div class="section-kicker">Step 1</div>
@@ -728,7 +741,7 @@
 <fieldset id="standardProcurementMethodQuestion">
 <legend><span id="procurementMethodNum">2.</span> Have you gone or do you intend to go through a competitive bidding process (e.g., RFP, solicitation of price, etc.) or are you sole/single sourcing this?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
-<label class="radio-card"><input name="procurementMethod" required="" type="radio" value="Competitive bidding process"/><span>Yes, I’ve gone through a competitive bidding process</span></label>
+<label class="radio-card"><input name="procurementMethod" required="" type="radio" value="Competitive bidding process"/><span>Yes</span></label>
 <label class="radio-card"><input name="procurementMethod" type="radio" value="Sole/single sourcing"/><span>I am sole/single sourcing this contract</span></label>
 <label class="radio-card"><input name="procurementMethod" type="radio" value="Other"/><span>Other</span></label>
 <label class="radio-card"><input name="procurementMethod" type="radio" value="I don't know"/><span>I don't know</span></label>
@@ -757,17 +770,17 @@
 </fieldset>
 </div>
 <fieldset id="fundingIdentifiedQuestion">
-<legend><span id="fundingIdentifiedNum">3.</span> Have you identified funding for this contract?<span class="required-mark">*</span></legend>
+<legend><span id="fundingIdentifiedNum">3.</span> Have you identified funding for this contract?</legend>
 <div class="radio-grid three">
-<label class="radio-card"><input name="fundingIdentified" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="fundingIdentified" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="fundingIdentified" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
 <label class="radio-card"><input name="fundingIdentified" type="radio" value="N/A"/><span>N/A</span></label>
 </div>
 </fieldset>
 <fieldset id="grantFundsQuestion">
-<legend><span id="grantFundsNum">4.</span> Will any portion of this purchase be paid for with grant funds?<span class="required-mark">*</span></legend>
+<legend><span id="grantFundsNum">4.</span> Will any portion of this purchase be paid for with grant funds?</legend>
 <div class="radio-grid">
-<label class="radio-card"><input name="grantFunds" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="grantFunds" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="grantFunds" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
 </div>
 </fieldset>
@@ -938,7 +951,7 @@
 <p class="intro">Identify activities that may need additional risk or insurance review.</p>
 <div class="error-summary" role="alert"></div>
 <fieldset>
-<legend>1. Does the project involve public-facing work, field work, minors/vulnerable populations, transportation/facilities?<span class="required-mark">*</span></legend>
+<legend>1. Does the contract involve higher-risk or specialized activities, including work with minors or vulnerable populations, professional or medical services, personal or confidential information, technology, vehicles, construction or property, hazardous materials, aviation/drones, or special events?<span class="required-mark">*</span></legend>
 <p class="helper">Vulnerable populations are groups at high risk for poor health, exploitation, or harm due to social, economic, or physical disadvantages.</p>
 <div class="radio-grid">
 <label class="radio-card"><input name="riskFactors" required="" type="radio" value="Yes"/><span>Yes</span></label>
@@ -1020,6 +1033,14 @@
 <label class="radio-card"><input name="legalIssues" required="" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="legalIssues" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
 
+</div>
+</fieldset>
+<fieldset>
+<legend>2. Does the vendor have any terms and conditions included on their forms, proposals, quotes, invoices, or other documents that would apply to this agreement? Also, has the vendor requested any changes or exceptions to the County’s standard PSC terms and conditions?<span class="required-mark">*</span></legend>
+<div class="radio-grid">
+<label class="radio-card"><input name="vendorTerms" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="vendorTerms" type="radio" value="No"/><span>No</span></label>
+<label class="radio-card"><input name="vendorTerms" type="radio" value="I don't know"/><span>I don't know</span></label>
 </div>
 </fieldset>
 <div class="actions">
@@ -1455,12 +1476,14 @@
       // Legal — only applies to Professional Services Contracts.
       if (isProfessionalServicesContract()) {
         const legalAnswer = checkedValue('legalIssues');
-        const legalItems = legalAnswer === 'Yes'
-          ? ['Prepare the contract using the County’s standard Professional Services Contract (PSC).']
-          : [
+        const vendorTermsAnswer = checkedValue('vendorTerms');
+        const needsCounselReview = legalAnswer !== 'Yes' || vendorTermsAnswer === 'Yes' || vendorTermsAnswer === "I don't know";
+        const legalItems = needsCounselReview
+          ? [
               'Reach out to County Counsel and let them know you are working on a non-standard agreement or are unsure which agreement to use.',
               'Work with County Counsel and the vendor’s Counsel, as applicable, until you have a final contract for submission.'
-            ];
+            ]
+          : ['Prepare the contract using the County’s standard Professional Services Contract (PSC).'];
 
         addChecklistSection(
           container,
