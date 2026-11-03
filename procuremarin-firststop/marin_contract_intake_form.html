@@ -573,6 +573,8 @@
     .welcome-page .intro { font-size: 1.08rem; max-width: 820px; line-height: 1.7; }
     .welcome-actions { margin-top: 34px; }
     .welcome-note { margin: 48px auto 0; max-width: 760px; text-align: center; font-style: italic; color: var(--muted); line-height: 1.55; }
+    .welcome-footnote { margin: 8px auto 0; max-width: 760px; text-align: center; font-size: 0.82rem; color: var(--muted); line-height: 1.45; }
+    .welcome-footnote sup, .welcome-note sup { font-size: 0.72em; vertical-align: super; }
 </style>
 </head>
 <body>
@@ -599,7 +601,8 @@
 <span></span>
 <button class="btn-primary" id="welcomeStartBtn" type="button">Click here to get started</button>
 </div>
-<p class="welcome-note"><em>This is an <strong>optional</strong> tool to help contract managers be successful. <strong>Note:</strong> You will have to input some of this information again in DAP until we move to a more integrated system.</em></p>
+<p class="welcome-note"><em>This is an <strong>optional<sup>1</sup></strong> tool to help contract managers be successful. <strong>Note:</strong> You will have to input some of this information again in DAP until we move to a more integrated system.</em></p>
+<p class="welcome-footnote"><sup>1</sup> Exception: All new Professional Services Contracts should complete this form for HR review. Otherwise, it could be a blocker during DAP.</p>
 </section>
 <section class="card page" data-step="1" data-title="General Information">
 <div class="section-kicker">Step 1</div>
@@ -682,11 +685,15 @@
 <input id="contractActionOther" name="contractActionOther" type="text"/>
 </div></fieldset>
 <div class="question">
-<label class="question-label" for="annualValue"><span id="annualValueNum">8.</span> What is the expected annual value of your purchase?<span class="required-mark">*</span></label>
+<label class="question-label" for="annualValue"><span id="annualValueNum">8.</span> What is the expected <strong>annual</strong> value of your purchase?<span class="required-mark">*</span></label>
 <input id="annualValue" inputmode="decimal" name="annualValue" placeholder="$0.00" required="" type="text"/>
 </div>
 <div class="question">
-<label class="question-label"><span id="timelineNum">9.</span> Anticipated timeline<span class="required-mark">*</span></label>
+<label class="question-label" for="maximumValue"><span id="maximumValueNum">9.</span> What is the total <strong>maximum</strong> value of the contract? <span class="helper" style="display:inline; margin:0;">(optional)</span></label>
+<input id="maximumValue" inputmode="decimal" name="maximumValue" placeholder="$0.00" type="text"/>
+</div>
+<div class="question">
+<label class="question-label"><span id="timelineNum">10.</span> Anticipated timeline<span class="required-mark">*</span></label>
 <div class="two-col">
 <div>
 <label class="helper" for="startDate">Start date</label>
@@ -719,7 +726,7 @@
 </fieldset>
 <div class="conditional visible" id="procurementMethodQuestion">
 <fieldset id="standardProcurementMethodQuestion">
-<legend><span id="procurementMethodNum">2.</span> Have you gone through a competitive bidding process (e.g., RFP, solicitation of price, etc.) or are you sole/single sourcing this?<span class="required-mark">*</span></legend>
+<legend><span id="procurementMethodNum">2.</span> Have you gone or do you intend to go through a competitive bidding process (e.g., RFP, solicitation of price, etc.) or are you sole/single sourcing this?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="procurementMethod" required="" type="radio" value="Competitive bidding process"/><span>Yes, I’ve gone through a competitive bidding process</span></label>
 <label class="radio-card"><input name="procurementMethod" type="radio" value="Sole/single sourcing"/><span>I am sole/single sourcing this contract</span></label>
@@ -852,7 +859,7 @@
 <textarea id="pastPerformance" name="pastPerformance"></textarea>
 </div>
 <fieldset>
-<legend><span id="countyStaffNum">3.</span> Is there County staff that perform this work?<span class="required-mark">*</span></legend>
+<legend><span id="countyStaffNum">3.</span> Does this work include duties that are typically performed by an existing County job classification?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="countyStaffPerform" required="" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="countyStaffPerform" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
@@ -884,9 +891,7 @@
 </div>
 </fieldset>
 <div class="question">
-<label class="question-label" for="sharepointLink"><span id="sharepointLinkNum">8.</span> Please include a SharePoint link to the SOW or contract if you have one:</label>
-<input id="sharepointLink" name="sharepointLink" type="text" inputmode="url" maxlength="300" placeholder="https://..."/>
-<p class="helper">Optional. Maximum 300 characters.</p>
+<p class="question-label"><span id="sharepointLinkNum">8.</span> Please include any attachments that provide details about the work being contracted out, such as a scope of work (SOW) or contract, if available. Including as much detail as possible up front will help expedite the review process and avoid delays.</p>
 </div>
 <div class="actions">
 <button class="btn-secondary back-btn" type="button">Back</button>
@@ -1297,7 +1302,11 @@
         metaBox.className = 'checklist-meta';
         meta.forEach(line => {
           const row = document.createElement('div');
-          row.textContent = line;
+          if (typeof line === 'object' && line.html) {
+            row.innerHTML = line.html;
+          } else {
+            row.textContent = line;
+          }
           metaBox.appendChild(row);
         });
         section.appendChild(metaBox);
@@ -1312,7 +1321,7 @@
       container.replaceChildren();
 
       const procurementMeta = ['Contact: TBD', 'Resources: TBD'];
-      const hrMeta = ['Contact: Lorena Cseszlyar (Lorena.Cseszlyar@MarinCounty.gov)', 'Resources: TBD'];
+      const hrMeta = ['Contact: Class&Comp@marincounty.gov', { html: 'Resources: <a href="https://marincounty.sharepoint.com/sites/intranet/hr/SitePages/rjqg7ckp.aspx" target="_blank" rel="noopener noreferrer">HR resources</a>' }];
       const itMeta = ['Contact: Tracylihn Monks (Tracylihn.Monks@MarinCounty.gov)', 'Resources: TBD'];
       const riskMeta = ['Contact: Julia Young (Julia.Young@marincounty.gov)', 'Resources: TBD'];
       const defaultMeta = ['Contact: TBD', 'Resources: TBD'];
@@ -1561,7 +1570,7 @@
       const dpwVisible = isDPWDepartment();
       const dpwNum = document.getElementById('dpwCUPCCAANum');
       if (dpwVisible && dpwNum) dpwNum.textContent = `${n++}.`;
-      const ids = ['contractTitleNum', 'contractTypeNum', 'contractActionNum', 'annualValueNum', 'timelineNum'];
+      const ids = ['contractTitleNum', 'contractTypeNum', 'contractActionNum', 'annualValueNum', 'maximumValueNum', 'timelineNum'];
       ids.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.textContent = `${n++}.`;
@@ -1782,6 +1791,17 @@
         annualValue.value = numeric.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
       }
       syncConditionals();
+    });
+
+    const maximumValue = document.getElementById('maximumValue');
+    maximumValue.addEventListener('focus', () => {
+      maximumValue.value = maximumValue.value.replace(/[^0-9.]/g, '');
+    });
+    maximumValue.addEventListener('blur', () => {
+      const numeric = Number(maximumValue.value.replace(/[^0-9.]/g, ''));
+      if (!Number.isNaN(numeric) && maximumValue.value.trim() !== '') {
+        maximumValue.value = numeric.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+      }
     });
 
     const startDate = document.getElementById('startDate');
