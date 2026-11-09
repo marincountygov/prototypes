@@ -162,6 +162,10 @@
       color: #22343f;
     }
 
+    body.testing-all-optional .required-mark {
+      display: none !important;
+    }
+
     .required-mark {
       color: var(--error);
       margin-left: 3px;
@@ -1096,6 +1100,8 @@
     const stepCount = document.getElementById('stepCount');
     const progressBar = document.getElementById('progressBar');
     const progressWrap = document.getElementById('progressWrap');
+    const TESTING_ALL_OPTIONAL = true; // Set to false to restore the production required-field rules.
+    if (TESTING_ALL_OPTIONAL) document.body.classList.add('testing-all-optional');
     let currentStep = 0;
 
     const pageTitle = step => pages.find(p => Number(p.dataset.step) === step)?.dataset.title || '';
@@ -1227,6 +1233,14 @@
     }
 
     function validateCurrentPage() {
+      if (TESTING_ALL_OPTIONAL) {
+        document.querySelectorAll('input, select, textarea').forEach(control => {
+          control.required = false;
+          control.setCustomValidity('');
+        });
+        return true;
+      }
+
       const page = getCurrentPage();
       const errorSummary = page.querySelector('.error-summary');
       errorSummary.classList.remove('visible');
@@ -1823,6 +1837,14 @@
       } else {
         legalStandardQuestionText.textContent = 'Are you using the standard Professional Services Contract (PSC) to execute this contract?';
         legalTermsAbbrev.textContent = 'PSC';
+      }
+
+      // Testing mode: preserve all routing/conditional behavior, but require no answers.
+      if (TESTING_ALL_OPTIONAL) {
+        document.querySelectorAll('input, select, textarea').forEach(control => {
+          control.required = false;
+          control.setCustomValidity('');
+        });
       }
     }
 
