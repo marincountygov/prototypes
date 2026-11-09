@@ -683,12 +683,12 @@
 <legend><span id="contractTypeNum">6.</span> What type of contract or purchase?<span class="required-mark">*</span></legend>
 <div class="radio-grid three">
 <label class="radio-card"><input name="contractType" required="" type="radio" value="Professional Services Contract"/><span>Professional Services Contract</span></label>
-<label class="radio-card"><input name="contractType" type="radio" value="General / Trade Contract"/><span>General / Trade Contract</span></label>
+<label class="radio-card"><input name="contractType" type="radio" value="Goods"/><span>Goods</span></label>
 <label class="radio-card"><input name="contractType" type="radio" value="Goods with a Service"/><span>Goods with a Service</span></label>
 <label class="radio-card"><input name="contractType" type="radio" value="Public Works / Construction"/><span>Public Works / Construction</span></label>
 <label class="radio-card"><input name="contractType" type="radio" value='Software ("SaaS")'/><span>Software (&quot;SaaS&quot;)</span></label>
 <label class="radio-card"><input name="contractType" type="radio" value="Community Service Contract"/><span>Community Service Contract</span></label>
-<label class="radio-card"><input name="contractType" type="radio" value="Goods"/><span>Goods</span></label>
+<label class="radio-card"><input name="contractType" type="radio" value="General / Trade Contract"/><span>General / Trade Contract</span></label>
 </div>
 </fieldset>
 <fieldset>
@@ -796,9 +796,10 @@
 <fieldset id="vendorRegisteredQuestion">
 <legend><span id="vendorRegisteredNum">5.</span> Is the vendor <a href="https://marincountycamunisapp.tylerhost.net/4912prod/munis/munisnet/AppHost/VendorCentral/search-results" rel="noopener noreferrer" target="_blank">registered with the County</a>?<span class="required-mark">*</span></legend>
 <p class="helper"><a href="https://marincountycamunisapp.tylerhost.net/4912prod/munis/munisnet/AppHost/VendorCentral/search-results" rel="noopener noreferrer" target="_blank">Click here</a> to see if your vendor is registered.</p>
-<div class="radio-grid">
-<label class="radio-card"><input name="vendorRegistered" required="" type="radio" value="Yes"/><span>Yes</span></label>
-<label class="radio-card"><input name="vendorRegistered" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
+<div class="radio-grid three">
+<label class="radio-card"><input name="vendorRegistered" required="" type="radio" value="Registered and in Active Status"/><span>Registered and in Active Status</span></label>
+<label class="radio-card"><input name="vendorRegistered" type="radio" value="Registered, but not in Active Status"/><span>Registered, but not in Active Status</span></label>
+<label class="radio-card"><input name="vendorRegistered" type="radio" value="Not registered"/><span>Not registered</span></label>
 </div>
 </fieldset>
 
@@ -1134,6 +1135,10 @@
       return checkedValue('contractType') === 'Community Service Contract';
     }
 
+    function isGoodsContract() {
+      return checkedValue('contractType') === 'Goods';
+    }
+
     function isPublicWorksContract() {
       return checkedValue('contractType') === 'Public Works / Construction';
     }
@@ -1431,8 +1436,11 @@
           procurementItems.push('Draft executive memo and share with your department head for feedback as appropriate.');
         }
 
-        if (checkedValue('vendorRegistered') === "No / I don't know") {
+        const vendorStatus = checkedValue('vendorRegistered');
+        if (vendorStatus === 'Not registered') {
           procurementItems.push('Ask your vendor to register as a vendor. Check Vendor Central on MUNIS until you see they are officially registered.');
+        } else if (vendorStatus === 'Registered, but not in Active Status') {
+          procurementItems.push('Your vendor is registered but not in active status. Email DOF-APVendor@MarinCounty.gov: "I am working on a DAP for [vendor] and Vendor Central says they are not active. Can you please provide me guidance on how to make them active?"');
         }
       }
 
@@ -1657,7 +1665,7 @@
       const exemptVisible = procurementApplies && !isPublicWorksContract();
       const actionAllowsMethod = procurementApplies && checkedValue('contractAction') !== 'Renewal';
       const range = actionAllowsMethod ? cupccaaRange() : '';
-      const standardMethodVisible = actionAllowsMethod && !range && checkedValue('transactionExempt') !== 'Yes';
+      const standardMethodVisible = actionAllowsMethod && !range && !isGoodsContract() && checkedValue('transactionExempt') !== 'Yes';
       const hhsVisible = procurementApplies && isHHSDepartment();
 
       assign('transactionExemptNum', exemptVisible);
@@ -1699,7 +1707,7 @@
       const procurementMethodInputs = [...document.querySelectorAll('input[name="procurementMethod"]')];
       const actionAllowsMethod = procurementApplies && action !== 'Renewal';
       const range = actionAllowsMethod ? cupccaaRange() : '';
-      const standardMethodApplies = actionAllowsMethod && !range && checkedValue('transactionExempt') !== 'Yes';
+      const standardMethodApplies = actionAllowsMethod && !range && !isGoodsContract() && checkedValue('transactionExempt') !== 'Yes';
       procurementMethodQuestion.classList.toggle('visible', Boolean(range) || standardMethodApplies);
       standardProcurementMethodQuestion.style.display = standardMethodApplies ? '' : 'none';
       procurementMethodInputs.forEach((field, index) => {
