@@ -340,10 +340,10 @@
     .conditional {
       display: none;
       margin-top: 12px;
-      padding: 16px;
-      border-left: 4px solid var(--marin-teal);
-      background: #f5faf9;
-      border-radius: 0 8px 8px 0;
+      padding: 0;
+      border-left: 0;
+      background: transparent;
+      border-radius: 0;
     }
 
     .conditional.visible {
@@ -679,6 +679,8 @@
 <legend><span id="contractTypeNum">6.</span> What type of contract or purchase?<span class="required-mark">*</span></legend>
 <div class="radio-grid three">
 <label class="radio-card"><input name="contractType" required="" type="radio" value="Professional Services Contract"/><span>Professional Services Contract</span></label>
+<label class="radio-card"><input name="contractType" type="radio" value="General / Trade Contract"/><span>General / Trade Contract</span></label>
+<label class="radio-card"><input name="contractType" type="radio" value="Goods with a Service"/><span>Goods with a Service</span></label>
 <label class="radio-card"><input name="contractType" type="radio" value="Public Works / Construction"/><span>Public Works / Construction</span></label>
 <label class="radio-card"><input name="contractType" type="radio" value='Software ("SaaS")'/><span>Software (&quot;SaaS&quot;)</span></label>
 <label class="radio-card"><input name="contractType" type="radio" value="Community Service Contract"/><span>Community Service Contract</span></label>
@@ -702,10 +704,6 @@
 <input id="annualValue" inputmode="decimal" name="annualValue" placeholder="$0.00" required="" type="text"/>
 </div>
 <div class="question">
-<label class="question-label" for="maximumValue"><span id="maximumValueNum">9.</span> What is the total <strong>maximum</strong> value of the contract?</label>
-<input id="maximumValue" inputmode="decimal" name="maximumValue" placeholder="$0.00" type="text"/>
-</div>
-<div class="question">
 <label class="question-label"><span id="timelineNum">10.</span> Anticipated contract term<span class="required-mark">*</span></label>
 <div class="two-col">
 <div>
@@ -718,6 +716,14 @@
 </div>
 </div>
 </div>
+<fieldset>
+<legend><span id="eocEmergencyNum">10.</span> Is this transaction an emergency activation contract or purchase part of the Emergency Operations Center?<span class="required-mark">*</span></legend>
+<p class="helper" style="color:#6b7280; margin-top:-8px; margin-bottom:12px;">E.g., Part of the El Niño/flooding emergency response</p>
+<div class="radio-grid">
+<label class="radio-card"><input name="eocEmergency" required="" type="radio" value="Yes"/><span>Yes</span></label>
+<label class="radio-card"><input name="eocEmergency" type="radio" value="No"/><span>No</span></label>
+</div>
+</fieldset>
 
 <div class="actions">
 <span></span>
@@ -734,7 +740,6 @@
 <div class="radio-grid three">
 <label class="radio-card"><input name="transactionExempt" required="" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="transactionExempt" type="radio" value="No"/><span>No</span></label>
-<label class="radio-card"><input name="transactionExempt" type="radio" value="I don't know"/><span>I don't know</span></label>
 </div>
 </fieldset>
 <div class="conditional visible" id="procurementMethodQuestion">
@@ -933,7 +938,7 @@
 </div>
 </fieldset>
 <fieldset>
-<legend>3. Will this software store, process or transmit any sensitive data? such as personally identifiable, health, or criminal justice information?<span class="required-mark">*</span></legend>
+<legend>3. Will the vendor or product collect, see, store, or send data or information about individual people, such as clients, patients, residents, or employees?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="piiShared" required="" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="piiShared" type="radio" value="No"/><span>No</span></label>
@@ -1028,7 +1033,7 @@
 <p class="intro">Identify contracts that may need County Counsel review.</p>
 <div class="error-summary" role="alert"></div>
 <fieldset>
-<legend>1. Are you using the standard Professional Services Contract (PSC) to execute this contract?<span class="required-mark">*</span></legend>
+<legend>1. <span id="legalStandardQuestionText">Are you using the standard Professional Services Contract (PSC) to execute this contract?</span><span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="legalIssues" required="" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="legalIssues" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
@@ -1036,7 +1041,7 @@
 </div>
 </fieldset>
 <fieldset>
-<legend>2. Does the vendor have any terms and conditions included on their forms, proposals, quotes, invoices, or other documents that would apply to this agreement? Also, has the vendor requested any changes or exceptions to the County’s standard PSC terms and conditions?<span class="required-mark">*</span></legend>
+<legend>2. Does the vendor have any terms and conditions included on their forms, proposals, quotes, invoices, or other documents that would apply to this agreement? Also, has the vendor requested any changes or exceptions to the County’s standard <span id="legalTermsAbbrev">PSC</span> terms and conditions?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="vendorTerms" required="" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="vendorTerms" type="radio" value="No"/><span>No</span></label>
@@ -1049,6 +1054,13 @@
 </div>
 </section>
 
+<section class="card page" data-step="11" data-title="Emergency Procurement">
+<div class="thank-you">
+<div class="section-kicker">Emergency contract routing</div>
+<h2>Emergency Operations Center Support</h2>
+<p class="intro" style="margin-left:auto; margin-right:auto;"><strong>Since your contract is part of an OEM Emergency Preparation or Response, your transaction should be prioritized. Please email <a href="mailto:ProcurementEOC@marincounty.gov">ProcurementEOC@marincounty.gov</a> to get support and process this transaction expediently.</strong></p>
+</div>
+</section>
 <section class="card page" data-step="10" data-title="Board of Supervisors">
 <div class="thank-you">
 <div class="section-kicker">Contract routing</div>
@@ -1094,6 +1106,18 @@
 
     function isProfessionalServicesContract() {
       return checkedValue('contractType') === 'Professional Services Contract';
+    }
+
+    function isRFCContract() {
+      return ['General / Trade Contract', 'Goods with a Service'].includes(checkedValue('contractType'));
+    }
+
+    function requiresLegalPage() {
+      return isProfessionalServicesContract() || isRFCContract();
+    }
+
+    function isEmergencyActivation() {
+      return checkedValue('eocEmergency') === 'Yes';
     }
 
     function isSaaSContract() {
@@ -1155,7 +1179,7 @@
       if (isSaaSContract()) steps.push(4);
       steps.push(5);
       if (!isCommunityServiceContract()) steps.push(6);
-      if (isProfessionalServicesContract()) steps.push(7);
+      if (requiresLegalPage()) steps.push(7);
       return steps;
     }
 
@@ -1164,8 +1188,8 @@
       if (step === 2 && !requiresProcurementPathway()) step = isProfessionalServicesContract() ? 3 : (isSaaSContract() ? 4 : 5);
       if (step === 3 && !isProfessionalServicesContract()) step = isSaaSContract() ? 4 : 5;
       if (step === 4 && !isSaaSContract()) step = 5;
-      if (step === 6 && isCommunityServiceContract()) step = isProfessionalServicesContract() ? 7 : 8;
-      if (step === 7 && !isProfessionalServicesContract()) step = 8;
+      if (step === 6 && isCommunityServiceContract()) step = requiresLegalPage() ? 7 : 8;
+      if (step === 7 && !requiresLegalPage()) step = 8;
 
       currentStep = step;
       pages.forEach(page => page.classList.toggle('active', Number(page.dataset.step) === step));
@@ -1185,6 +1209,9 @@
           progressBar.style.width = '100%';
         } else if (step === 10) {
           stepCount.textContent = 'Complete — Board of Supervisors';
+          progressBar.style.width = '100%';
+        } else if (step === 11) {
+          stepCount.textContent = 'Complete — Emergency Procurement';
           progressBar.style.width = '100%';
         } else {
           stepCount.textContent = 'Complete — Contract Checklist';
@@ -1250,6 +1277,10 @@
     document.querySelectorAll('.next-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         if (!validateCurrentPage()) return;
+        if (currentStep === 1 && isEmergencyActivation()) {
+          showStep(11);
+          return;
+        }
         if (currentStep === 1 && requiresBoardApproval() && !isCUPCCAAProject()) {
           showStep(10);
           return;
@@ -1473,8 +1504,8 @@
         addChecklistSection(container, 'Insurance', insuranceItems, insuranceItems.length ? defaultMeta : []);
       }
 
-      // Legal — only applies to Professional Services Contracts.
-      if (isProfessionalServicesContract()) {
+      // Legal — applies to PSC and RFC contract types.
+      if (requiresLegalPage()) {
         const legalAnswer = checkedValue('legalIssues');
         const vendorTermsAnswer = checkedValue('vendorTerms');
         const needsCounselReview = legalAnswer !== 'Yes' || vendorTermsAnswer === 'Yes' || vendorTermsAnswer === "I don't know";
@@ -1483,7 +1514,7 @@
               'Reach out to County Counsel and let them know you are working on a non-standard agreement or are unsure which agreement to use.',
               'Work with County Counsel and the vendor’s Counsel, as applicable, until you have a final contract for submission.'
             ]
-          : ['Prepare the contract using the County’s standard Professional Services Contract (PSC).'];
+          : [isRFCContract() ? 'Prepare the contract using the County’s standard RFC.' : 'Prepare the contract using the County’s standard Professional Services Contract (PSC).'];
 
         addChecklistSection(
           container,
@@ -1593,7 +1624,7 @@
       const dpwVisible = isDPWDepartment();
       const dpwNum = document.getElementById('dpwCUPCCAANum');
       if (dpwVisible && dpwNum) dpwNum.textContent = `${n++}.`;
-      const ids = ['contractTitleNum', 'contractTypeNum', 'contractActionNum', 'annualValueNum', 'maximumValueNum', 'timelineNum'];
+      const ids = ['contractTitleNum', 'contractTypeNum', 'contractActionNum', 'annualValueNum', 'timelineNum', 'eocEmergencyNum'];
       ids.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.textContent = `${n++}.`;
@@ -1612,7 +1643,7 @@
       const exemptVisible = procurementApplies && !isPublicWorksContract();
       const actionAllowsMethod = procurementApplies && checkedValue('contractAction') !== 'Renewal';
       const range = actionAllowsMethod ? cupccaaRange() : '';
-      const standardMethodVisible = actionAllowsMethod && !range;
+      const standardMethodVisible = actionAllowsMethod && !range && checkedValue('transactionExempt') !== 'Yes';
       const hhsVisible = procurementApplies && isHHSDepartment();
 
       assign('transactionExemptNum', exemptVisible);
@@ -1654,8 +1685,8 @@
       const procurementMethodInputs = [...document.querySelectorAll('input[name="procurementMethod"]')];
       const actionAllowsMethod = procurementApplies && action !== 'Renewal';
       const range = actionAllowsMethod ? cupccaaRange() : '';
-      const standardMethodApplies = actionAllowsMethod && !range;
-      procurementMethodQuestion.classList.toggle('visible', actionAllowsMethod);
+      const standardMethodApplies = actionAllowsMethod && !range && checkedValue('transactionExempt') !== 'Yes';
+      procurementMethodQuestion.classList.toggle('visible', Boolean(range) || standardMethodApplies);
       standardProcurementMethodQuestion.style.display = standardMethodApplies ? '' : 'none';
       procurementMethodInputs.forEach((field, index) => {
         field.disabled = !standardMethodApplies;
@@ -1766,10 +1797,9 @@
         setConditional(emergencyWhyWrap, emergencyWhy, checkedValue('emergency') === 'Yes');
       }
 
-      // Disable IT fields entirely when this is not a new contract so they are neither
-      // required nor included in a future submission payload.
+      // IT questions apply only to Software (SaaS) purchases.
       const itPage = pages.find(page => Number(page.dataset.step) === 4);
-      const itApplies = action === 'New Contract';
+      const itApplies = isSaaSContract();
       itPage.querySelectorAll('input, select, textarea').forEach(field => {
         field.disabled = !itApplies;
       });
@@ -1781,10 +1811,19 @@
       });
 
       const legalPage = pages.find(page => Number(page.dataset.step) === 7);
-      const legalApplies = isProfessionalServicesContract();
+      const legalApplies = requiresLegalPage();
       legalPage.querySelectorAll('input, select, textarea').forEach(field => {
         field.disabled = !legalApplies;
       });
+      const legalStandardQuestionText = document.getElementById('legalStandardQuestionText');
+      const legalTermsAbbrev = document.getElementById('legalTermsAbbrev');
+      if (isRFCContract()) {
+        legalStandardQuestionText.textContent = 'Are you using the standard RFC to execute this contract?';
+        legalTermsAbbrev.textContent = 'RFC';
+      } else {
+        legalStandardQuestionText.textContent = 'Are you using the standard Professional Services Contract (PSC) to execute this contract?';
+        legalTermsAbbrev.textContent = 'PSC';
+      }
     }
 
     document.querySelectorAll('input[name="hhsInfoTypes"]').forEach(input => {
@@ -1814,17 +1853,6 @@
         annualValue.value = numeric.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
       }
       syncConditionals();
-    });
-
-    const maximumValue = document.getElementById('maximumValue');
-    maximumValue.addEventListener('focus', () => {
-      maximumValue.value = maximumValue.value.replace(/[^0-9.]/g, '');
-    });
-    maximumValue.addEventListener('blur', () => {
-      const numeric = Number(maximumValue.value.replace(/[^0-9.]/g, ''));
-      if (!Number.isNaN(numeric) && maximumValue.value.trim() !== '') {
-        maximumValue.value = numeric.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-      }
     });
 
     const startDate = document.getElementById('startDate');
