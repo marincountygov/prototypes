@@ -1122,7 +1122,7 @@
     const stepCount = document.getElementById('stepCount');
     const progressBar = document.getElementById('progressBar');
     const progressWrap = document.getElementById('progressWrap');
-    const TESTING_ALL_OPTIONAL = true; // Set to false to restore the production required-field rules.
+    const TESTING_ALL_OPTIONAL = false; // Production mode: required-field rules are active.
     if (TESTING_ALL_OPTIONAL) document.body.classList.add('testing-all-optional');
     let currentStep = 0;
 
