@@ -592,6 +592,26 @@
       color: inherit;
     }
 
+    .risk-footnote {
+      margin: 9px 0 0;
+      font-size: 0.68rem;
+      color: #8a8f98;
+      line-height: 1.35;
+    }
+
+    .risk-footnote sup { font-size: 0.72em; vertical-align: super; }
+
+    .checklist-guidance {
+      margin: 0;
+      color: #22343f;
+      line-height: 1.55;
+    }
+
+    .checklist-item.subitem {
+      margin-left: 28px;
+      background: #fff;
+    }
+
 </style>
 </head>
 <body>
@@ -780,17 +800,16 @@
 </div>
 <fieldset id="fundingIdentifiedQuestion">
 <legend><span id="fundingIdentifiedNum">3.</span> Have you identified funding for this contract?</legend>
-<div class="radio-grid three">
+<div class="radio-grid">
 <label class="radio-card"><input name="fundingIdentified" type="radio" value="Yes"/><span>Yes</span></label>
-<label class="radio-card"><input name="fundingIdentified" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
-<label class="radio-card"><input name="fundingIdentified" type="radio" value="N/A"/><span>N/A</span></label>
+<label class="radio-card"><input name="fundingIdentified" type="radio" value="No"/><span>No</span></label>
 </div>
 </fieldset>
 <fieldset id="grantFundsQuestion">
 <legend><span id="grantFundsNum">4.</span> Will any portion of this purchase be paid for with grant funds?</legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="grantFunds" type="radio" value="Yes"/><span>Yes</span></label>
-<label class="radio-card"><input name="grantFunds" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
+<label class="radio-card"><input name="grantFunds" type="radio" value="No"/><span>No</span></label>
 </div>
 </fieldset>
 <fieldset id="vendorRegisteredQuestion">
@@ -961,20 +980,24 @@
 <p class="intro">Identify activities that may need additional risk or insurance review.</p>
 <div class="error-summary" role="alert"></div>
 <fieldset>
-<legend>1. Does the contract involve higher-risk or specialized activities, including work with minors or vulnerable populations, professional or medical services, personal or confidential information, technology, vehicles, construction or property, hazardous materials, aviation/drones, or special events?<span class="required-mark">*</span></legend>
-<p class="helper">Vulnerable populations are groups at high risk for poor health, exploitation, or harm due to social, economic, or physical disadvantages.</p>
+<legend>1. Does the contract involve any higher-risk or specialized activities including<span class="required-mark">*</span></legend>
 <div class="radio-grid">
-<label class="radio-card"><input name="riskFactors" required="" type="radio" value="Yes"/><span>Yes</span></label>
-<label class="radio-card"><input name="riskFactors" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
-
+<label class="radio-card"><input name="riskActivities" type="checkbox" value="Work with minors or vulnerable populations"/><span>Work with minors or vulnerable populations<sup>1</sup></span></label>
+<label class="radio-card"><input name="riskActivities" type="checkbox" value="Professional medical services"/><span>Professional medical services</span></label>
+<label class="radio-card"><input name="riskActivities" type="checkbox" value="Personal or confidential information or vendor access to County systems"/><span>Personal or confidential information or vendor access to County systems</span></label>
+<label class="radio-card"><input name="riskActivities" type="checkbox" value="Construction or property"/><span>Construction or property</span></label>
+<label class="radio-card"><input name="riskActivities" type="checkbox" value="Hazardous materials"/><span>Hazardous materials</span></label>
+<label class="radio-card"><input name="riskActivities" type="checkbox" value="Aviation/drones"/><span>Aviation/drones</span></label>
+<label class="radio-card"><input name="riskActivities" type="checkbox" value="Special events"/><span>Special events</span></label>
+<label class="radio-card"><input name="riskActivities" type="checkbox" value="None of these apply"/><span>None of these apply</span></label>
 </div>
+<p class="risk-footnote"><sup>1</sup> Vulnerable populations are groups at high risk for poor health, exploitation, or harm due to social, economic, or physical disadvantages.</p>
 </fieldset>
 <fieldset>
 <legend>2. Is this a public works/construction project that is subject to prevailing wage and Department of Industrial Relations (DIR) requirements?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="publicWorks" required="" type="radio" value="Yes"/><span>Yes</span></label>
-<label class="radio-card"><input name="publicWorks" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
-
+<label class="radio-card"><input name="publicWorks" type="radio" value="No"/><span>No</span></label>
 </div>
 </fieldset>
 <div class="actions">
@@ -1007,7 +1030,7 @@
 <legend>3. Will this contractor be driving as part of their contract—and hence require auto insurance coverage?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="autoInsurance" required="" type="radio" value="Yes"/><span>Yes</span></label>
-<label class="radio-card"><input name="autoInsurance" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
+<label class="radio-card"><input name="autoInsurance" type="radio" value="No"/><span>No</span></label>
 
 </div>
 </fieldset>
@@ -1015,7 +1038,7 @@
 <legend>4. Will the contractor provide professional services—such as advice, consulting, design, or analysis—where a mistake could cause financial or operational harm to the County?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="professionalLiability" required="" type="radio" value="Yes"/><span>Yes</span></label>
-<label class="radio-card"><input name="professionalLiability" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
+<label class="radio-card"><input name="professionalLiability" type="radio" value="No"/><span>No</span></label>
 
 </div>
 </fieldset>
@@ -1024,7 +1047,6 @@
 <div class="radio-grid">
 <label class="radio-card"><input name="businessStructure" required="" type="radio" value="Has employees"/><span>Has employees</span></label>
 <label class="radio-card"><input name="businessStructure" type="radio" value="Sole proprietorship"/><span>Sole proprietorship (an individual owner with no employees)</span></label>
-<label class="radio-card"><input name="businessStructure" type="radio" value="I don't know"/><span>I don't know</span></label>
 </div>
 </fieldset>
 <div class="actions">
@@ -1041,7 +1063,7 @@
 <legend>1. <span id="legalStandardQuestionText">Are you using the standard Professional Services Contract (PSC) to execute this contract?</span><span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="legalIssues" required="" type="radio" value="Yes"/><span>Yes</span></label>
-<label class="radio-card"><input name="legalIssues" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
+<label class="radio-card"><input name="legalIssues" type="radio" value="No"/><span>No</span></label>
 
 </div>
 </fieldset>
@@ -1050,7 +1072,6 @@
 <div class="radio-grid">
 <label class="radio-card"><input name="vendorTerms" required="" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="vendorTerms" type="radio" value="No"/><span>No</span></label>
-<label class="radio-card"><input name="vendorTerms" type="radio" value="I don't know"/><span>I don't know</span></label>
 </div>
 </fieldset>
 <div class="actions">
@@ -1259,6 +1280,15 @@
 
       let firstInvalid = null;
 
+      // Risk activities are a required "select all that apply" group in production mode.
+      const riskActivityInputs = [...document.querySelectorAll('input[name="riskActivities"]')];
+      if (currentStep === 5 && riskActivityInputs.length) {
+        const anyRiskActivityChecked = riskActivityInputs.some(input => input.checked);
+        riskActivityInputs[0].setCustomValidity(anyRiskActivityChecked ? '' : 'Please select at least one option.');
+      } else if (riskActivityInputs.length) {
+        riskActivityInputs[0].setCustomValidity('');
+      }
+
       // HHS information-type question is a required "select all that apply" group.
       const hhsInfoInputs = [...document.querySelectorAll('input[name="hhsInfoTypes"]')];
       if (currentStep === 2 && isHHSDepartment() && requiresProcurementPathway() && hhsInfoInputs.length) {
@@ -1322,6 +1352,10 @@
       });
     });
 
+    document.querySelectorAll('input[name="riskActivities"]').forEach(input => {
+      input.addEventListener('change', () => syncRiskActivitySelections(input));
+    });
+
     form.addEventListener('submit', event => {
       event.preventDefault();
       if (validateCurrentPage()) finishForm();
@@ -1333,6 +1367,17 @@
 
     function checkedValue(name) {
       return document.querySelector(`input[name="${name}"]:checked`)?.value || '';
+    }
+
+    function syncRiskActivitySelections(changedInput) {
+      const options = [...document.querySelectorAll('input[name="riskActivities"]')];
+      const none = options.find(input => input.value === 'None of these apply');
+      if (!none || !changedInput) return;
+      if (changedInput === none && none.checked) {
+        options.forEach(input => { if (input !== none) input.checked = false; });
+      } else if (changedInput !== none && changedInput.checked) {
+        none.checked = false;
+      }
     }
 
     function addChecklistSection(container, title, items, meta = []) {
@@ -1349,8 +1394,17 @@
       list.className = 'checklist-items';
 
       items.forEach(item => {
+        if (typeof item === 'object' && (item.plain || item.plainHtml)) {
+          const guidance = document.createElement('p');
+          guidance.className = 'checklist-guidance';
+          if (item.plainHtml) guidance.innerHTML = item.plainHtml;
+          else guidance.textContent = item.plain;
+          list.appendChild(guidance);
+          return;
+        }
+
         const label = document.createElement('label');
-        label.className = 'checklist-item';
+        label.className = 'checklist-item' + (typeof item === 'object' && item.indent ? ' subitem' : '');
 
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
@@ -1416,7 +1470,7 @@
         } else if (!range) {
           const procurementMethod = checkedValue('procurementMethod');
           if (procurementMethod === 'Sole/single sourcing') {
-            procurementItems.push('Complete this sole/single source justification form. Consult with Procurement to validate it will suffice.');
+            procurementItems.push({ html: 'Complete <u>this sole/single source justification form</u>. As needed, consult with Procurement.' });
           } else if (procurementMethod === 'Competitive bidding process') {
             procurementItems.push('Document where you solicited quotes and be ready to include that information in your submission.');
           } else if (procurementMethod === "I don't know") {
@@ -1424,8 +1478,8 @@
           }
         }
 
-        if (checkedValue('fundingIdentified') === "No / I don't know") {
-          procurementItems.push(`Identify funding with your department's leadership, including a clear "organization" and "object" code.`);
+        if (checkedValue('fundingIdentified') === 'No') {
+          procurementItems.push(`Identify funding with your department's leadership/admin team, including a clear "organization" and "object" code.`);
         }
 
         if (checkedValue('grantFunds') === 'Yes') {
@@ -1479,46 +1533,70 @@
       }
       addChecklistSection(container, 'Information Technology', itItems, itItems.length ? itMeta : []);
 
-      // Risk — show if either Risk answer is Yes.
-      if (checkedValue('riskFactors') === 'Yes' || checkedValue('publicWorks') === 'Yes') {
-        addChecklistSection(
-          container,
-          'Risk',
-          [
-            'Reach out to Risk Management and send them a copy of your answers that was sent to this email, calling attention to the “Risk” section.',
-            'Follow up with Risk until you get written approval to proceed—or how to remediate potential issues.',
-            'Recommended: PDF any emails or documents that substantiate this to submit with your DAP.'
-          ],
-          riskMeta
-        );
+      // Risk — build guidance from the specific higher-risk activities selected.
+      const selectedRiskActivities = [...document.querySelectorAll('input[name="riskActivities"]:checked')]
+        .map(input => input.value)
+        .filter(value => value !== 'None of these apply');
+
+      if (selectedRiskActivities.length) {
+        const riskSummaryNames = {
+          'Work with minors or vulnerable populations': 'work with minors or vulnerable populations',
+          'Professional medical services': 'professional medical services',
+          'Personal or confidential information or vendor access to County systems': 'personal or confidential information or vendor access to County systems',
+          'Construction or property': 'construction or property',
+          'Hazardous materials': 'hazardous materials',
+          'Aviation/drones': 'aviation/drones',
+          'Special events': 'special events'
+        };
+        const riskDetailItems = {
+          'Work with minors or vulnerable populations': '<strong>Work with minors or vulnerable populations:</strong> The type of services provided and to which populations.',
+          'Professional medical services': '<strong>Professional or medical services:</strong> The type of licensed or specialized services being provided.',
+          'Personal or confidential information or vendor access to County systems': '<strong>Personal or confidential information // access to County systems:</strong> Whether the contractor will access, collect, store, transmit, or process personal, confidential, health, financial, or other sensitive information.',
+          'Construction or property': '<strong>Construction or property:</strong> If not included in the contract, the kind of installation, repair, maintenance, excavation, design, or other construction-related work.',
+          'Hazardous materials': '<strong>Hazardous or environmental exposures:</strong> What chemicals, pollutants, fuel, waste, asbestos, lead, or other hazardous materials are involved and how.',
+          'Aviation/drones': '<strong>Aviation or drone activities:</strong> The type of aircraft/drone and how it will be used.',
+          'Special events': '<strong>Special event information:</strong> The type of event, location, estimated attendance, activities, alcohol, and other unusual risk.'
+        };
+        const names = selectedRiskActivities.map(value => riskSummaryNames[value]);
+        const readableList = names.length === 1
+          ? names[0]
+          : names.length === 2
+            ? `${names[0]} and ${names[1]}`
+            : `${names.slice(0, -1).join(', ')}, and ${names[names.length - 1]}`;
+
+        const riskItems = [
+          { plain: `You indicated your contract involves ${readableList}.` },
+          { plain: 'Email Reesha Ruel your contract and a brief description of the activities/services. Please also add in your description:' },
+          ...selectedRiskActivities.map(value => ({ html: riskDetailItems[value], indent: true }))
+        ];
+
+        addChecklistSection(container, 'Risk', riskItems, riskMeta);
       }
 
       // Insurance — Community Service Contracts skip this section entirely.
       if (!isCommunityServiceContract()) {
         const insuranceItems = [];
         if (checkedValue('generalLiability') === "No / I don't know") {
-          insuranceItems.push('Check with your department admin team or your own folders and collect any existing insurance documentation on this vendor. If you do not have a Certificate of Insurance and "additional endorsement," request one from your vendor, or for them to request one from their insurer.');
-          insuranceItems.push({ html: 'Confirm the certificate of insurance covers general liability.' });
+          insuranceItems.push({ html: 'Check with your department admin team or your own folders and collect any existing insurance documentation on this vendor. If you do not have a <u>Certificate of Insurance and \"additional endorsement\"</u>, request one from your vendor, or for them to request one from their insurer. Make sure the COI covers all insurance requirements (see below).' });
+          insuranceItems.push({ html: 'Confirm the certificate of insurance <u>covers general liability</u>.' });
         }
         if (checkedValue('additionalInsured') === "No / I don't know") {
-          insuranceItems.push('Confirm the additional endorsement meets Risk’s requirements.');
+          insuranceItems.push({ html: 'Confirm the <u>additional endorsement</u> meets Risk’s requirements.' });
         }
         if (checkedValue('autoInsurance') === 'Yes') {
           insuranceItems.push('Obtain or confirm Auto Liability insurance coverage.');
-        } else if (checkedValue('autoInsurance') === "No / I don't know") {
+        } else if (checkedValue('autoInsurance') === 'No') {
           insuranceItems.push('Confirm with Risk Management whether Auto Liability insurance is required; if not, request an exemption.');
         }
         if (checkedValue('professionalLiability') === 'Yes') {
           insuranceItems.push('Obtain or confirm Professional Liability / Errors & Omissions (E&O) insurance.');
-        } else if (checkedValue('professionalLiability') === "No / I don't know") {
+        } else if (checkedValue('professionalLiability') === 'No') {
           insuranceItems.push('Confirm with Risk Management whether Professional Liability / Errors & Omissions (E&O) insurance is required; if not, request an exemption.');
         }
         if (checkedValue('businessStructure') === 'Has employees') {
           insuranceItems.push('Get Workers’ Compensation insurance COI (typically the same as the original).');
         } else if (checkedValue('businessStructure') === 'Sole proprietorship') {
           insuranceItems.push('Reach out to Risk for an exemption request from Workers’ Compensation.');
-        } else if (checkedValue('businessStructure') === "I don't know") {
-          insuranceItems.push('Find out if your vendor has employees. If they do they need to show workers compensation on their certificate of insurance. If not, you need to request a workers comp waiver.');
         }
         if (insuranceItems.length) {
           insuranceItems.push('Recommended: PDF any emails or documents that substantiate this to submit with your DAP.');
@@ -1530,7 +1608,7 @@
       if (requiresLegalPage()) {
         const legalAnswer = checkedValue('legalIssues');
         const vendorTermsAnswer = checkedValue('vendorTerms');
-        const needsCounselReview = legalAnswer !== 'Yes' || vendorTermsAnswer === 'Yes' || vendorTermsAnswer === "I don't know";
+        const needsCounselReview = legalAnswer !== 'Yes' || vendorTermsAnswer === 'Yes';
         const legalItems = needsCounselReview
           ? [
               'Reach out to County Counsel and let them know you are working on a non-standard agreement or are unsure which agreement to use.',
