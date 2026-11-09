@@ -600,6 +600,13 @@
     }
 
     .risk-footnote sup { font-size: 0.72em; vertical-align: super; }
+    .risk-option-copy { font-weight: inherit; }
+    .risk-footnote-marker {
+      font-size: 0.65em;
+      vertical-align: super;
+      line-height: 0;
+      margin-left: 2px;
+    }
 
     .checklist-guidance {
       margin: 0;
@@ -980,16 +987,16 @@
 <p class="intro">Identify activities that may need additional risk or insurance review.</p>
 <div class="error-summary" role="alert"></div>
 <fieldset>
-<legend>1. Does the contract involve any higher-risk or specialized activities including<span class="required-mark">*</span></legend>
-<div class="radio-grid">
-<label class="radio-card"><input name="riskActivities" type="checkbox" value="Work with minors or vulnerable populations"/><span>Work with minors or vulnerable populations<sup>1</sup></span></label>
-<label class="radio-card"><input name="riskActivities" type="checkbox" value="Professional medical services"/><span>Professional medical services</span></label>
-<label class="radio-card"><input name="riskActivities" type="checkbox" value="Personal or confidential information or vendor access to County systems"/><span>Personal or confidential information or vendor access to County systems</span></label>
-<label class="radio-card"><input name="riskActivities" type="checkbox" value="Construction or property"/><span>Construction or property</span></label>
-<label class="radio-card"><input name="riskActivities" type="checkbox" value="Hazardous materials"/><span>Hazardous materials</span></label>
-<label class="radio-card"><input name="riskActivities" type="checkbox" value="Aviation/drones"/><span>Aviation/drones</span></label>
-<label class="radio-card"><input name="riskActivities" type="checkbox" value="Special events"/><span>Special events</span></label>
-<label class="radio-card"><input name="riskActivities" type="checkbox" value="None of these apply"/><span>None of these apply</span></label>
+<legend>1. Does the contract involve any higher-risk or specialized activities? Check all that apply.<span class="required-mark">*</span></legend>
+<div class="checkbox-grid">
+<label class="checkbox-card"><input name="riskActivities" type="checkbox" value="Work with minors or vulnerable populations"/><span><b class="risk-option-copy">Work with minors or vulnerable populations<sup class="risk-footnote-marker">1</sup></b></span></label>
+<label class="checkbox-card"><input name="riskActivities" type="checkbox" value="Professional medical services"/><span>Professional medical services</span></label>
+<label class="checkbox-card"><input name="riskActivities" type="checkbox" value="Personal or confidential information or vendor access to County systems"/><span>Personal or confidential information or vendor access to County systems</span></label>
+<label class="checkbox-card"><input name="riskActivities" type="checkbox" value="Construction or property"/><span>Construction or property</span></label>
+<label class="checkbox-card"><input name="riskActivities" type="checkbox" value="Hazardous materials"/><span>Hazardous materials</span></label>
+<label class="checkbox-card"><input name="riskActivities" type="checkbox" value="Aviation/drones"/><span>Aviation/drones</span></label>
+<label class="checkbox-card"><input name="riskActivities" type="checkbox" value="Special events"/><span>Special events</span></label>
+<label class="checkbox-card"><input name="riskActivities" type="checkbox" value="None of these apply"/><span>None of these apply</span></label>
 </div>
 <p class="risk-footnote"><sup>1</sup> Vulnerable populations are groups at high risk for poor health, exploitation, or harm due to social, economic, or physical disadvantages.</p>
 </fieldset>
@@ -1565,8 +1572,7 @@
             : `${names.slice(0, -1).join(', ')}, and ${names[names.length - 1]}`;
 
         const riskItems = [
-          { plain: `You indicated your contract involves ${readableList}.` },
-          { plain: 'Email Reesha Ruel your contract and a brief description of the activities/services. Please also add in your description:' },
+          { plain: `You indicated your contract involves ${readableList}. Email Reesha Ruel your contract and a brief description of the activities/services. Please also add in your description:` },
           ...selectedRiskActivities.map(value => ({ html: riskDetailItems[value], indent: true }))
         ];
 
@@ -1584,17 +1590,17 @@
           insuranceItems.push({ html: 'Confirm the <u>additional endorsement</u> meets Risk’s requirements.' });
         }
         if (checkedValue('autoInsurance') === 'Yes') {
-          insuranceItems.push('Obtain or confirm Auto Liability insurance coverage.');
+          insuranceItems.push('Obtain or confirm Auto Liability insurance coverage (typically on the same COI).');
         } else if (checkedValue('autoInsurance') === 'No') {
           insuranceItems.push('Confirm with Risk Management whether Auto Liability insurance is required; if not, request an exemption.');
         }
         if (checkedValue('professionalLiability') === 'Yes') {
-          insuranceItems.push('Obtain or confirm Professional Liability / Errors & Omissions (E&O) insurance.');
+          insuranceItems.push('Obtain or confirm Professional Liability / Errors & Omissions (E&O) insurance (typically on the same COI).');
         } else if (checkedValue('professionalLiability') === 'No') {
           insuranceItems.push('Confirm with Risk Management whether Professional Liability / Errors & Omissions (E&O) insurance is required; if not, request an exemption.');
         }
         if (checkedValue('businessStructure') === 'Has employees') {
-          insuranceItems.push('Get Workers’ Compensation insurance COI (typically the same as the original).');
+          insuranceItems.push('Obtain or confirm Workers Compensation coverage (typically on the same COI).');
         } else if (checkedValue('businessStructure') === 'Sole proprietorship') {
           insuranceItems.push('Reach out to Risk for an exemption request from Workers’ Compensation.');
         }
