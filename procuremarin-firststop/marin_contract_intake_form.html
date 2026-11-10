@@ -2135,20 +2135,31 @@
         if (checkedValue('additionalInsured') === "No / I don't know") {
           insuranceItems.push({ html: 'Confirm the <u>‘Additional Insured Endorsement’ (AIE)</u> meets Risk’s requirements.' });
         }
+        const autoExemptionRequested = checkedValue('autoInsurance') === 'No';
+        const professionalExemptionRequested = checkedValue('professionalLiability') === 'No';
+        const workersCompExemptionRequested = checkedValue('businessStructure') === 'Sole proprietorship';
+        const anyInsuranceExemptionRequested = autoExemptionRequested || professionalExemptionRequested || workersCompExemptionRequested;
+
         if (checkedValue('autoInsurance') === 'Yes') {
           insuranceItems.push('Obtain and confirm Auto Liability insurance coverage (typically on the same COI).');
-        } else if (checkedValue('autoInsurance') === 'No') {
-          insuranceItems.push('Confirm with Risk Management whether Auto Liability insurance is required; if not, request an exemption.');
+        } else if (autoExemptionRequested) {
+          insuranceItems.push('Email Risk Management with an exemption request for auto liability insurance, explaining that there is no driving or transportation as part of this contract.');
         }
         if (checkedValue('professionalLiability') === 'Yes') {
           insuranceItems.push('Obtain and confirm Professional Liability / Errors & Omissions (E&O) insurance (typically on the same COI).');
-        } else if (checkedValue('professionalLiability') === 'No') {
-          insuranceItems.push('Confirm with Risk Management whether Professional Liability / Errors & Omissions (E&O) insurance is required; if not, request an exemption.');
+        } else if (professionalExemptionRequested) {
+          insuranceItems.push('Email Risk Management with an exemption request for professional liability insurance, explaining that there is no special advice, consultation, or professional counsel being offered as part of this contract.');
         }
         if (checkedValue('businessStructure') === 'Has employees') {
           insuranceItems.push('Obtain and confirm Workers Compensation coverage (typically on the same COI).');
-        } else if (checkedValue('businessStructure') === 'Sole proprietorship') {
-          insuranceItems.push('Reach out to Risk for an exemption request from Workers’ Compensation.');
+        } else if (workersCompExemptionRequested) {
+          insuranceItems.push("Email Risk Management with an exemption request for Workers' Compensation coverage insurance, explaining that the vendor is a sole proprietorship.");
+        }
+        if (anyInsuranceExemptionRequested) {
+          insuranceItems.push('Complete an Exhibit C "Insurance/Reduction Waiver" with the requested waivers and description included. Sign and include as part of your DAP packet.');
+        }
+        if (workersCompExemptionRequested) {
+          insuranceItems.push("Complete an Exhibit N and get the vendor's signature to secure a workers' compensation exemption.");
         }
         if (insuranceItems.length) {
           insuranceItems.push('Recommended: PDF any emails or documents that substantiate this to submit with your DAP.');
