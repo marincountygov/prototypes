@@ -577,14 +577,44 @@
       display: none;
       margin-top: 30px;
       padding: 16px 18px;
-      border: 1px solid #d92d20;
+      border: 1px solid transparent;
       border-radius: 9px;
-      background: #fff5f4;
-      color: var(--error);
       font-weight: 700;
+      align-items: flex-start;
+      gap: 12px;
     }
 
-    .timeline-note.visible { display: block; }
+    .timeline-note.visible { display: flex; }
+    .timeline-note .timeline-icon {
+      flex: 0 0 auto;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 800;
+      line-height: 1;
+      background: rgba(255,255,255,.72);
+      border: 1px solid currentColor;
+    }
+    .timeline-note .timeline-copy { padding-top: 2px; }
+    .timeline-note.timeline-good {
+      border-color: #2f7d4f;
+      background: #f0faf4;
+      color: #25663f;
+    }
+    .timeline-note.timeline-watch {
+      border-color: #d4a72c;
+      background: #fff8df;
+      color: #72550b;
+    }
+    .timeline-note.timeline-urgent {
+      border-color: #d92d20;
+      background: #fff5f4;
+      color: var(--error);
+    }
 
     .welcome-page { padding-top: clamp(34px, 6vw, 64px); padding-bottom: clamp(34px, 6vw, 64px); }
     .welcome-page h2 { font-size: clamp(2rem, 5vw, 3rem); }
@@ -1128,8 +1158,7 @@
 <div class="radio-grid">
 <label class="radio-card"><input name="contractAction" required="" type="radio" value="New Contract"/><span>New Contract</span></label>
 <label class="radio-card"><input name="contractAction" type="radio" value="Purchase Order"/><span>Purchase Order</span></label>
-<label class="radio-card"><input name="contractAction" type="radio" value="Change Order"/><span>Change order, e.g., addendum, amendment</span></label>
-<label class="radio-card"><input name="contractAction" type="radio" value="Renewal"/><span>Renewal</span></label>
+<label class="radio-card"><input name="contractAction" type="radio" value="Change Order"/><span>Change order, e.g., addendum, amendment, renewal</span></label>
 <label class="radio-card"><input name="contractAction" type="radio" value="Other"/><span>Other</span></label></div>
 <div class="conditional" id="contractActionOtherWrap">
 <label class="question-label" for="contractActionOther">Please describe the other contract type<span class="required-mark">*</span></label>
@@ -1552,6 +1581,10 @@
     const TESTING_ALL_OPTIONAL = false; // Production mode: required-field rules are active.
     if (TESTING_ALL_OPTIONAL) document.body.classList.add('testing-all-optional');
     let currentStep = 0;
+    // Until General Information has been successfully completed, show every possible
+    // assessment step as potentially applicable. This avoids striking out steps based
+    // on blank/default Step 1 answers before we have enough information to route.
+    let generalInfoConfirmed = false;
 
     const pageTitle = step => pages.find(p => Number(p.dataset.step) === step)?.dataset.title || '';
 
@@ -1722,7 +1755,12 @@
         return;
       }
 
-      const steps = assessmentWorkflowSteps();
+      // On the first form page, before the user has completed General Information,
+      // show the full possible journey with no steps struck out. Once Step 1 is
+      // successfully completed, switch to the answer-driven applicable-step list.
+      const steps = (currentStep === 1 && !generalInfoConfirmed)
+        ? [...allAssessmentSteps]
+        : assessmentWorkflowSteps();
       const effectiveStep = sidebarCurrentStep();
       let currentIndex = steps.indexOf(effectiveStep);
       if (currentIndex < 0) currentIndex = 0;
@@ -1839,6 +1877,7 @@
     document.querySelectorAll('.next-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         if (!validateCurrentPage()) return;
+        if (currentStep === 1) generalInfoConfirmed = true;
         if (currentStep === 1 && isEmergencyActivation()) {
           showStep(11);
           return;
@@ -1962,6 +2001,7 @@
       const hrMeta = ['Contact: Class&Comp@marincounty.gov', { html: 'Resources: <a href="https://marincounty.sharepoint.com/sites/intranet/hr/SitePages/rjqg7ckp.aspx" target="_blank" rel="noopener noreferrer">HR resources</a>' }];
       const itMeta = ['Contact: Tracylihn Monks (Tracylihn.Monks@MarinCounty.gov)', 'Resources: TBD'];
       const riskMeta = ['Contact: Julia Young (Julia.Young@marincounty.gov)', 'Resources: TBD'];
+      const insuranceMeta = [{ html: 'Contact: Reesha Ruel &lt;<a href="mailto:Reesha.Ruel@MarinCounty.gov">Reesha.Ruel@MarinCounty.gov</a>&gt;' }, 'Resources: TBD'];
       const defaultMeta = ['Contact: TBD', 'Resources: TBD'];
 
       const contractTitle = document.getElementById('contractTitle').value.trim();
@@ -2113,7 +2153,7 @@
         if (insuranceItems.length) {
           insuranceItems.push('Recommended: PDF any emails or documents that substantiate this to submit with your DAP.');
         }
-        addChecklistSection(container, 'Insurance', insuranceItems, insuranceItems.length ? defaultMeta : []);
+        addChecklistSection(container, 'Insurance', insuranceItems, insuranceItems.length ? insuranceMeta : []);
       }
 
       // Legal — applies to PSC and RFC contract types.
@@ -2211,13 +2251,25 @@
       const daysUntilStart = Math.ceil((start - today) / 86400000);
       const recommendedSubmitDate = addDays(start, -30);
 
-      if (daysUntilStart <= 30) {
-        note.textContent = `Your anticipated start date (${formatShortDate(start)}) is in 30 days or less. We recommend completing this checklist and submitting a DAP ASAP to meet this tight timeline.`;
-      } else if (daysUntilStart < 60) {
-        note.textContent = `Your anticipated start date (${formatShortDate(start)}) is between 30 and 60 days from now. This is a relatively tight timeline. We recommend completing this checklist and submitting a DAP at least by ${formatLongDate(recommendedSubmitDate)}.`;
+      note.classList.remove('timeline-good', 'timeline-watch', 'timeline-urgent');
+      let icon = '!';
+      let copy = '';
+
+      if (daysUntilStart > 90) {
+        note.classList.add('timeline-good');
+        icon = '👍';
+        copy = `Your anticipated start date (${formatShortDate(start)}) is more than 90 days from now. Congrats on getting started early. We still recommend you submit a DAP at least by ${formatLongDate(recommendedSubmitDate)} to execute your contract on time.`;
+      } else if (daysUntilStart > 45) {
+        note.classList.add('timeline-watch');
+        icon = '–';
+        copy = `Your anticipated start date (${formatShortDate(start)}) is between 45 and 90 days from now. This is a relatively tight timeline. We recommend completing this checklist and submitting a DAP at least by ${formatLongDate(recommendedSubmitDate)}.`;
       } else {
-        note.textContent = `Your anticipated start date (${formatShortDate(start)}) is 60 or more days from now. Congrats on getting started early. We still recommend you submit a DAP at least by ${formatLongDate(recommendedSubmitDate)} to execute your contract on time.`;
+        note.classList.add('timeline-urgent');
+        icon = '!';
+        copy = `Your anticipated start date (${formatShortDate(start)}) is 45 days or sooner. We recommend completing this checklist and submitting a DAP ASAP to meet this tight timeline.`;
       }
+
+      note.innerHTML = `<span class="timeline-icon" aria-hidden="true">${icon}</span><span class="timeline-copy">${copy}</span>`;
       note.classList.add('visible');
     }
 
