@@ -1472,7 +1472,7 @@
 </div>
 </fieldset>
 <fieldset>
-<legend>3. Will this contractor be driving as part of their contract—and hence require auto insurance coverage?<span class="required-mark">*</span></legend>
+<legend>3. Will this contractor be driving as part of their contract, even if it is only to attend meetings or other County-related activities?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="autoInsurance" required="" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="autoInsurance" type="radio" value="No"/><span>No</span></label>
@@ -2001,7 +2001,7 @@
       const hrMeta = ['Contact: Class&Comp@marincounty.gov', { html: 'Resources: <a href="https://marincounty.sharepoint.com/sites/intranet/hr/SitePages/rjqg7ckp.aspx" target="_blank" rel="noopener noreferrer">HR resources</a>' }];
       const itMeta = ['Contact: Tracylihn Monks (Tracylihn.Monks@MarinCounty.gov)', 'Resources: TBD'];
       const riskMeta = ['Contact: Julia Young (Julia.Young@marincounty.gov)', 'Resources: TBD'];
-      const insuranceMeta = [{ html: 'Contact: Reesha Ruel &lt;<a href="mailto:Reesha.Ruel@MarinCounty.gov">Reesha.Ruel@MarinCounty.gov</a>&gt;' }, 'Resources: TBD'];
+      const insuranceMeta = [{ html: 'Contact: <a href="mailto:InsuranceRisk@marincounty.gov">InsuranceRisk@marincounty.gov</a>' }, 'Resources: TBD'];
       const defaultMeta = ['Contact: TBD', 'Resources: TBD'];
 
       const contractTitle = document.getElementById('contractTitle').value.trim();
@@ -2118,7 +2118,7 @@
             : `${names.slice(0, -1).join(', ')}, and ${names[names.length - 1]}`;
 
         const riskItems = [
-          { plain: `You indicated your contract involves ${readableList}. Email Reesha Ruel your contract and a brief description of the activities/services. Please also add in your description:` },
+          { plain: `You indicated your contract involves ${readableList}. Based on your responses, it appears different insurance requirements may be needed. Email InsuranceRisk@marincounty.gov a copy of your contract with the completed scope of work and any supplemental documents you intend to include as part of the agreement. Providing complete information up front will help Risk determine the appropriate insurance requirements and avoid delays. Please also include the following information:` },
           ...selectedRiskActivities.map(value => ({ html: riskDetailItems[value], indent: true }))
         ];
 
@@ -2128,39 +2128,50 @@
       // Insurance — Community Service Contracts skip this section entirely.
       if (!isCommunityServiceContract()) {
         const insuranceItems = [];
-        if (checkedValue('generalLiability') === "No / I don't know") {
-          insuranceItems.push({ html: 'Check with your department admin team or your own folders and collect any existing insurance documentation on this vendor. If you do not have a <u>Certificate of Insurance and ‘Additional Insured Endorsement’ (AIE)</u>, request one from your vendor, or for them to request one from their insurer. Make sure the COI covers all insurance requirements (see below).' });
-          insuranceItems.push({ html: 'Confirm the certificate of insurance <u>covers general liability</u>.' });
-        }
-        if (checkedValue('additionalInsured') === "No / I don't know") {
-          insuranceItems.push({ html: 'Confirm the <u>‘Additional Insured Endorsement’ (AIE)</u> meets Risk’s requirements.' });
-        }
         const autoExemptionRequested = checkedValue('autoInsurance') === 'No';
         const professionalExemptionRequested = checkedValue('professionalLiability') === 'No';
         const workersCompExemptionRequested = checkedValue('businessStructure') === 'Sole proprietorship';
         const anyInsuranceExemptionRequested = autoExemptionRequested || professionalExemptionRequested || workersCompExemptionRequested;
 
+        const documentationItems = [];
+        if (checkedValue('generalLiability') === "No / I don't know") {
+          documentationItems.push({ html: 'Check with your department admin team or your own folders and collect any existing insurance documentation on this vendor. If you do not have a <u>Certificate of Insurance and ‘Additional Insured Endorsement’ (AIE)</u>, request one from your vendor, or for them to request one from their insurer. Make sure the COI covers all insurance requirements (see below).' });
+          documentationItems.push({ html: 'Confirm the certificate of insurance <u>covers general liability</u>.' });
+        }
+        if (checkedValue('additionalInsured') === "No / I don't know") {
+          documentationItems.push({ html: 'Confirm the <u>‘Additional Insured Endorsement’ (AIE)</u> meets Risk’s requirements.' });
+        }
         if (checkedValue('autoInsurance') === 'Yes') {
-          insuranceItems.push('Obtain and confirm Auto Liability insurance coverage (typically on the same COI).');
-        } else if (autoExemptionRequested) {
-          insuranceItems.push('Email Risk Management with an exemption request for auto liability insurance, explaining that there is no driving or transportation as part of this contract.');
+          documentationItems.push('Obtain and confirm Auto Liability insurance coverage (typically on the same COI).');
         }
         if (checkedValue('professionalLiability') === 'Yes') {
-          insuranceItems.push('Obtain and confirm Professional Liability / Errors & Omissions (E&O) insurance (typically on the same COI).');
-        } else if (professionalExemptionRequested) {
-          insuranceItems.push('Email Risk Management with an exemption request for professional liability insurance, explaining that there is no special advice, consultation, or professional counsel being offered as part of this contract.');
+          documentationItems.push('Obtain and confirm Professional Liability / Errors & Omissions (E&O) insurance (typically on the same COI).');
         }
         if (checkedValue('businessStructure') === 'Has employees') {
-          insuranceItems.push('Obtain and confirm Workers Compensation coverage (typically on the same COI).');
-        } else if (workersCompExemptionRequested) {
-          insuranceItems.push("Email Risk Management with an exemption request for Workers' Compensation coverage insurance, explaining that the vendor is a sole proprietorship.");
+          documentationItems.push('Obtain and confirm Workers Compensation coverage (typically on the same COI).');
         }
+        if (documentationItems.length) {
+          insuranceItems.push({ plainHtml: '<strong>Insurance documentation</strong>' });
+          insuranceItems.push(...documentationItems);
+        }
+
         if (anyInsuranceExemptionRequested) {
-          insuranceItems.push('Complete an Exhibit C "Insurance/Reduction Waiver" with the requested waivers and description included. Sign and include as part of your DAP packet.');
+          insuranceItems.push({ plainHtml: '<strong>Insurance exemptions / waivers</strong>' });
+          if (autoExemptionRequested) {
+            insuranceItems.push('In Exhibit C, request an exemption from Auto Liability insurance and explain that there is no driving or transportation as part of this contract.');
+          }
+          if (professionalExemptionRequested) {
+            insuranceItems.push('In Exhibit C, request an exemption from Professional Liability insurance and explain that there is no special advice, consultation, or professional counsel being offered as part of this contract.');
+          }
+          if (workersCompExemptionRequested) {
+            insuranceItems.push("In Exhibit C, request an exemption from Workers' Compensation coverage and explain that the vendor is a sole proprietorship.");
+          }
+          insuranceItems.push('Complete an Exhibit C "Insurance/Reduction Waiver" identifying the requested waiver(s) and explaining the basis for each request. Email the completed Exhibit C, your contract with the completed scope of work, and any supplemental agreement documents to InsuranceRisk@marincounty.gov for review. Incorporate any requested changes before including the signed Exhibit C in your DAP packet.');
+          if (workersCompExemptionRequested) {
+            insuranceItems.push("Complete an Exhibit N and get the vendor's signature to secure a workers' compensation exemption.");
+          }
         }
-        if (workersCompExemptionRequested) {
-          insuranceItems.push("Complete an Exhibit N and get the vendor's signature to secure a workers' compensation exemption.");
-        }
+
         if (insuranceItems.length) {
           insuranceItems.push('Recommended: PDF any emails or documents that substantiate this to submit with your DAP.');
         }
