@@ -517,6 +517,20 @@
       margin-top: 4px;
     }
 
+    .hhs-checklist-note {
+      margin-top: 24px;
+      padding: 18px 20px;
+      border: 1px solid var(--marin-border);
+      border-radius: 14px;
+      background: #f7f9fb;
+      line-height: 1.55;
+    }
+
+    .hhs-checklist-note a {
+      color: var(--marin-blue);
+      font-weight: 700;
+    }
+
     .checklist-empty {
       margin: 0;
       color: var(--muted);
@@ -619,6 +633,361 @@
       background: #fff;
     }
 
+
+    /* Assessment progress layout (shown after the welcome page) */
+    :root {
+      --marin-success: #2f7d57;
+      --marin-success-light: #eaf5ef;
+      --marin-gold: #d8ad36;
+      --marin-gold-light: #fff8df;
+    }
+
+    main {
+      max-width: 1240px;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+    }
+
+    .assessment-shell {
+      width: 100%;
+    }
+
+    .assessment-shell.welcome-mode,
+    .assessment-shell.special-mode {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .assessment-shell.assessment-mode {
+      display: grid;
+      grid-template-columns: 236px minmax(0, 1fr);
+      gap: 26px;
+      align-items: start;
+    }
+
+    .assessment-content {
+      min-width: 0;
+    }
+
+    .assessment-sidebar {
+      position: sticky;
+      top: 22px;
+      align-self: start;
+    }
+
+    .assessment-progress-card {
+      background: #fff;
+      border: 1px solid var(--marin-border);
+      border-radius: 13px;
+      padding: 15px 16px 14px;
+      box-shadow: 0 6px 20px rgba(23, 59, 87, 0.04);
+      margin-bottom: 14px;
+    }
+
+    .assessment-progress-kicker {
+      font-size: 0.68rem;
+      line-height: 1.2;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 7px;
+    }
+
+    .assessment-progress-count {
+      color: var(--marin-navy);
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .sidebar-progress-track {
+      height: 6px;
+      width: 100%;
+      background: #e4ebef;
+      overflow: hidden;
+      border-radius: 999px;
+    }
+
+    .sidebar-progress-bar {
+      width: 0;
+      height: 100%;
+      background: var(--marin-gold);
+      border-radius: inherit;
+      transition: width 0.2s ease;
+    }
+
+    .assessment-step-list,
+    .mobile-step-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .assessment-step-list {
+      display: grid;
+      gap: 4px;
+    }
+
+    .assessment-step-item {
+      min-height: 40px;
+      display: grid;
+      grid-template-columns: 24px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 9px;
+      border: 1px solid transparent;
+      border-radius: 9px;
+      color: #60717c;
+      font-size: 0.88rem;
+      font-weight: 650;
+      user-select: none;
+    }
+
+    .assessment-step-marker {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 1px solid #bcc9d1;
+      background: #f6f9fb;
+      color: #6b7c87;
+      font-size: 0.72rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .assessment-step-item.completed {
+      color: var(--marin-success);
+    }
+
+    .assessment-step-item.completed .assessment-step-marker {
+      background: var(--marin-success);
+      border-color: var(--marin-success);
+      color: #fff;
+    }
+
+    .assessment-step-item.current {
+      color: var(--marin-navy);
+      background: #eaf1f5;
+      font-weight: 800;
+    }
+
+    .assessment-step-item.current .assessment-step-marker {
+      background: var(--marin-navy);
+      border-color: var(--marin-navy);
+      color: #fff;
+    }
+
+    .assessment-step-item.not-applicable {
+      color: #9aa6ad;
+      opacity: 0.8;
+    }
+
+    .assessment-step-item.not-applicable .assessment-step-name {
+      text-decoration: line-through;
+      text-decoration-thickness: 1.5px;
+    }
+
+    .assessment-step-item.not-applicable .assessment-step-marker {
+      border-color: #d4dce1;
+      background: #f5f7f8;
+      color: #9aa6ad;
+    }
+
+    .welcome-steps {
+      margin: 24px 0 6px;
+      padding: 18px;
+      border: 1px solid var(--marin-border);
+      border-radius: 12px;
+      background: #f9fbfc;
+    }
+
+    .welcome-steps h3 {
+      margin: 0 0 6px;
+      color: var(--marin-navy);
+      font-size: 1rem;
+    }
+
+    .welcome-steps-intro {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .welcome-step-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 12px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .welcome-step-grid li {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 38px;
+      padding: 8px 10px;
+      border: 1px solid #dfe7eb;
+      border-radius: 9px;
+      background: #fff;
+      color: var(--marin-navy);
+      font-weight: 700;
+      font-size: 0.88rem;
+    }
+
+    .welcome-step-number {
+      flex: 0 0 22px;
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #eef3f6;
+      color: var(--marin-navy);
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .welcome-step-grid li.welcome-checklist-step {
+      border-color: #ead488;
+      background: var(--marin-gold-light);
+      color: #715712;
+    }
+
+    .welcome-step-grid li.welcome-checklist-step .welcome-step-number {
+      background: var(--marin-gold);
+      color: #3f3008;
+    }
+
+    @media (max-width: 620px) {
+      .welcome-step-grid { grid-template-columns: 1fr; }
+    }
+
+    .assessment-step-item.checklist-step {
+      margin-top: 8px;
+      border-color: #ead488;
+      background: var(--marin-gold-light);
+      color: #715712;
+    }
+
+    .assessment-step-item.checklist-step.current {
+      border-color: var(--marin-gold);
+      background: #fff2bf;
+      color: #513d08;
+      box-shadow: inset 3px 0 0 var(--marin-gold);
+    }
+
+    .assessment-step-item.checklist-step .assessment-step-marker {
+      border-color: #d6b451;
+      background: #fff;
+      color: #806314;
+    }
+
+    .assessment-step-item.checklist-step.current .assessment-step-marker {
+      background: var(--marin-gold);
+      border-color: var(--marin-gold);
+      color: #3f3008;
+    }
+
+    .assessment-end-badge {
+      border-radius: 999px;
+      padding: 2px 6px;
+      background: rgba(216, 173, 54, 0.20);
+      color: #72580e;
+      font-size: 0.62rem;
+      font-weight: 850;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .mobile-progress-wrap {
+      display: none;
+      margin-bottom: 14px;
+      background: #fff;
+      border: 1px solid var(--marin-border);
+      border-radius: 10px;
+      box-shadow: 0 4px 14px rgba(23, 59, 87, 0.04);
+    }
+
+    .mobile-progress-details > summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 12px 14px;
+    }
+
+    .mobile-progress-details > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .mobile-progress-summary-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .mobile-progress-summary-label {
+      color: var(--muted);
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .mobile-progress-summary-count {
+      color: var(--marin-navy);
+      font-size: 0.82rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .mobile-progress-current {
+      color: var(--marin-navy);
+      font-size: 0.92rem;
+      font-weight: 800;
+      margin-bottom: 9px;
+    }
+
+    .mobile-progress-body {
+      border-top: 1px solid var(--marin-border);
+      padding: 8px 10px 10px;
+    }
+
+    .mobile-step-list .assessment-step-item {
+      min-height: 36px;
+      padding: 6px 7px;
+      font-size: 0.84rem;
+    }
+
+    @media (min-width: 861px) {
+      .mobile-progress-wrap { display: none !important; }
+    }
+
+    @media (max-width: 860px) {
+      main {
+        max-width: 980px;
+      }
+
+      .assessment-shell.assessment-mode {
+        display: block;
+      }
+
+      .assessment-sidebar {
+        display: none !important;
+      }
+
+      .mobile-progress-wrap {
+        display: block;
+      }
+    }
+
 </style>
 </head>
 <body>
@@ -634,13 +1003,49 @@
 </div>
 </header>
 <main>
-<div aria-hidden="true" class="progress-wrap" id="progressWrap">
-<div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+<div class="assessment-shell welcome-mode" id="assessmentShell">
+<aside class="assessment-sidebar" id="assessmentSidebar" aria-label="Assessment progress" hidden>
+  <div class="assessment-progress-card">
+    <div class="assessment-progress-kicker">Assessment progress</div>
+    <div class="assessment-progress-count" id="sidebarStepCount">Step 1 of 1</div>
+    <div class="sidebar-progress-track"><div class="sidebar-progress-bar" id="sidebarProgressBar"></div></div>
+  </div>
+  <ol class="assessment-step-list" id="sidebarStepList"></ol>
+</aside>
+<div class="assessment-content">
+<div class="mobile-progress-wrap" id="progressWrap" hidden>
+  <details class="mobile-progress-details">
+    <summary>
+      <div class="mobile-progress-summary-row">
+        <span class="mobile-progress-summary-label">Assessment progress</span>
+        <span class="mobile-progress-summary-count" id="mobileStepCount">Step 1 of 1</span>
+      </div>
+      <div class="mobile-progress-current" id="mobileCurrentStep">General</div>
+      <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+    </summary>
+    <div class="mobile-progress-body">
+      <ol class="mobile-step-list" id="mobileStepList"></ol>
+    </div>
+  </details>
 </div>
 <form id="contractForm" novalidate=""><section class="card page active welcome-page" data-step="0" data-title="ProcureMarin FirstStop">
 <div class="section-kicker">County of Marin</div>
 <h2>ProcureMarin FirstStop</h2>
 <p class="intro">FirstStop allows contract managers to get a personalized check-list of action items to complete before processing a DAP.</p>
+<div class="welcome-steps" aria-label="Possible FirstStop steps">
+  <h3>What you may encounter</h3>
+  <p class="welcome-steps-intro">FirstStop adapts to your answers, so some steps may be skipped.</p>
+  <ol class="welcome-step-grid">
+    <li><span class="welcome-step-number">1</span><span>General</span></li>
+    <li><span class="welcome-step-number">2</span><span>Procurement</span></li>
+    <li><span class="welcome-step-number">3</span><span>HR</span></li>
+    <li><span class="welcome-step-number">4</span><span>IT</span></li>
+    <li><span class="welcome-step-number">5</span><span>Risk</span></li>
+    <li><span class="welcome-step-number">6</span><span>Insurance</span></li>
+    <li><span class="welcome-step-number">7</span><span>Legal</span></li>
+    <li class="welcome-checklist-step"><span class="welcome-step-number">✓</span><span>Checklist — End</span></li>
+  </ol>
+</div>
 <div class="actions welcome-actions">
 <span></span>
 <button class="btn-primary" id="welcomeStartBtn" type="button">Click here to get started</button>
@@ -831,7 +1236,7 @@
 
 <div class="conditional" id="hhsProcurementQuestions">
 <fieldset>
-<legend><span id="hhsFederalTechNum">6.</span> Is this a Social Services purchase of electronic equipment, software, or EDP services for a federally funded program?<span class="required-mark">*</span></legend>
+<legend><span id="hhsFederalTechNum">6.</span> Is this a purchase for the Department of Health and Human Services Division of Social Services? If so, does it include electronic data processing equipment (laptops, monitors, keyboards, software, etc.)?<span class="required-mark">*</span></legend>
 <div class="radio-grid three">
 <label class="radio-card"><input name="hhsFederalTech" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="hhsFederalTech" type="radio" value="No"/><span>No</span></label>
@@ -874,7 +1279,7 @@
 </fieldset>
 
 <fieldset>
-<legend><span id="hhsSystemConnectionNum">10.</span> Will the product connect to a County or State system, such as an electronic health record or CalSAWS?<span class="required-mark">*</span></legend>
+<legend><span id="hhsSystemConnectionNum">10.</span> Will the vendor or product connect to a County or State system, such as an electronic health record or CalSAWS?<span class="required-mark">*</span></legend>
 <div class="radio-grid three">
 <label class="radio-card"><input name="hhsSystemConnection" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="hhsSystemConnection" type="radio" value="No"/><span>No</span></label>
@@ -940,7 +1345,11 @@
 </div>
 </fieldset>
 <div class="question">
-<p class="question-label"><span id="sharepointLinkNum">8.</span> Please include any attachments that provide details about the work being contracted out, such as a scope of work (SOW) or contract, if available. Including as much detail as possible up front will help expedite the review process and avoid delays.</p>
+<label class="question-label" for="maximumContractValue"><span id="maximumContractValueNum">8.</span> You indicated the total annual value of your contract is <strong><span id="hrAnnualValueDisplay"></span></strong>. What&apos;s the <strong>MAXIMUM</strong> value of your contract over the course of its term?<span class="required-mark">*</span></label>
+<input id="maximumContractValue" inputmode="decimal" name="maximumContractValue" placeholder="$0.00" required="" type="text"/>
+</div>
+<div class="question">
+<p class="question-label"><span id="sharepointLinkNum">9.</span> Please include any attachments that provide details about the work being contracted out, such as a scope of work (SOW) or contract, if available. Including as much detail as possible up front will help expedite the review process and avoid delays.</p>
 </div>
 <div class="actions">
 <button class="btn-secondary back-btn" type="button">Back</button>
@@ -993,7 +1402,7 @@
 <label class="checkbox-card"><input name="riskActivities" type="checkbox" value="Professional medical services"/><span>Professional medical services</span></label>
 <label class="checkbox-card"><input name="riskActivities" type="checkbox" value="Personal or confidential information or vendor access to County systems"/><span>Personal or confidential information or vendor access to County systems</span></label>
 <label class="checkbox-card"><input name="riskActivities" type="checkbox" value="Construction or property"/><span>Construction or property</span></label>
-<label class="checkbox-card"><input name="riskActivities" type="checkbox" value="Hazardous materials"/><span>Hazardous materials</span></label>
+<label class="checkbox-card"><input name="riskActivities" type="checkbox" value="Hazardous, environmental, or biohazard exposures"/><span>Hazardous, environmental, or biohazard exposures</span></label>
 <label class="checkbox-card"><input name="riskActivities" type="checkbox" value="Aviation/drones"/><span>Aviation/drones</span></label>
 <label class="checkbox-card"><input name="riskActivities" type="checkbox" value="Special events"/><span>Special events</span></label>
 <label class="checkbox-card"><input name="riskActivities" type="checkbox" value="None of these apply"/><span>None of these apply</span></label>
@@ -1026,7 +1435,7 @@
 </div>
 </fieldset>
 <fieldset>
-<legend>2. In addition to a certificate of insurance, Risk Management requires an “additional endorsement” naming the County of Marin. Do you have that document?<span class="required-mark">*</span></legend>
+<legend>2. In addition to a certificate of insurance, Risk Management requires an ‘Additional Insured Endorsement’ (AIE) naming the County of Marin. Do you have that document?<span class="required-mark">*</span></legend>
 <div class="radio-grid">
 <label class="radio-card"><input name="additionalInsured" required="" type="radio" value="Yes"/><span>Yes</span></label>
 <label class="radio-card"><input name="additionalInsured" type="radio" value="No / I don't know"/><span>No / I don't know</span></label>
@@ -1118,9 +1527,12 @@
 <p class="checklist-intro">Based on the information you provided, the following is a checklist for you as the contract manager to consider before submitting your contract.</p>
 <div aria-live="polite" class="timeline-note" id="timelineNote"></div>
 <div id="checklistSections"></div>
+<div class="hhs-checklist-note" id="hhsChecklistNote" hidden></div>
 </div>
 </section>
 </form>
+</div>
+</div>
 </main>
 </div>
 <script>
@@ -1129,6 +1541,14 @@
     const stepCount = document.getElementById('stepCount');
     const progressBar = document.getElementById('progressBar');
     const progressWrap = document.getElementById('progressWrap');
+    const assessmentShell = document.getElementById('assessmentShell');
+    const assessmentSidebar = document.getElementById('assessmentSidebar');
+    const sidebarStepCount = document.getElementById('sidebarStepCount');
+    const sidebarProgressBar = document.getElementById('sidebarProgressBar');
+    const sidebarStepList = document.getElementById('sidebarStepList');
+    const mobileStepCount = document.getElementById('mobileStepCount');
+    const mobileCurrentStep = document.getElementById('mobileCurrentStep');
+    const mobileStepList = document.getElementById('mobileStepList');
     const TESTING_ALL_OPTIONAL = false; // Production mode: required-field rules are active.
     if (TESTING_ALL_OPTIONAL) document.body.classList.add('testing-all-optional');
     let currentStep = 0;
@@ -1222,6 +1642,115 @@
       return steps;
     }
 
+
+    const assessmentStepLabels = {
+      1: 'General',
+      2: 'Procurement',
+      3: 'HR',
+      4: 'IT',
+      5: 'Risk',
+      6: 'Insurance',
+      7: 'Legal',
+      9: 'Checklist'
+    };
+
+    const allAssessmentSteps = [1, 2, 3, 4, 5, 6, 7, 9];
+
+    function assessmentWorkflowSteps() {
+      // Used for progress math: only steps that actually apply to this user.
+      return [...workflowSteps(), 9];
+    }
+
+    function sidebarCurrentStep() {
+      if (currentStep === 8 || currentStep === 9) return 9;
+      return currentStep;
+    }
+
+    function renderAssessmentStepList(target, applicableSteps, effectiveStep) {
+      target.innerHTML = '';
+      const currentApplicableIndex = applicableSteps.indexOf(effectiveStep);
+
+      allAssessmentSteps.forEach((step, index) => {
+        const isApplicable = applicableSteps.includes(step);
+        const applicableIndex = applicableSteps.indexOf(step);
+        const isCompleted = isApplicable && currentApplicableIndex >= 0 && applicableIndex < currentApplicableIndex;
+        const isCurrent = isApplicable && step === effectiveStep;
+
+        const item = document.createElement('li');
+        item.className = 'assessment-step-item';
+        if (!isApplicable) item.classList.add('not-applicable');
+        if (isCompleted) item.classList.add('completed');
+        if (isCurrent) item.classList.add('current');
+        if (step === 9) item.classList.add('checklist-step');
+
+        const marker = document.createElement('span');
+        marker.className = 'assessment-step-marker';
+        if (!isApplicable) marker.textContent = '—';
+        else if (isCompleted) marker.textContent = '✓';
+        else marker.textContent = step === 9 ? '✓' : String(index + 1);
+
+        const label = document.createElement('span');
+        label.className = 'assessment-step-name';
+        label.textContent = assessmentStepLabels[step] || pageTitle(step);
+
+        item.append(marker, label);
+
+        if (step === 9) {
+          const endBadge = document.createElement('span');
+          endBadge.className = 'assessment-end-badge';
+          endBadge.textContent = 'End';
+          item.appendChild(endBadge);
+        }
+
+        target.appendChild(item);
+      });
+    }
+
+    function updateAssessmentChrome() {
+      const specialExit = currentStep === 10 || currentStep === 11;
+      const onWelcome = currentStep === 0;
+
+      assessmentShell.classList.toggle('welcome-mode', onWelcome);
+      assessmentShell.classList.toggle('special-mode', specialExit);
+      assessmentShell.classList.toggle('assessment-mode', !onWelcome && !specialExit);
+
+      if (onWelcome || specialExit) {
+        assessmentSidebar.hidden = true;
+        progressWrap.hidden = true;
+        progressWrap.style.display = 'none';
+        stepCount.textContent = onWelcome ? 'ProcureMarin FirstStop' : pageTitle(currentStep);
+        return;
+      }
+
+      const steps = assessmentWorkflowSteps();
+      const effectiveStep = sidebarCurrentStep();
+      let currentIndex = steps.indexOf(effectiveStep);
+      if (currentIndex < 0) currentIndex = 0;
+      const position = currentIndex + 1;
+      const total = steps.length;
+      const percent = Math.max(0, Math.min(100, (position / total) * 100));
+      const label = assessmentStepLabels[effectiveStep] || pageTitle(effectiveStep);
+
+      if (currentStep >= 1 && currentStep <= 7) {
+        const currentPage = pages.find(page => Number(page.dataset.step) === currentStep);
+        const kicker = currentPage?.querySelector('.section-kicker');
+        if (kicker) kicker.textContent = `Step ${position}`;
+      }
+
+      assessmentSidebar.hidden = false;
+      progressWrap.hidden = false;
+      progressWrap.style.display = '';
+      sidebarStepCount.textContent = `Step ${position} of ${total}`;
+      mobileStepCount.textContent = `Step ${position} of ${total}`;
+      mobileCurrentStep.textContent = label;
+      sidebarProgressBar.style.width = `${percent}%`;
+      progressBar.style.width = `${percent}%`;
+      stepCount.textContent = `Step ${position} of ${total} — ${label}`;
+
+      renderAssessmentStepList(sidebarStepList, steps, effectiveStep);
+      renderAssessmentStepList(mobileStepList, steps, effectiveStep);
+    }
+
     function showStep(step) {
       // If a conditional page is not applicable, route to the next applicable page.
       if (step === 2 && !requiresProcurementPathway()) step = isProfessionalServicesContract() ? 3 : (isSaaSContract() ? 4 : 5);
@@ -1233,30 +1762,7 @@
       currentStep = step;
       pages.forEach(page => page.classList.toggle('active', Number(page.dataset.step) === step));
 
-      if (step === 0) {
-        stepCount.textContent = 'ProcureMarin FirstStop';
-        progressWrap.style.display = 'none';
-      } else {
-        progressWrap.style.display = 'block';
-        if (step <= 7) {
-          const steps = workflowSteps();
-          const position = steps.indexOf(step) + 1;
-          stepCount.textContent = `Step ${position} of ${steps.length} — ${pageTitle(step)}`;
-          progressBar.style.width = `${(position / steps.length) * 100}%`;
-        } else if (step === 8) {
-          stepCount.textContent = 'Complete — Thank You';
-          progressBar.style.width = '100%';
-        } else if (step === 10) {
-          stepCount.textContent = 'Complete — Board of Supervisors';
-          progressBar.style.width = '100%';
-        } else if (step === 11) {
-          stepCount.textContent = 'Complete — Emergency Procurement';
-          progressBar.style.width = '100%';
-        } else {
-          stepCount.textContent = 'Complete — Contract Checklist';
-          progressBar.style.width = '100%';
-        }
-      }
+      updateAssessmentChrome();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       syncConditionals();
     }
@@ -1452,7 +1958,7 @@
       const title = document.getElementById('checklistTitle');
       container.replaceChildren();
 
-      const procurementMeta = ['Contact: TBD', 'Resources: TBD'];
+      const procurementMeta = [{ html: 'Contact: <a href="mailto:Procurement@marincounty.gov">Procurement@marincounty.gov</a>' }, { html: 'Resources: <a href="https://marincounty.sharepoint.com/sites/intranet/df/SitePages/Procurement.aspx" target="_blank" rel="noopener noreferrer">Procurement resources</a>' }];
       const hrMeta = ['Contact: Class&Comp@marincounty.gov', { html: 'Resources: <a href="https://marincounty.sharepoint.com/sites/intranet/hr/SitePages/rjqg7ckp.aspx" target="_blank" rel="noopener noreferrer">HR resources</a>' }];
       const itMeta = ['Contact: Tracylihn Monks (Tracylihn.Monks@MarinCounty.gov)', 'Resources: TBD'];
       const riskMeta = ['Contact: Julia Young (Julia.Young@marincounty.gov)', 'Resources: TBD'];
@@ -1477,7 +1983,7 @@
         } else if (!range) {
           const procurementMethod = checkedValue('procurementMethod');
           if (procurementMethod === 'Sole/single sourcing') {
-            procurementItems.push({ html: 'Complete <u>this sole/single source justification form</u>. As needed, consult with Procurement.' });
+            procurementItems.push({ html: 'Complete <u>this sole/single source justification form</u>. Document the single-source, sole-source, or emergency basis, price reasonableness, and required approvals before relying on the selected vendor. As needed, consult with Procurement.' });
           } else if (procurementMethod === 'Competitive bidding process') {
             procurementItems.push('Document where you solicited quotes and be ready to include that information in your submission.');
           } else if (procurementMethod === "I don't know") {
@@ -1551,7 +2057,7 @@
           'Professional medical services': 'professional medical services',
           'Personal or confidential information or vendor access to County systems': 'personal or confidential information or vendor access to County systems',
           'Construction or property': 'construction or property',
-          'Hazardous materials': 'hazardous materials',
+          'Hazardous, environmental, or biohazard exposures': 'hazardous materials',
           'Aviation/drones': 'aviation/drones',
           'Special events': 'special events'
         };
@@ -1560,7 +2066,7 @@
           'Professional medical services': '<strong>Professional or medical services:</strong> The type of licensed or specialized services being provided.',
           'Personal or confidential information or vendor access to County systems': '<strong>Personal or confidential information // access to County systems:</strong> Whether the contractor will access, collect, store, transmit, or process personal, confidential, health, financial, or other sensitive information.',
           'Construction or property': '<strong>Construction or property:</strong> If not included in the contract, the kind of installation, repair, maintenance, excavation, design, or other construction-related work.',
-          'Hazardous materials': '<strong>Hazardous or environmental exposures:</strong> What chemicals, pollutants, fuel, waste, asbestos, lead, or other hazardous materials are involved and how.',
+          'Hazardous, environmental, or biohazard exposures': '<strong>Hazardous or environmental exposures:</strong> What chemicals, pollutants, fuel, waste, asbestos, lead, or other hazardous materials are involved and how.',
           'Aviation/drones': '<strong>Aviation or drone activities:</strong> The type of aircraft/drone and how it will be used.',
           'Special events': '<strong>Special event information:</strong> The type of event, location, estimated attendance, activities, alcohol, and other unusual risk.'
         };
@@ -1583,24 +2089,24 @@
       if (!isCommunityServiceContract()) {
         const insuranceItems = [];
         if (checkedValue('generalLiability') === "No / I don't know") {
-          insuranceItems.push({ html: 'Check with your department admin team or your own folders and collect any existing insurance documentation on this vendor. If you do not have a <u>Certificate of Insurance and \"additional endorsement\"</u>, request one from your vendor, or for them to request one from their insurer. Make sure the COI covers all insurance requirements (see below).' });
+          insuranceItems.push({ html: 'Check with your department admin team or your own folders and collect any existing insurance documentation on this vendor. If you do not have a <u>Certificate of Insurance and ‘Additional Insured Endorsement’ (AIE)</u>, request one from your vendor, or for them to request one from their insurer. Make sure the COI covers all insurance requirements (see below).' });
           insuranceItems.push({ html: 'Confirm the certificate of insurance <u>covers general liability</u>.' });
         }
         if (checkedValue('additionalInsured') === "No / I don't know") {
-          insuranceItems.push({ html: 'Confirm the <u>additional endorsement</u> meets Risk’s requirements.' });
+          insuranceItems.push({ html: 'Confirm the <u>‘Additional Insured Endorsement’ (AIE)</u> meets Risk’s requirements.' });
         }
         if (checkedValue('autoInsurance') === 'Yes') {
-          insuranceItems.push('Obtain or confirm Auto Liability insurance coverage (typically on the same COI).');
+          insuranceItems.push('Obtain and confirm Auto Liability insurance coverage (typically on the same COI).');
         } else if (checkedValue('autoInsurance') === 'No') {
           insuranceItems.push('Confirm with Risk Management whether Auto Liability insurance is required; if not, request an exemption.');
         }
         if (checkedValue('professionalLiability') === 'Yes') {
-          insuranceItems.push('Obtain or confirm Professional Liability / Errors & Omissions (E&O) insurance (typically on the same COI).');
+          insuranceItems.push('Obtain and confirm Professional Liability / Errors & Omissions (E&O) insurance (typically on the same COI).');
         } else if (checkedValue('professionalLiability') === 'No') {
           insuranceItems.push('Confirm with Risk Management whether Professional Liability / Errors & Omissions (E&O) insurance is required; if not, request an exemption.');
         }
         if (checkedValue('businessStructure') === 'Has employees') {
-          insuranceItems.push('Obtain or confirm Workers Compensation coverage (typically on the same COI).');
+          insuranceItems.push('Obtain and confirm Workers Compensation coverage (typically on the same COI).');
         } else if (checkedValue('businessStructure') === 'Sole proprietorship') {
           insuranceItems.push('Reach out to Risk for an exemption request from Workers’ Compensation.');
         }
@@ -1620,7 +2126,7 @@
               'Reach out to County Counsel and let them know you are working on a non-standard agreement or are unsure which agreement to use.',
               'Work with County Counsel and the vendor’s Counsel, as applicable, until you have a final contract for submission.'
             ]
-          : [isRFCContract() ? 'Prepare the contract using the County’s standard RFC.' : 'Prepare the contract using the County’s standard Professional Services Contract (PSC).'];
+          : [isRFCContract() ? 'Prepare the contract using the County’s standard RFC (Requirement for Contractors).' : 'Prepare the contract using the County’s standard Professional Services Contract (PSC).'];
 
         addChecklistSection(
           container,
@@ -1628,6 +2134,17 @@
           legalItems,
           defaultMeta
         );
+      }
+
+      const hhsChecklistNote = document.getElementById('hhsChecklistNote');
+      if (hhsChecklistNote) {
+        if (isHHSDepartment()) {
+          hhsChecklistNote.hidden = false;
+          hhsChecklistNote.innerHTML = 'HHS contracts often require several exhibits that serve as addenda to the statement of work. <a href="https://marincounty.sharepoint.com/:l:/s/HHSGrantContract/JAAYnfHM09XxQbVpUDNw2hqRAVMqZYFECI1OxVE1PZ13_qQ?e=O0HgNc" target="_blank" rel="noopener noreferrer">Please refer to this site for further information</a>.';
+        } else {
+          hhsChecklistNote.hidden = true;
+          hhsChecklistNote.replaceChildren();
+        }
       }
 
       updateTimelineNote();
@@ -1718,7 +2235,7 @@
       setConditional(contractActionOtherWrap, contractActionOther, action === 'Other');
       const hasConditionalQuestion = action === 'Renewal' || action === 'New Contract';
       const start = hasConditionalQuestion ? 3 : 2;
-      const ids = ['countyStaffNum', 'contractNecessityNum', 'employeeImpactsNum', 'processChangesNum', 'emergencyNum', 'sharepointLinkNum'];
+      const ids = ['countyStaffNum', 'contractNecessityNum', 'employeeImpactsNum', 'processChangesNum', 'emergencyNum', 'maximumContractValueNum', 'sharepointLinkNum'];
       ids.forEach((id, index) => {
         const el = document.getElementById(id);
         if (el) el.textContent = `${start + index}.`;
@@ -1886,6 +2403,10 @@
       setConditional(renewalQuestion, renewalDuration, action === 'Renewal');
       setConditional(newContractQuestion, pastPerformance, action === 'New Contract');
       syncHRNumbering();
+      const hrAnnualValueDisplay = document.getElementById('hrAnnualValueDisplay');
+      if (hrAnnualValueDisplay) {
+        hrAnnualValueDisplay.textContent = document.getElementById('annualValue').value.trim() || '$0.00';
+      }
 
       const emergencyWhyWrap = document.getElementById('emergencyWhyWrap');
       const emergencyWhy = document.getElementById('emergencyWhy');
@@ -1924,8 +2445,8 @@
       const legalStandardQuestionText = document.getElementById('legalStandardQuestionText');
       const legalTermsAbbrev = document.getElementById('legalTermsAbbrev');
       if (isRFCContract()) {
-        legalStandardQuestionText.textContent = 'Are you using the standard RFC to execute this contract?';
-        legalTermsAbbrev.textContent = 'RFC';
+        legalStandardQuestionText.textContent = 'Are you using the standard RFC (Requirement for Contractors) to execute this contract?';
+        legalTermsAbbrev.textContent = 'RFC (Requirement for Contractors)';
       } else {
         legalStandardQuestionText.textContent = 'Are you using the standard Professional Services Contract (PSC) to execute this contract?';
         legalTermsAbbrev.textContent = 'PSC';
@@ -1955,18 +2476,30 @@
       });
     });
 
-    form.addEventListener('change', syncConditionals);
+    form.addEventListener('change', () => { syncConditionals(); updateAssessmentChrome(); });
 
     const annualValue = document.getElementById('annualValue');
     annualValue.addEventListener('focus', () => {
       annualValue.value = annualValue.value.replace(/[^0-9.]/g, '');
     });
+    annualValue.addEventListener('input', updateAssessmentChrome);
     annualValue.addEventListener('blur', () => {
       const numeric = Number(annualValue.value.replace(/[^0-9.]/g, ''));
       if (!Number.isNaN(numeric) && annualValue.value.trim() !== '') {
         annualValue.value = numeric.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
       }
       syncConditionals();
+    });
+
+    const maximumContractValue = document.getElementById('maximumContractValue');
+    maximumContractValue.addEventListener('focus', () => {
+      maximumContractValue.value = maximumContractValue.value.replace(/[^0-9.]/g, '');
+    });
+    maximumContractValue.addEventListener('blur', () => {
+      const numeric = Number(maximumContractValue.value.replace(/[^0-9.]/g, ''));
+      if (!Number.isNaN(numeric) && maximumContractValue.value.trim() !== '') {
+        maximumContractValue.value = numeric.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+      }
     });
 
     const startDate = document.getElementById('startDate');
